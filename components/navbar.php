@@ -34,8 +34,8 @@
             "YanoDASH's Story" => "/yanodash-repository/about/yanodash-story"
         ]);
         $myaccount_dropdownMenu = dropdownMenu("myaccount-dropdown-menu", [
-            "Login" => "/yanodash/login",
-            "Request an Account" => "/yanodash/request-account"
+            "Login" => "/yanodash-repository/login",
+            "Request an Account" => "/yanodash-repository/request-account"
         ]);
 
         $html = <<< HTML
@@ -94,8 +94,8 @@
                 <a href="/yanodash-repository/">
                     <img src="/yanodash-repository/images/navbar-logo.png" draggable="false" style="width: 90px;">
                 </a>
-                <span id="vertical-bar" style="width: 2px; height: 80px; background-color: #71100F"></span>
                 <a href="/yanodash-repository"><h1 style="user-select: none;">YanoDASH</h1></a>
+                <span id="vertical-bar" style="width: 2px; height: 32px; background-color: #71100F"></span>
                 <div class="dropdown" id="documents-dropdown">
                     <a class="$documents_classList" href="/yanodash-repository/documents/">
                         <h3>Documents</h3>
