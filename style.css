@@ -1,5 +1,444 @@
- * {
- 	margin: 0px;
- 	padding: 0px;
- 	box-sizing: border-box;
- }
+/* ============================================================================================================ 
+                                            START OF MOBILE VIEW 
+============================================================================================================ */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW NAVBAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#navbar {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    position: relative; 
+    padding: 10px;
+}
+
+#navbar h1 { font-size: 1.5rem !important; }
+
+#navbar h3 { font-size: 1.15rem !important; }
+
+#navbar > a:first-child img { 
+    width: 50px !important;
+    height: auto;
+}
+
+.hamburger { 
+    display: block; 
+    background: none; 
+    border: none; 
+    cursor: pointer; 
+    margin-left: auto; 
+    z-index: 1001;
+}
+
+.hamburger span { 
+    display: block; 
+    width: 25px; 
+    height: 3px; 
+    background: #71100F; 
+    margin: 5px 0;
+}
+
+#nav-links { 
+    display: none; 
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    width: calc(100% - 20px);
+    margin: 0 10px; 
+
+    background: #fff; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,.2); 
+
+    flex-direction: column; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 20px 0; 
+
+    z-index: 1000;
+}
+
+#nav-links.active { display: flex; }
+
+#nav-links .dropdown,
+#nav-links h3 { 
+    width: 100%; 
+    text-align: center;
+}
+
+#nav-links .dropdown[style] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+#nav-links > .dropdown:last-child { order: -1; }
+
+#nav-links a { 
+    display: block; 
+    width: 100%;
+}
+
+#nav-links img { 
+    width: 40px !important; 
+    height: 40px !important; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    margin-bottom: 10px;
+}
+
+.dropdown:hover .dropdown-contents { display: none !important; }
+
+.dropdown .dropdown-contents { 
+    display: none; 
+    position: static !important; 
+    transform: none !important; 
+    box-shadow: none !important; 
+    background: #f5f5f5; 
+    width: 100%;
+}
+
+.dropdown.open .dropdown-contents { display: block !important; }
+
+.dropdown-contents a { 
+    text-align: center; 
+    padding: 10px;
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.content-section {
+    color: white;
+    padding: 30px;
+    height: auto;
+}
+
+#sec1-title {
+    width: 60%;
+    border-radius: 10px;
+    background-color: #FFD700;
+    font-size: 1.30rem;
+    padding: 10px;
+    color: #71100F;
+    margin-top: 10px;
+}
+
+#sec1-text, 
+#stats-section-text,
+#dms-section-text {
+    font-size: 1rem;
+    margin: 20px;
+    text-align: justify;
+}
+
+#stats-section-title {
+    width: 42%;
+    border-radius: 10px;
+    background-color: #FFD700;
+    font-size: 1.30rem;
+    padding: 10px;
+    color: #71100F;
+    margin-top: 10px;
+}
+
+#dms-section-title {
+    width: 69%;
+    border-radius: 10px;
+    background-color: #FFD700;
+    font-size: 1.30rem;
+    padding: 10px;
+    color: #71100F;
+    margin-top: 10px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW FOOTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#footer {
+    position: static !important;
+    flex-direction: column !important;
+    background-color: black;
+    color: white;
+    gap: 30px !important;
+    padding: 20px;
+    text-align: center;
+}
+
+#footer .footer-section:last-child { margin-left: 0 !important; }
+
+.footer-section-label {
+    font-size: 1.15rem;
+    font-weight: bolder;
+}
+
+#contacts {
+    justify-content: center !important;
+    margin-left: 0 !important;
+}
+/* ============================================================================================================ 
+                                            END OF MOBILE VIEW 
+============================================================================================================ */
+
+
+
+/* ============================================================================================================ 
+                                            START OF TABLET VIEW 
+============================================================================================================ */
+@media (min-width: 481px) {
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW NAVBAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    #navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #navbar > a:first-child,
+    #navbar > a:nth-child(2),
+    #vertical-bar {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    #navbar > a:first-child img { width: 65px !important; }
+
+    #navbar h1 {
+        font-size: 1.8rem !important;
+        margin: 0 8px;
+        white-space: nowrap;
+    }
+
+    #vertical-bar {
+        width: 2px;
+        height: 28px;
+        background-color: #71100F;
+        margin: 0 8px;
+    }
+
+    .hamburger { display: none; }
+
+    #nav-links {
+        display: flex !important;
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        gap: 15px;
+
+        margin-left: auto;
+
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        width: auto;
+    }
+
+    #nav-links .dropdown {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+    }
+
+    #nav-links h3 { font-size: 1.3rem !important; }
+
+    #nav-links img {
+        width: 36px !important;
+        height: 36px !important;
+        margin-bottom: 0;
+    }
+
+    #nav-links > .dropdown:last-child { order: 0; }
+
+    #nav-links .dropdown[style] {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .dropdown .dropdown-contents {
+        display: none;
+        position: absolute !important;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 160px;
+        z-index: 9999;
+    }
+
+    .dropdown.open .dropdown-contents { display: block !important; }
+
+    .dropdown { position: relative; }
+
+    #about-dropdown .dropdown-contents,
+    #myaccount-dropdown-menu {
+        left: auto !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    .content-section { padding: 50px; }
+
+    #sec1-title {
+        width: 41%;
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+
+    #sec1-text, 
+    #stats-section-text, 
+    #dms-section-text { font-size: 1.5rem; }
+
+    #stats-section-title {
+        width: 29%;
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+
+    #dms-section-title {
+        width: 47%;
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW FOOTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    #footer {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+        gap: 40px;
+        line-height: 1.7em;
+    }
+
+    .footer-section {
+        width: 45%;
+        margin-bottom: 15px;
+    }
+
+    #footer .footer-section:last-child { margin-left: 0 !important; }
+
+    .footer-section-label {
+        font-size: 1.5rem !important;
+        font-weight: bolder;
+    }
+
+    .footer-section li, 
+    .footer-section p, 
+    #legal { font-size: 1.2rem; }
+
+    #contacts {
+        display: flex;
+        justify-content: flex-start !important;
+        gap: 12px;
+        margin-left: 0 !important;
+    }
+} /* ============================================================================================================ 
+                                            END OF TABLET VIEW 
+============================================================================================================ */
+
+
+
+/* ============================================================================================================ 
+                                            START OF DESKTOP VIEW 
+============================================================================================================ */
+@media (min-width: 1024px) {
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DESKTOP VIEW NAVBAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    #navbar {
+        padding: 10px 15px;
+        width: 100%;
+    }
+
+    #navbar > a:first-child img { width: 90px !important; }
+
+    #navbar h1 {
+        font-size: 2rem !important;
+        margin: 0 8px;
+    }
+
+    #vertical-bar {
+        width: 3px;
+        height: 32px;
+    }
+
+    #nav-links {
+        gap: 25px;
+    }
+
+    #nav-links h3 { font-size: 1.7rem !important; }
+
+    #nav-links img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .dropdown.open .dropdown-contents { display: none !important; }
+
+    .dropdown:hover .dropdown-contents { display: block !important; }
+
+    .dropdown { position: relative; }
+
+    #about-dropdown .dropdown-contents,
+    #myaccount-dropdown-menu {
+        left: auto !important;
+        right: 0 !important;
+        transform: none !important;
+    }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DESKTOP VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    .content-section { padding: 70px; }
+
+    #sec1-title {
+        width: 27%;
+        font-size: 2rem;
+        padding: 15px;
+    }
+
+    #sec1-text, 
+    #stats-section-text, 
+    #dms-section-text { font-size: 1.3rem; }
+
+    #stats-section-title {
+        width: 19%;
+        font-size: 2rem;
+        padding: 15px;
+    }
+
+    #dms-section-title {
+        width: 31%;
+        font-size: 2rem;
+        padding: 15px;
+    }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DESKTOP VIEW FOOTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    #footer {
+        display: flex;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+        gap: 15px;
+        line-height: 1.7em;
+    }
+
+    .footer-section { width: 25%; }
+
+    #footer .footer-section:last-child { margin-left: 0 !important; }
+
+    .footer-section-label {
+        font-size: 1.7rem !important;
+        font-weight: bolder;
+    }
+
+    .footer-section li, 
+    .footer-section p, 
+    #legal { font-size: 1.2rem; }
+
+    #contacts {
+        display: flex;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+} /* ============================================================================================================ 
+                                            END OF DESKTOP VIEW 
+============================================================================================================ */
