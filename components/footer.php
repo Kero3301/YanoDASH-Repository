@@ -2,6 +2,9 @@
     function footer(): string {
         $html = <<< HTML
             <style>
+                .footer-section {
+                    color: white;
+                }
                 .footer-section ul {
                     list-style-type: none;
                     padding: 0;
@@ -9,7 +12,7 @@
                 }
             </style>
 
-            <div id="footer" style="display: flex; gap: 64px; position: absolute; bottom: 0; left: 0; right: 0;">
+            <div id="footer" style="display: flex; gap: 64px; padding: 32px; left: 0; right: 0; background-color: black;">
                 <div class="footer-section">
                     <h3 class="footer-section-label">Documents</h3>
                     <ul>
