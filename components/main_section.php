@@ -9,7 +9,8 @@
         string $content, 
         string $bgImage, 
         string $bgImageTint, 
-        int $alignment = 0)
+        int $alignment = 0,
+        array $linksList = [])
         : string {
 
         # Escaped outputs
@@ -18,6 +19,29 @@
         $sanitizedContent = htmlspecialchars($content);
         $sanitizedBGImage = htmlspecialchars($bgImage);
         $sanitizedBGImageTint = htmlspecialchars($bgImageTint);
+        
+        $buttonsList = [];
+
+        if (count($linksList) > 0) {
+            foreach ($linksList as $link) {
+                $sanitizedLabel = htmlspecialchars($link[0]);
+                $sanitizedLink = htmlspecialchars($link[1]);
+                $sanitizedButtonID = htmlspecialchars(TextUtils::sanitizeIdentifier($link[2]));
+
+                $html = <<< HTML
+                    <a href="$sanitizedLink" id="$sanitizedButtonID" style="text-decoration: none;">
+                        <button style="padding: 8px; border: none; border-radius: 16px; cursor: pointer;">
+                            $sanitizedLabel
+                        </button>
+                    </a>
+                HTML;
+                array_push($buttonsList, $html);
+            }
+        }
+
+        $outputButtons = "";
+        if (count($buttonsList) > 0) $outputButtons = implode("\n", $buttonsList); 
+        
 
         # Dynamic outputs
         $alignmentClass = match ($alignment) {
@@ -32,10 +56,12 @@
             <div class="$classList" style="
                 background: linear-gradient($sanitizedBGImageTint, $sanitizedBGImageTint), url('$sanitizedBGImage');
                 background-size: cover;
-                background-position: center;">
+                background-position: center;
+                margin: 0;">
                 <div class="content-section">
-                    <h1 id="{$sanitizedID}-title">$sanitizedTitle</h1>
-                    <p id="{$sanitizedID}-text">$sanitizedContent</p>
+                    <h1 id="{$sanitizedID}-title" class="content-title">$sanitizedTitle</h1>
+                    <p id="{$sanitizedID}-text" class="content-text">$sanitizedContent</p>
+                    $outputButtons
                 </div>
             </div>
         HTML;
