@@ -15,32 +15,26 @@ require_once '../components/navbar.php';
             background-color: #ffffff;
         }
 
-        .form-container {
-            width: 600px; 
-            margin: 50px auto;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 8px solid #2e7d32;
-        }
+        .form-container { width: 600px; 
+                          margin: 50px auto; 
+                          background: #ffffff; 
+                          padding: 40px; 
+                          border-radius: 15px; 
+                          box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+                          border-top: 8px solid #2e7d32; 
+                        }
 
-        
-        .btn-back {
-            display: inline-block;
-            padding: 10px 25px;
-            background-color: #ffffff;
-            color: #333;
-            text-decoration: none;
-            border-radius: 50px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            margin-bottom: 25px;
-        }
+ .btn-back { display: inline-block; 
+             padding: 10px 25px; 
+             background-color: #ffffff; 
+             color: #333; 
+             text-decoration: none; 
+             border-radius: 50px; 
+             font:700 14px Arial,sans-serif;
+             border: 1px solid #ddd; 
+             box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+             transition: all 0.3s ease; 
+             margin-bottom: 25px; }
 
         .btn-back:hover {
             background-color: #5f0000;
@@ -54,8 +48,7 @@ require_once '../components/navbar.php';
 
         .search-group label {
             display: block;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
+            font-family: Arial, sans-serif bold;
             margin-bottom: 8px;
             color: #333;
         }
@@ -155,7 +148,7 @@ require_once '../components/navbar.php';
 <div class="form-container">
     <a href="request.php" class="btn-back">Back to Menu</a>
 
-    <h2 style="text-align: center; font-family: 'Times New Roman'; margin-bottom: 30px; color: #2e7d32;">Track Your Document</h2>
+    <h2 style="text-align: center; font-family: 'Sans-serif'; margin-bottom: 30px; color: #2e7d32;">Track Your Document</h2>
     
     <div class="search-group">
         <label for="track_id">Enter Document ID</label>
@@ -193,4 +186,4 @@ require_once '../components/navbar.php';
 </div>
 
 </body>
-</html>
+</html> 

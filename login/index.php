@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="../styles.css">
         <link rel="stylesheet" href="../css/fonts.css">
         <link rel="stylesheet" href="../css/components/user-form.css">
+         <link rel="stylesheet" text="text/css" href="../style.css">
         
         <style>
             * {

@@ -12,39 +12,44 @@ require_once '../components/navbar.php';
 
 <style>
   body {
-    font-family: 'Times New Roman', Times, serif, sans-serif;
-    background: #ffffff;
+    font: normal 1em 'Times New Roman', Times, serif, sans-serif;
+    background: #fff;
+     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   .header-container {
-    position: relative; 
+    position: relative;
     display: flex;
-    justify-content: center; 
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     margin-top: 60px;
     width: 100%;
-
   }
 
   .btnarchive {
     position: absolute;
-    right: 15%; 
-    background-color: #ffffff; 
+    right: 15%;
+    background: #fff;
     border: 2px solid maroon;
     color: maroon;
     padding: 10px 20px;
     border-radius: 25px;
     text-decoration: none;
-    font-weight: bold;
-    font-family: Arial, sans-serif;
-    transition: all 0.3s ease;
-     margin-top: 80px;
-     margin-left: 25px;
+    font: bold 1em Arial, sans-serif;
+    transition: 0.3s ease;
+    margin-top: 80px;
+    margin-left: 25px;
   }
 
   .btnarchive:hover {
-    background-color: maroon;
+    background: maroon;
     color: white;
+    align-items: center;
+    flex-direction: column;
+    
   }
 
   .stats-container {
@@ -64,52 +69,53 @@ require_once '../components/navbar.php';
     font: bold 18px Arial;
   }
 
-.activity-section {
-  max-width: 800px;
-  margin: 50px auto; /* Centers it and adds space below the cards */
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
+  .activity-section {
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  font-family: Arial, sans-serif;
-}
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font: normal 1em Arial, sans-serif;
+  }
 
-th {
-  text-align: left;
-  color: #888;
-  font-size: 14px;
-  border-bottom: 2px solid #eee;
-  padding: 10px;
-}
+  th {
+    text-align: left;
+    color: #888;
+    font-size: 14px;
+    border-bottom: 2px solid #eee;
+    padding: 10px;
+  }
 
-td {
-  padding: 15px 10px;
-  border-bottom: 1px solid #eee;
-  font-size: 15px;
-  color: #333;
-}
-.status {
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-}
+  td {
+    padding: 15px 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 15px;
+    color: #333;
+  }
 
-.status-approved { background: #e8f5e9; color: #2e7d32; }
-.status-pending { background: #e3f2fd; color: #1976d2; }
-.status-rejected { background: #ffebee; color: #c62828; }
+  .status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  .status-approved { background: #e8f5e9; color: #2e7d32; }
+  .status-pending { background: #e3f2fd; color: #1976d2; }
+  .status-rejected { background: #ffebee; color: #c62828; }
 
   /* Colors */
-  .total { background-color: #616161; }
-  .approved { background-color: #2E7D32; }
-  .pending { background-color: #1976D2; }
-  .rejected { background-color: #C62828; }
+  .total { background: #616161; }
+  .approved { background: #2e7d32; }
+  .pending { background: #1976d2; }
+  .rejected { background: #c62828; }
 </style>
 
 </head>
