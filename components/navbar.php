@@ -4,13 +4,15 @@
 
     # We import the default styles needed for this component so that it gets imported automatically whenever we include this component in another page
     echo <<< HTML
-        <link rel="stylesheet" href="/yanodash-repository/css/components/navbar.css"> <!-- abc -->
+        <link rel="stylesheet" href="/yanodash-repository/css/components/navbar.css">
+        <script src="/yanodash-repository/script/navbar-hamburger.js"></script>
     HTML;
 
     # The default value of $activeIndex is 0, it means the homepage is active or another unknown page is active.
     # Other values:
     #   - $activeIndex is 1 = Documents is active
     #   - $activeIndex is 2 = Statistics is active
+    #   - $activeIndex is 3 = Request is active
     #   - $activeIndex is 6 = Contact is active
     #   - $activeIndex is 7 = About is active
     # If you don't set a value for $activeIndex, it will always default to 0, otherwise it will use the value you put
@@ -76,7 +78,17 @@
                         </a>
                         $statistics_dropdownMenu
                     </div>
-                    <h3><a class="$contact_classList" href="/yanodash-repository/contact/">Contact</a></h3>
+                    <div class="dropdown" id="request-dropdown">
+                        <a class="request_classList" href="/yanodash-repository/request/request.php">
+                            <h3>Request</h3>
+                        </a>
+                        $request_dropdownMenu
+                    </div>
+                    <div class="dropdown" id="contact-dropdown">
+                        <a class="$contact_classList" href="/yanodash-repository/contact/">
+                            <h3>Contact</h3>
+                        </a>
+                    </div>
                     <div class="dropdown" id="about-dropdown">
                         <a class="$about_classList" href="/yanodash-repository/about/">
                             <h3>About</h3>
