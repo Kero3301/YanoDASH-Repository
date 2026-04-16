@@ -12,7 +12,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Create / Upload Documents </title>
-	<link rel="stylesheet" type="text/css" href="..\css\uploadstyle.css">
+	<link rel="stylesheet" type="text/css" href="../css/uploadstyle.css">
 </head>
 <body>
 	<?php echo navbar(0) ?>

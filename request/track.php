@@ -1,11 +1,12 @@
 <?php
-require_once '../components/head.php';
-require_once '../components/navbar.php';
+    require_once '../components/head.php';
+    require_once '../components/navbar.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<<<<<<< HEAD
     <link rel="stylesheet" text="text/css" href="../style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Track Request | YanoDASH</title>
@@ -32,6 +33,26 @@ require_once '../components/navbar.php';
             box-shadow: 0 6px 16px rgba(0,0,0,0.08);
             border-top: 5px solid #2e7d32;
         }
+=======
+    <?php initializePage("Track Request | YanoDASH")?>
+    <!-- <meta charset="UTF-8">
+    <title>Track Request | YanoDASH</title> -->
+
+    <style>
+        /* body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #ffffff;
+        } */
+
+        .form-container { width: 750px; 
+                          margin: 50px auto; 
+                          background: #ffffff; 
+                          padding: 40px; 
+                          border-radius: 15px; 
+                          box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+                          border-top: 8px solid #2e7d32; 
+                        }
+>>>>>>> 22dbbd76b30e94d9f5f2102cff14ea8052fafa20
 
         .btn-back { 
             display: inline-block; 

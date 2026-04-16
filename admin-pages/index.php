@@ -12,7 +12,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Admin Space </title>
-    <link rel="stylesheet" href="../css/indexstyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/indexstyle.css">
 </head>
 <body>    
 
@@ -27,7 +27,7 @@
             <a href="archive-rq.php" class="button button1">Pending Archive Requests</a>
             <a href="upload.php" class="button button2">Create/Upload Document</a>
             <a href="manage.php" class="button button3">Manage Documents</a>
-            <a href="#" class="button button4">Security</a>
+            <a href="security.php" class="button button4">Security</a>
         </div>
     </main>
 

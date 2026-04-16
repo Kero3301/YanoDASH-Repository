@@ -8,7 +8,7 @@
 <html>
     <head>
         <?php initializePage("Account Requesting | YanoDASH")?>
-        <link rel="stylesheet" href="../css/base-layout.css">
+        <!-- <link rel="stylesheet" href="../css/base-layout.css"> -->
     </head>
     <body>
         <?php echo navbar(0)?>

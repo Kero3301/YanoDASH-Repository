@@ -1,3 +1,5 @@
+<!-- Browse Archive -->
+<!-- Assigned Member: Carylle -->
 <?php
     require_once '../components/head.php';
     require_once '../components/navbar.php';
@@ -6,11 +8,12 @@
 <html>
     <head>
         <?php initializePage("All Documents | YanoDASH")?>
-        <link rel="stylesheet" href="docsss.css"/>
+        <link rel="stylesheet" href="../css/docsss.css"/>
     </head>
     <body>
         <?php echo navbar(1)?>
 <div class="archive-container">
+    <a href="index.php" id="b-back">Back to Index</a>
     <div class="search-panel">
         <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="     Search..." autocomplete="off">
@@ -46,7 +49,7 @@
 </div>
 
 <script> 
-    // Your Data Array
+    //Data Array
     const Documents = [
         {id: "LR-2026-01", title: "Hudyaka", category: "Council Documents", fileRef: "anu.pdf", date: "2026-04-08", dept: "USeP", desc: "Official publication for the first quarter." },
         {id: "BA-123", title: "Ambut", category: "Departmental Documents", fileRef: "wala.pdf", date: "2026-04-04", dept: "CIC", desc: "Archived records for departmental review." },

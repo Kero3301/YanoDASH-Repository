@@ -1,111 +1,67 @@
-/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* =========================
-   NAVBAR (NOT TOUCHED)
-   ========================= */
-
-/* NAVBAR RESPONSIVENESS */
-
-#navbar {
-    flex-wrap: wrap !important;
-    padding: 5px 1% !important;
-    gap: 5px !important;
-}
-
-/* Logo */
-#navbar img {
-    max-width: 40px;
-    height: auto;
-}
-
-#navbar .dropdown img {
-    margin-right: 0 !important;
-    width: 20px !important;
-    height: auto;
-    display: block;
-}
-
-/* Title */
-#navbar h1 {
-    font-size: 0.9rem;
-}
-
-/* Links */
-#navbar h3 {
-    font-size: 0.7rem;
-}
-
-#vertical-bar {
-    height: 24px !important;
-    width: 2px !important;
-}
-
-/* =========================
-   BASE (MOBILE FIRST)
-   ========================= */
-
+/* ======================================== MOBILE VIEW ======================================== */
 body {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 14px;
+    font-family: 'RobotoFlex', sans-serif;
+    overflow-x: hidden;
 }
 
-/* TITLE */
 .title {
     padding: 20px 7%;
-    font-size: 1.4rem;
+    font-size: 1rem;
     font-weight: bold;
+    font-family: 'Gupter', serif;
 }
 
-/* FORM WRAPPER */
 .form-container {
     display: flex;
     justify-content: center;
     padding: 10px;
+    overflow-x: hidden;
 }
 
-/* FORM BOX */
 .create-container {
     width: 95%;
+    max-width: 100%;
     background: white;
     padding: 20px;
     margin: 10px auto 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     line-height: 1.5;
+    overflow: hidden;
 }
 
-/* FORM LAYOUT */
 form {
     display: flex;
     flex-direction: column;
 }
 
-/* SPACING BETWEEN ALL ELEMENTS */
 form > * {
     margin-bottom: 15px;
 }
 
-/* LABELS */
 label {
     margin-bottom: 5px;
     font-weight: 500;
 }
 
-/* INPUTS */
 input,
 select,
 textarea {
     width: 100%;
+    max-width: 100%;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #ccc;
     font-size: 0.9rem;
     outline: none;
+
+    box-sizing: border-box;
 }
 
 input:focus,
@@ -114,19 +70,16 @@ textarea:focus {
     border-color: #7bb661;
 }
 
-/* TEXTAREA */
 textarea {
     resize: vertical;
     margin-top: 5px;
 }
 
-/* FORM GROUP (STACKED IN MOBILE) */
 .form-group {
     display: flex;
     flex-direction: column;
 }
 
-/* BUTTON */
 button.approve {
     margin-top: 20px;
     padding: 10px;
@@ -139,56 +92,24 @@ button.approve {
     transition: 0.2s ease;
 }
 
-button.approve:hover {
+button.approve:active {
     background-color: #6aa452;
     transform: scale(1.03);
 }
 
-/* =========================
-   TABLET VIEW
-   ========================= */
+/* ======================================== TABLET VIEW ======================================== */
 
-@media (min-width: 768px) {
-
-    #navbar {
-        padding: 12px 1% !important;
-        gap: 16px !important;
-    }
-
-    #navbar img {
-        max-width: 90px;
-        height: auto;
-    }
-
-    #navbar .dropdown img {
-        width: 70px !important;
-        height: auto;
-        display: block;
-    }
-
-    #navbar h1 {
-        font-size: 2rem;
-    }
-
-    #navbar h3 {
-        font-size: 1.8rem;
-    }
-
-    #vertical-bar {
-        height: 28px !important;
-        width: 2px !important;
-    }
-
+@media (min-width: 481px) {
     .title {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
     }
 
     .create-container {
-        width: 80%;
+        width: 90%;
         padding: 25px;
+        font-size: 1.1rem;
     }
 
-    /* SIDE-BY-SIDE BUT WITH SPACING */
     .form-group {
         flex-direction: row;
         align-items: center;
@@ -205,50 +126,23 @@ button.approve:hover {
     .form-group select {
         width: 70%;
     }
+
+    input,
+    select,
+    textarea {
+        font-size: 1.1rem;
+    }
 }
 
-/* =========================
-   DESKTOP VIEW
-   ========================= */
+/* ======================================== TABLET VIEW ======================================== */
 
 @media (min-width: 1024px) {
-
-    #navbar {
-        padding: 8px 1% !important;
-        gap: 16px !important;
-    }
-
-    #navbar img {
-        max-width: 90px;
-        height: auto;
-    }
-
-    #navbar .dropdown img {
-        width: 40px !important;
-        height: auto;
-        display: block;
-    }
-
-    #navbar h1 {
-        font-size: 2rem;
-    }
-
-    #navbar h3 {
-        font-size: 1.2rem;
-    }
-
-    #vertical-bar {
-        height: 36px !important;
-        width: auto;
-    }
-    
     .title {
-        font-size: 1.8rem;
-        padding-left: 10%;
+        font-size: 1.5rem;
     }
 
     .create-container {
-        width: 60%;
+        width: 90%;
     }
 
     input,
@@ -259,5 +153,10 @@ button.approve:hover {
 
     button.approve {
         font-size: 1rem;
+    }
+
+    button.approve:hover {
+        background-color: #6aa452;
+        transform: scale(1.03);
     }
 }

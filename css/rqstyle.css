@@ -1,104 +1,78 @@
-/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* =========================
-   NAVBAR (UNCHANGED)
-   ========================= */
-
-#navbar {
-    flex-wrap: wrap !important;
-    padding: 5px 1% !important;
-    gap: 5px !important;
-}
-
-#navbar img {
-    max-width: 40px;
-    height: auto;
-}
-
-#navbar .dropdown img {
-    margin-right: 0 !important;
-    width: 20px !important;
-    height: auto;
-    display: block;
-}
-
-#navbar h1 {
-    font-size: 0.9rem;
-}
-
-#navbar h3 {
-    font-size: 0.7rem;
-}
-
-#vertical-bar {
-    height: 24px !important;
-    width: 2px !important;
-}
-
-/* =========================
-   BASE (MOBILE FIRST)
-   ========================= */
-
-body {
-    font-family: "Times New Roman", Times, serif;
-    font-size: 14px;
-}
-
-/* TITLE */
+/* ======================================== MOBILE VIEW ======================================== */
 .title {
     padding: 20px 7%;
-    font-size: 1.3rem;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Gupter', serif;
+}
+
+.top-actions {
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.8rem;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.important-btn {
+    padding: 10px 15px;
+    background-color: #71100F;
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
     font-weight: bold;
 }
 
-/* TABLE WRAPPER (NEW - FOR RESPONSIVENESS) */
-main div {
+.important-btn:active {
+    background-color: black;
+    color: white;
+    transform: scale(1.05);
+}
+
+.table-container {
     width: 95%;
     margin: 0 auto 30px;
     overflow-x: auto;
+    padding: 10px;
 }
 
-/* TABLE */
 table {
     width: 100%;
-    min-width: 600px;
     border-collapse: collapse;
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    font-family: 'RobotoFlex', sans-serif;
 }
 
-/* REMOVE OLD BORDER ATTRIBUTES */
 table, th, td {
     border: none;
 }
 
-/* HEADER */
 th {
     background-color: #e6f0fa;
-    padding: 10px;
+    padding: 15px;
     text-align: left;
     font-weight: 600;
 }
 
-/* CELLS */
 td {
-    padding: 10px;
+    padding: 15px;
     border-bottom: 1px solid #eee;
 }
 
-/* LAST ROW FIX */
 tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* BUTTONS BASE */
 td button {
     display: inline-block;
     margin-right: 5px;
@@ -111,113 +85,129 @@ td button {
     transition: 0.2s ease;
 }
 
-/* APPROVE */
 button.approve {
     background-color: #7bb661;
     color: white;
 }
 
-button.approve:hover {
+button.approve:active {
     background-color: #6aa452;
     transform: scale(1.05);
 }
 
-/* REJECT */
 button.reject {
     background-color: white;
     color: #c0392b;
     border: 1px solid #c0392b;
 }
 
-button.reject:hover {
+button.reject:active {
     background-color: #c0392b;
     color: white;
     transform: scale(1.05);
 }
 
-/* =========================
-   TABLET VIEW
-   ========================= */
+/* IMPORTANT DOCUMENTS PAGE */
+.pending {
+    color: #e67e22;
+    font-weight: bold;
+}
 
-@media (min-width: 768px) {
+.approved {
+    color: #27ae60;
+    font-weight: bold;
+}
 
-    /* NAVBAR (UNCHANGED STYLE, JUST YOUR VALUES) */
-    #navbar {
-        padding: 12px 1% !important;
-        gap: 16px !important;
-    }
+.rejected {
+    color: #c0392b;
+    font-weight: bold;
+}
 
-    #navbar img {
-        max-width: 90px;
-    }
+/* ======================================== TABLET VIEW ======================================== */
 
-    #navbar .dropdown img {
-        width: 70px !important;
-    }
-
-    #navbar h1 {
-        font-size: 2rem;
-    }
-
-    #navbar h3 {
-        font-size: 1.8rem;
-    }
-
-    #vertical-bar {
-        height: 28px !important;
-    }
-
-    /* CONTENT */
+@media (min-width: 481px) {
     .title {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
         padding-top: 15px;
     }
 
-    th, td {
-        font-size: 0.95rem;
+    .top-actions {
+        font-size: 1.1rem;
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .table-container {
+        width: 90%;
+        max-width: 1100px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.1rem;
+    }
+
+    th {
+        padding: 22px 15px;
+    }
+
+    td {
+        padding: 20px 15px;
+    }
+
+    td button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .important-page .top-actions {
+        width: 90%;
+        max-width: 1100px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .important-page .important-btn {
+        display: inline-block; /* prevents stretching */
+    }
+
+    .important-page main {
+        display: block; /* 🔥 stop side-by-side layout */
     }
 }
 
-/* =========================
-   DESKTOP VIEW
-   ========================= */
+/* ======================================== DESKTOP VIEW ======================================== */
 
 @media (min-width: 1024px) {
-
-    /* NAVBAR (UNCHANGED) */
-    #navbar {
-        padding: 8px 1% !important;
-        gap: 16px !important;
-    }
-
-    #navbar img {
-        max-width: 90px;
-    }
-
-    #navbar .dropdown img {
-        width: 40px !important;
-    }
-
-    #navbar h1 {
-        font-size: 2rem;
-    }
-
-    #navbar h3 {
-        font-size: 1.2rem;
-    }
-
-    #vertical-bar {
-        height: 36px !important;
-    }
-
-    /* CONTENT */
     .title {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         padding-left: 10%;
     }
 
-    main div {
-        width: 85%;
+    .top-actions {
+        width: 90%;
+        max-width: 1100px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: flex-end;
+        font-size: 1rem;
+    }
+
+    .table-container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 0 auto 30px;
+    }
+
+    .important-btn:hover {
+        background-color: red;
+        transform: scale(1.05);
     }
 
     th, td {
@@ -225,16 +215,39 @@ button.reject:hover {
         font-size: 1rem;
     }
 
-    /* HOVER EFFECT */
     tbody tr:hover {
         background-color: #f5f5f5;
     }
 
-    /* STACK BUTTONS FOR CLEAN LOOK */
+    td button:hover {
+        transform: scale(1.05);
+    }
+
     td button {
         display: block;
         width: 100%;
         margin-bottom: 8px;
         font-size: 0.9rem;
+    }
+
+    .important-page .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 10%;
+    }
+
+    .important-page .top-actions {
+        margin-top: 0;
+    }
+
+    .important-page .important-btn {
+        font-size: 0.95rem;
+        padding: 10px 18px;
+    }
+
+    .important-page td span {
+        display: inline-block;
+        min-width: 80px;
     }
 }

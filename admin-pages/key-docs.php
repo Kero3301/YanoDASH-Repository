@@ -9,26 +9,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Archive Requests </title>
-    <link rel="stylesheet" type="text/css" href="../css/rqstyle.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title> Important Documents </title>
+	<link rel="stylesheet" type="text/css" href="../css/rqstyle.css">
 </head>
+<body class="important-page">
+	<?php echo navbar(0) ?>
 
-<body>
-    <?php echo navbar(0) ?>
+    <header class="title">
+        <h1> Important Documents </h1>
+    </header>
 
-    <header class="title"> <!-- start of header -->
-        <h1> Pending Archive Requests </h1>
-    </header> <!-- end of header -->
+    <main>
 
-    <div class="top-actions">
-        <a href="key-docs.php" class="important-btn">
-            View Important Documents
-        </a>
-    </div>
+        <!-- Optional: Back button -->
+        <div class="top-actions">
+            <a href="archive-rq.php" class="important-btn">
+                Back to Requests
+            </a>
+        </div>
 
-    <main> <!-- start of main -->
         <div class="table-container">
             <br>
             <table>
@@ -37,7 +38,8 @@
                         <th> ID </th>
                         <th> Document Title </th>
                         <th> Requested By </th>
-                        <th> Date Requested </th>
+                        <th> Date Submitted </th>
+                        <th> Status </th>
                         <th> Actions </th>
                     </tr>
                 </thead>
@@ -48,6 +50,7 @@
                         <td> Budget Report 2026 </td>
                         <td> John Doe </td>
                         <td> 2026-04-06 </td>
+                        <td><span class="pending">Pending</span></td>
                         <td>
                             <button class="approve">Approve</button>
                             <button class="reject">Reject</button>
@@ -56,9 +59,10 @@
 
                     <tr>
                         <td> 2 </td>
-                        <td> Event Proposal </td>
+                        <td> Annual Financial Plan </td>
                         <td> Jane Smith </td>
                         <td> 2026-04-05 </td>
+                        <td><span class="approved">Approved</span></td>
                         <td>
                             <button class="approve">Approve</button>
                             <button class="reject">Reject</button>
@@ -67,20 +71,10 @@
 
                     <tr>
                         <td> 3 </td>
-                        <td> Meeting Minutes </td>
+                        <td> Policy Guidelines </td>
                         <td> Alex Cruz </td>
                         <td> 2026-04-04 </td>
-                        <td>
-                            <button class="approve">Approve</button>
-                            <button class="reject">Reject</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td> 4 </td>
-                        <td> Project Documentation </td>
-                        <td> Maria Lopez </td>
-                        <td> 2026-04-03 </td>
+                        <td><span class="rejected">Rejected</span></td>
                         <td>
                             <button class="approve">Approve</button>
                             <button class="reject">Reject</button>
@@ -89,7 +83,7 @@
                 </tbody>
             </table>
         </div>
-    </main> <!-- end of main -->
 
+    </main>
 </body>
 </html>

@@ -8,15 +8,20 @@
        <?php initializePage("Your page title goes here")?>
     */
     function initializePage(string $title) {
+        # Cleans up the title input to prevent reflected XSS attacks
         $sanitizedTitle = htmlspecialchars($title);
-        
-        echo <<< HTML
+
+        # Points to the location of the website logo
+        $iconDirectory = '/yanodash-repository/images/favicon.png';
+
+        $html = <<< HTML
             <title>$sanitizedTitle</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="icon" type="image/png" href="/yanodash-repository/images/favicon.png">
-            <link rel="stylesheet" type="text/css" href="/yanodash-repository/style.css">
-            <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/fonts.css">
+            <link rel="icon" type="image/png" href="$iconDirectory">
+
+            <link rel="stylesheet" type="text/css" href="style.css">
         HTML;
+        echo $html;
     }
 ?>

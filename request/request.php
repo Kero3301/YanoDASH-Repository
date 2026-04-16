@@ -1,5 +1,5 @@
 <?php
-include '../components/head.php';
+// include '../components/head.php';
 require_once '../components/head.php';
 require_once '../components/navbar.php';
 
@@ -9,9 +9,11 @@ require_once '../components/navbar.php';
 <html lang="en">
 <head>
     <link rel="stylesheet" text="text/css" href="../style.css">
-<meta charset="UTF-8">
+    <?php initializePage("Document Archiving Request | YanoDASH")?>
+
+    <!-- <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<title>Document</title> -->
 
 <style>
 body {

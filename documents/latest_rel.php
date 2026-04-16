@@ -7,17 +7,18 @@
 <html>
 <head>
      <?php initializePage("Latest Releases | YanoDASH")?>
-    <link rel="stylesheet" href="docsss.css"/>
+    <link rel="stylesheet" href="../css/docsss.css"/>
 </head>
 <body>
     <?php echo navbar(1) ?>
 <div class="archive-container">
+    <a href="index.php" id="b-back">Back to Index</a>
     <div class="search-panel">
         <div class="search-wrapper">
             <input type="text" id="searchInput" placeholder="     Search..." autocomplete="off">
         </div>
     </div>
-    <header id="title"> <h1> Latest Releases </h1>
+    <header id="title"> <h1> Latest Releases </h1> </header>
     </div> <div class="docs-grid" id="docsGrid">
     </div>
 

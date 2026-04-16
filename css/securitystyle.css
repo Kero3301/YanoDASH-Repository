@@ -1,0 +1,118 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ======================================== MOBILE VIEW ======================================== */
+body {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.security-container {
+    padding: 1.5rem;
+}
+
+.security-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+    font-family: 'Gupter', serif;
+}
+
+.security-header p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.security-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.security-card {
+    display: block;
+    padding: 1.25rem;
+    border-radius: 10px;
+    background: #111;
+    color: white;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.security-card h2 {
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+}
+
+.security-card p {
+    font-size: 0.85rem;
+    color: #bbb;
+}
+
+/* ======================================== TABLET VIEW ======================================== */
+@media (min-width: 481px) {
+
+    .security-container {
+        padding: 2rem;
+    }
+
+    .security-header h1 {
+        font-size: 2rem;
+    }
+
+    .security-header p {
+        font-size: 1.5rem;
+    }
+
+    .security-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+    }
+
+    .security-card {
+        padding: 1.5rem;
+    }
+
+    .security-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .security-card p {
+        font-size: 1.3rem;
+    }
+}
+
+/* ======================================== DESKTOP VIEW ======================================== */
+@media (min-width: 1024px) {
+
+    .security-container {
+        padding: 2.5rem 3rem;
+    }
+
+    .security-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .security-header p {
+        font-size: 1rem;
+    }
+
+    .security-grid {
+        gap: 1.5rem;
+    }
+
+    .security-card:hover {
+        transform: translateY(-3px);
+        background: #1a1a1a;
+    }
+
+    .security-card h2 {
+        font-size: 1.2rem;
+    }
+
+    .security-card p {
+        font-size: 0.95rem;
+    }
+}

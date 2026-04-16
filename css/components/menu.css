@@ -1,0 +1,47 @@
+.menu {
+    background-color: #f5f5f5;
+    position: absolute;
+    display: block;
+    min-width: 180px;
+    width: auto !important;
+    flex: 0 0 auto;
+    align-self: flex-start;
+    padding: 8px 0;
+    border-radius: 8px;
+    z-index: 999999;
+    overflow: visible;
+    transition: 
+        opacity 0.5s ease,
+        transform 0.5s ease,
+        clip-path 0.5s ease;
+}
+
+.menu.dark {
+    background-color: #313131 !important;
+}
+
+.menu a {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: black;
+    font-family: 'RobotoFlex', sans-serif;
+    font-size: 15px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+    text-indent: 0;
+}
+
+.menu.dark a {
+    color: white !important;
+}
+
+.menu a:hover {
+    background-color: rgba(255, 52, 52, 0.15);
+}
+
+.menu.dark a:hover {
+    background-color: rgba(255, 52, 52, 0.4) !important;
+}

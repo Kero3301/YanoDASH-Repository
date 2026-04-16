@@ -1,6 +1,5 @@
 <?php
     require_once '../utils/TextUtils.php';
-    require_once 'password_input_event_handlers.php';
 
     # Define the minimum dimensions (width and height), in px unit, allowed for the password input
     const MIN_WIDTH = 200;

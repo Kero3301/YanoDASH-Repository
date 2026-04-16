@@ -78,7 +78,7 @@
             border-radius: 1.2rem;
             border: 5px solid #eef2f8;
             transition: all 0.25s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 5px #63071e;
             cursor: pointer;
             overflow: hidden;
             display: flex;
@@ -104,7 +104,7 @@
             background: #eef2ff;
             padding: 0.25rem 0.8rem;
             border-radius: 30px;
-            color: #1f4a6e;
+            color: #63071e;
             margin-bottom: 0.8rem;
             letter-spacing: 0.3px;
         }
@@ -114,7 +114,7 @@
             font-weight: 600;
             margin-bottom: 0.6rem;
             line-height: 1.4;
-            color: #0c4a6e;
+            color: #63071e;
         }
 
         .doc-meta {
@@ -150,7 +150,7 @@
             backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
-            z-index: 9999999;
+            z-index: 1000;
             font-family: monospace;
         }
 
@@ -161,7 +161,7 @@
             border-radius: 1.8rem;
             padding: 1.8rem 2rem 2rem;
             text-align: center;
-            box-shadow: 0 25px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 25px 40px #63071e;
             animation: fadeSlide 0.2s ease;
         }
 
@@ -192,7 +192,7 @@
         }
 
         .btn-primary {
-            background: #1a4a6f;
+            background: #63071e;
             color: white;
         }
 

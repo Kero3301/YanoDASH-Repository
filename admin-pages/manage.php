@@ -12,7 +12,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> Manage Documents </title>
-	<link rel="stylesheet" type="text/css" href="..\css\managestyle.css">
+	<link rel="stylesheet" type="text/css" href="../css/managestyle.css">
 </head>
 <body>
 	<?php echo navbar(0) ?>
