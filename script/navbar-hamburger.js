@@ -1,36 +1,49 @@
 document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.querySelector(".hamburger");
     const navLinks = document.querySelector("#nav-links");
+    const dropdowns = document.querySelectorAll("#nav-links .dropdown");
 
     if (hamburger && navLinks) {
         // TOGGLE NAV
         hamburger.addEventListener("click", () => {
             navLinks.classList.toggle("active");
+            dropdowns.forEach(d => d.classList.remove("open"));
         });
 
         // DROPDOWN CLICK
-        document.querySelectorAll("#nav-links .dropdown").forEach(dropdown => {
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener("mouseenter", () => {
+                dropdown.classList.add("open");
+            });
+
+            dropdown.addEventListener("mouseleave", () => {
+                dropdown.classList.remove("open");
+            });
+
             dropdown.addEventListener("click", function (e) {
                 // ignore clicks inside dropdown menu
-                if (e.target.closest(".dropdown-contents")) return;
+                if (e.target.closest(".menu")) return;
 
                 e.preventDefault();
-                this.classList.toggle("open");
+                dropdown.classList.toggle("open");
                 // close other open dropdown menus
-                document.querySelectorAll("#nav-links .dropdown").forEach(d => {
-                    if (d !== this) d.classList.remove("open");
+                dropdowns.forEach(d => {
+                    if (d !== dropdown) d.classList.remove("open");
                 });
             });
         });
 
-        // CLOSE MENU (ONLY NON-DROPDOWN LINKS)
-        document.querySelectorAll("#nav-links a").forEach(link => {
-            link.addEventListener("click", (e) => {
-                if (link.closest(".dropdown")) return;
+        document.querySelectorAll(".menu a").forEach(link => {
+            link.addEventListener("click", () => {
+                dropdowns.forEach(d => d.classList.remove("open"));
                 navLinks.classList.remove("active");
             });
         });
 
-        
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest("#nav-links")) {
+                dropdowns.forEach(d => d.classList.remove("open"));
+            }
+        });
     }
 });

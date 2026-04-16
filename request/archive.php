@@ -1,23 +1,24 @@
 <?php
-require_once '../components/head.php';
-require_once '../components/navbar.php';
+    require_once '../components/head.php';
+    require_once '../components/navbar.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <?php initializePage("Request Document | YanoDASH")?>
+    <!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Document | YanoDASH</title>
+    <title>Request Document | YanoDASH</title> -->
 
     <style>
-        body {
+        /* body {
             font-family: 'Times New Roman', Times, serif;
             background-color: #ffffff;
-        }
+        } */
 
         .form-container {
-            max-width: 600px;
+            max-width: 750px;
             margin: 50px auto;
             background: #ffffff;
             padding: 40px;

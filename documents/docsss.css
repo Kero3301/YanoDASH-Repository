@@ -149,7 +149,7 @@
             backdrop-filter: blur(4px);
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 9999999;
             font-family: monospace;
         }
 

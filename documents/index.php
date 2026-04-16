@@ -2,6 +2,7 @@
 <?php
     require_once '../components/head.php';
     require_once '../components/navbar.php';
+    require_once '../components/footer.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,5 +20,6 @@
                 <a href="br_arch.php" class="button"> Browse Archive </a>
             </div>
         </div>
+        <?php echo footer()?>
     </body>
 </html>

@@ -56,11 +56,6 @@
             );
 
             echo footer();
-        ?>
-
-        <script src="script/navbar-hamburger.js">
-        
-        </script>
-        
+        ?>        
     </body>
 </html>

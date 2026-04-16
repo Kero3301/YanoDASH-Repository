@@ -1,21 +1,22 @@
 <?php
-require_once '../components/head.php';
-require_once '../components/navbar.php';
+    require_once '../components/head.php';
+    require_once '../components/navbar.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Track Request | YanoDASH</title>
+    <?php initializePage("Track Request | YanoDASH")?>
+    <!-- <meta charset="UTF-8">
+    <title>Track Request | YanoDASH</title> -->
 
     <style>
-        body {
+        /* body {
             font-family: 'Times New Roman', Times, serif;
             background-color: #ffffff;
-        }
+        } */
 
-        .form-container { width: 600px; 
+        .form-container { width: 750px; 
                           margin: 50px auto; 
                           background: #ffffff; 
                           padding: 40px; 

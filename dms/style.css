@@ -1,0 +1,151 @@
+body { 
+    font-family: 'Times New Roman', Times, serif; 
+    background-image: url('../images/backgrounds/eagle-background.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #2c3e50;
+    /* display: flex;  */
+    min-height: 100vh;      /* Use min-height so the page can grow if needed */
+}
+
+/* Clean Reset for the Navbar */
+
+/* User Profile Circle - Updated to handle the image */
+.user-circle {
+    width: 38px;  /* Sized to match your reference image */
+    height: 38px;
+    border-radius: 50%;
+    display: block; /* Important for alignment */
+    border: 1px solid #ddd; /* Light border to define the circle edge */
+    object-fit: cover; /* Ensures the image doesn't stretch */
+}
+
+/* Brand Area */
+/* Vertical Alignment for the brand area */
+.nav-brand {
+    display: flex;
+    align-items: center; /* Crucial for keeping logo, divider, and text centered vertically */
+}
+
+/* THE FIX: Constraints the massive logo */
+.brand-logo {
+    height: 80px; /* This makes it match the text/divider height like in your image */
+    width: auto;   /* Maintains aspect ratio so it doesn't look squished */
+    display: block;
+    margin-right: 5px; /* Slight gap before the divider */
+}
+
+.nav-divider {
+    width: 2px;
+    height: 35px; /* Matches the new logo height better */
+    background-color: #71100F;
+    margin: 0 15px;
+}
+
+.brand-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4B0082; /* The purple/indigo color from your image */
+    font-family: 'Times New Roman', serif;
+    line-height: 1; /* Keeps the text from shifting up or down */
+}
+
+/* Menu Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Space between links */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #0000CD; /* Blue color from your image */
+    font-weight: 600;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #71100F; /* Hover effect using your red */
+}
+
+/* User Profile Circle Placeholder */
+.user-circle {
+    width: 35px;
+    height: 35px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.container { 
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px; 
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);    
+    max-width: 400px; 
+    width: 90%; 
+    text-align: center;
+    margin-top: 80px; /* Separates the portal from the top navbar */
+    margin-bottom: 40px; /* Adds space at the bottom */
+}
+
+h2 { color: #FFFFFF; margin-bottom: 5px; font-size: 28px; }
+.subtitle { color: #FFFFFF; margin-bottom: 30px; font-size: 16px; }
+
+/* Hide the ugly default file input */
+input[type="file"] {
+    display: none;
+}
+
+/* Create a nice custom button for selecting files */
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #edf2f7;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    color: #2d3748;
+    font-weight: bold;
+    transition: all 0.3s;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+.custom-file-upload:hover {
+    background: #e2e8f0;
+    border-color: #a0aec0;
+}
+
+.file-info {
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.upload-btn { 
+    background: #2563eb; 
+    color: white; 
+    border: none; 
+    padding: 15px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.upload-btn:hover { background: #1d4ed8; }
+
+.status { margin-top: 20px; font-size: 16px; }
+.success { color: #065f46; font-weight: bold; }
+.error { color: #991b1b; font-weight: bold; }

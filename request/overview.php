@@ -1,23 +1,21 @@
 <?php
-require_once '../components/head.php';
-require_once '../components/navbar.php';
+  require_once '../components/head.php';
+  require_once '../components/navbar.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Request Overview</title>
+  <?php initializePage("Request Overview | YanoDASH")?>
 
 <style>
-  body {
+  /* body {
     font: normal 1em 'Times New Roman', Times, serif, sans-serif;
     background: #fff;
      margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+  } */
 
   .header-container {
     position: relative;

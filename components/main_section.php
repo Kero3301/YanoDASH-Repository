@@ -52,7 +52,7 @@
         };
         $classList = "main-section $alignmentClass";
 
-        $html = <<< HTML
+        return <<< HTML
             <div class="$classList" style="
                 background: linear-gradient($sanitizedBGImageTint, $sanitizedBGImageTint), url('$sanitizedBGImage');
                 background-size: cover;
@@ -65,6 +65,5 @@
                 </div>
             </div>
         HTML;
-        return $html;
     }
 ?>
