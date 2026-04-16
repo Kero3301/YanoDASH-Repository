@@ -6,35 +6,46 @@ require_once '../components/navbar.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" text="text/css" href="../style.css">
     <meta charset="UTF-8">
-    <title>Track Request | YanoDASH</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Track Request | YanoDASH</title>
 
     <style>
+        * {
+            box-sizing: border-box; /* Ensures padding doesn't break widths */
+        }
+
         body {
             font-family: 'Times New Roman', Times, serif;
             background-color: #ffffff;
+            margin: 0;
+            padding: 0;
         }
 
-        .form-container { width: 600px; 
-                          margin: 50px auto; 
-                          background: #ffffff; 
-                          padding: 40px; 
-                          border-radius: 15px; 
-                          box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
-                          border-top: 8px solid #2e7d32; 
-                        }
+        .form-container {   
+            width: 90%;
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            border-top: 5px solid #2e7d32;
+        }
 
- .btn-back { display: inline-block; 
-             padding: 10px 25px; 
-             background-color: #ffffff; 
-             color: #333; 
-             text-decoration: none; 
-             border-radius: 50px; 
-             font:700 14px Arial,sans-serif;
-             border: 1px solid #ddd; 
-             box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-             transition: all 0.3s ease; 
-             margin-bottom: 25px; }
+        .btn-back { 
+            display: inline-block; 
+            padding: 8px 18px; 
+            background-color: #ffffff; 
+            color: #333; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font: 700 13px Arial, sans-serif;
+            border: 1px solid #ddd; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+            transition: all 0.3s ease; 
+            margin-bottom: 20px; 
+        }
 
         .btn-back:hover {
             background-color: #5f0000;
@@ -43,19 +54,21 @@ require_once '../components/navbar.php';
         }
 
         .search-group {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .search-group label {
             display: block;
-            font-family: Arial, sans-serif bold;
-            margin-bottom: 8px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            margin-bottom: 10px;
             color: #333;
         }
 
         .search-input-wrapper {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .search-input-wrapper input {
@@ -64,80 +77,112 @@ require_once '../components/navbar.php';
             border: 1px solid #ddd;
             border-radius: 8px;
             font-family: Arial, sans-serif;
+            font-size: 16px; /* Prevents auto-zoom on iOS */
         }
 
         .btn-track {
             background-color: #2e7d32;
             color: white;
             border: none;
-            padding: 0 30px;
-            border-radius: 50px;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s;
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
         }
 
         .btn-track:hover {
             background-color: #1b5e20;
         }
 
+        /* Timeline Styles */
         .status-timeline {
-            margin-top: 40px;
+            margin-top: 25px;
             border-top: 1px solid #eee;
-            padding-top: 30px;
+            padding-top: 20px;
         }
 
         .step {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             position: relative;
         }
 
+        /* The vertical line connecting steps */
         .step:not(:last-child):after {
             content: "";
             position: absolute;
-            left: 17px;
-            top: 35px;
-            bottom: -30px;
+            left: 14px; /* Centered exactly under the 28px circle */
+            top: 30px;
+            bottom: -20px;
             width: 2px;
             background: #e0e0e0;
         }
 
         .circle {
-            width: 35px;
-            height: 35px;
+            width: 28px;
+            height: 28px;
             background: #e0e0e0;
             border-radius: 50%;
             display: flex;
+            flex-shrink: 0; /* Prevents circle from squishing on mobile */
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: bold;
-            margin-right: 20px;
+            margin-right: 15px;
             z-index: 1;
             font-family: Arial, sans-serif;
+            font-size: 12px;
         }
 
-        .step.active .circle {
-            background: #2e7d32;
-        }
-
-        .step.current .circle {
-            background: #1976d2; 
-        }
+        .step.active .circle { background: #2e7d32; }
+        .step.current .circle { background: #1976d2; }
 
         .step-content h4 {
-            margin: 0;
+            margin: 0 0 4px 0;
             font-family: Arial, sans-serif;
+            font-size: 15px;
             color: #333;
         }
 
         .step-content p {
-            margin: 5px 0 0;
+            margin: 0;
             font-family: Arial, sans-serif;
+            font-size: 13px;
             color: #777;
-            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Tablet (481px–768px) */
+        @media (min-width: 481px) {
+            .form-container {
+                width: 80%;
+                max-width: 600px;
+                margin: 50px auto;
+                padding: 30px;
+            }
+
+            .search-input-wrapper {
+                flex-direction: row;
+            }
+
+            .btn-track {
+                width: auto;
+                padding: 0 25px;
+                border-radius: 8px;
+            }
+        }
+
+        /* Desktop (1024px+) */
+        @media (min-width: 1024px) {
+            .form-container {
+                max-width: 700px;
+                padding: 40px;
+            }
         }
     </style>
 </head>
@@ -146,15 +191,15 @@ require_once '../components/navbar.php';
 <?php echo navbar(0); ?>
 
 <div class="form-container">
-    <a href="request.php" class="btn-back">Back to Menu</a>
+    <a href="request.php" class="btn-back">← Back to Menu</a>
 
-    <h2 style="text-align: center; font-family: 'Sans-serif'; margin-bottom: 30px; color: #2e7d32;">Track Your Document</h2>
+    <h2 style="text-align: center; font-family: Arial, sans-serif; margin-bottom: 25px; color: #2e7d32;">Track Your Document</h2>
     
     <div class="search-group">
         <label for="track_id">Enter Document ID</label>
         <div class="search-input-wrapper">
             <input type="text" id="track_id" placeholder="e.g. YD-2024-001">
-            <button class="btn-track">Track</button>
+            <button class="btn-track">Track Now</button>
         </div>
     </div>
 
@@ -186,4 +231,4 @@ require_once '../components/navbar.php';
 </div>
 
 </body>
-</html> 
+</html>

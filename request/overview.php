@@ -6,17 +6,16 @@ require_once '../components/navbar.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" text="text/css" href="../style.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Request Overview</title>
 
 <style>
   body {
-    font: normal 1em 'Times New Roman', Times, serif, sans-serif;
-    background: #fff;
-     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin: 0;
+ font-family: Arial, sans-serif;
+    background: #fffdfd;
   }
 
   .header-container {
@@ -30,8 +29,10 @@ require_once '../components/navbar.php';
   }
 
   .btnarchive {
-    position: absolute;
-    right: 15%;
+    display: block;
+    text-align: center;
+    margin: 80px auto 0 auto;
+    width: fit-content;
     background: #fff;
     border: 2px solid maroon;
     color: maroon;
@@ -41,7 +42,6 @@ require_once '../components/navbar.php';
     font: bold 1em Arial, sans-serif;
     transition: 0.3s ease;
     margin-top: 80px;
-    margin-left: 25px;
   }
 
   .btnarchive:hover {
@@ -116,6 +116,17 @@ require_once '../components/navbar.php';
   .approved { background: #2e7d32; }
   .pending { background: #1976d2; }
   .rejected { background: #c62828; }
+
+  /* Tablet (481px–768px) */
+@media (min-width: 481px) {
+    .btnarchive {
+        width: 280px;
+    }
+      h1 {
+      font: 14px;
+      
+  }
+}
 </style>
 
 </head>

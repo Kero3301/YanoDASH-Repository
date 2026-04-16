@@ -17,13 +17,14 @@ require_once '../components/navbar.php';
         }
 
         .form-container {
-            max-width: 600px;
+            max-width: 500px;
+            width: 92%;
             margin: 50px auto;
             background: #ffffff;
-            padding: 40px;
+            padding: 20px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 8px solid #2e7d32; /* Green accent from your menu suggestion */
+            border-top: 8px solid #2e7d32; 
         }
 
         /* UI Styled Back Button */
@@ -110,6 +111,22 @@ require_once '../components/navbar.php';
             background-color: #1b5e20;
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
+        }
+        @media (max-width: 768px) {
+        .form-container {
+            width: 80%;
+            max-width: 650px;
+            padding: 30px;
+            margin: 50px auto;
+             }   
+        }
+        @media (max-width: 1024px) {
+        .form-container {
+            width: 80%;
+            max-width: 650px;
+            padding: 30px;
+            margin: 50px auto;
+             }   
         }
     </style>
 </head>
