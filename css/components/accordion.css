@@ -1,0 +1,63 @@
+.accordion-container {
+    width: 100%;
+    margin: 1rem auto;
+    border-radius: 16px;
+    border: 3px solid #CCC;
+    overflow: hidden;
+    background: #f4f4f4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.accordion {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    font-size: 1rem;
+    font-family: 'RobotoFlex';
+    font-weight: bold;
+    background-color: #f4f4f4;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+}
+
+.accordion:hover {
+    background-color: rgba(255, 52, 52, 0.3);
+}
+
+.accordion.active {
+    border-color: #63071e;
+    background-color: #63071e;
+    color: white;
+}
+
+.accordion::after {
+    content: "+";
+    position: absolute;
+    right: 1rem;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+}
+
+.accordion.active::after {
+    content: "-";
+}
+
+.panel {
+    border-radius: 0 0 16px 16px;
+    max-height: 0;
+    overflow: hidden;
+    background-color: white;
+    transition: max-height 0.3s ease;
+    padding: 0 1.25rem;
+}
+
+.panel p {
+    margin: 0.75rem 0 1rem;
+    color: black;
+    font-size: 0.9rem;
+    font-family: 'RobotoFlex';
+}
