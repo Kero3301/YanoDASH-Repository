@@ -1,7 +1,6 @@
 <?php
     require_once '../components/head.php';
     require_once '../components/navbar.php';
-    require_once '../components/faq_section.php';
     require_once '../components/accordion.php';
     require_once '../components/footer.php';
 ?>
@@ -39,7 +38,7 @@
 
                         "Can I request an account using a non-USeP email address?"
                         => "No, not currently. For verification and safety purposes, we only support USeP university email addresses."
-                    ]
+                    ], true
                 );
             ?>
         </div>
