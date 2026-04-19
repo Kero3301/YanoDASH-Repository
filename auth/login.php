@@ -177,7 +177,7 @@
                             <p style="font-family: 'RobotoFlex'">Remember me</p>
                         </div>
 
-                        <input id="login-button" class="btn-back" type="submit" name="login" value="Login" onclick="hidePassword('login-enter-password-visibilitytoggle'); setElementsLockedByIDs(['uname', 'login-enter-password-inputfield', 'remember-me']);" style="display: block; width: 128px; margin-top: 16px; margin-bottom: 8px; margin-left: auto; margin-right: auto; cursor: pointer; text-align: center">
+                        <input id="login-button" class="btn-back" type="submit" name="login" value="Login" style="display: block; width: 128px; margin-top: 16px; margin-bottom: 8px; margin-left: auto; margin-right: auto; cursor: pointer; text-align: center">
 
                         <a style="text-align: center; cursor: pointer;"><p style="margin-top: 16px; margin-bottom: 16px; font-family: 'RobotoFlex'">I forgot my password</p></a>
                         <hr style="border: 1px solid rgba(0,0,0,0.1)">
@@ -198,6 +198,9 @@
             const loginButton = document.querySelector("#login-button");
 
             form.addEventListener("submit", () => {
+                hidePassword('login-enter-password-visibilitytoggle'); 
+                setElementsLockedByIDs(['uname', 'login-enter-password-inputfield', 'remember-me']);
+                
                 requestAnimationFrame(() => {
                     loginButton.disabled = true;
                     loginButton.value = "Logging in...";
