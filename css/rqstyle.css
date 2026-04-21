@@ -14,7 +14,7 @@
 
 .top-actions {
     width: 90%;
-    margin: 20px auto;
+    margin: 10px auto;
     display: flex;
     justify-content: flex-end;
     font-size: 0.8rem;
@@ -23,17 +23,22 @@
 
 .important-btn {
     padding: 10px 15px;
-    background-color: #71100F;
-    color: white;
+    background-color: #fff;
+    color: black;
     text-decoration: none;
+    border: 2px solid #63071e;
     border-radius: 12px;
     font-weight: bold;
 }
 
 .important-btn:active {
-    background-color: black;
+    background-color: #63071e;
     color: white;
-    transform: scale(1.05);
+    transition: 0.3s ease;
+}
+
+.important-btn:active{
+    transform: scale(0.95);
 }
 
 .table-container {
@@ -58,7 +63,8 @@ table, th, td {
 }
 
 th {
-    background-color: #e6f0fa;
+    background-color: #63071e;
+    color: white;
     padding: 15px;
     text-align: left;
     font-weight: 600;
@@ -86,25 +92,32 @@ td button {
 }
 
 button.approve {
-    background-color: #7bb661;
-    color: white;
+    background-color: #fff;
+    color: #0e633a;
+    border: 1px solid #0e633a;
 }
 
 button.approve:active {
-    background-color: #6aa452;
-    transform: scale(1.05);
+    background-color: #0e633a;
+    color: white;
+    transition: 0.2s ease;
 }
 
 button.reject {
     background-color: white;
-    color: #c0392b;
-    border: 1px solid #c0392b;
+    color: #63071e;
+    border: 1px solid #63071e;
 }
 
 button.reject:active {
-    background-color: #c0392b;
+    background-color: #63071e;
     color: white;
-    transform: scale(1.05);
+    transition: 0.2s ease;
+}
+
+button.approve:active,
+button.reject:active {
+    transform: scale(0.95);
 }
 
 /* IMPORTANT DOCUMENTS PAGE */
@@ -206,8 +219,9 @@ button.reject:active {
     }
 
     .important-btn:hover {
-        background-color: red;
-        transform: scale(1.05);
+        background-color: maroon;
+        color: white;
+        transition: 0.3s ease;
     }
 
     th, td {
@@ -219,8 +233,21 @@ button.reject:active {
         background-color: #f5f5f5;
     }
 
-    td button:hover {
-        transform: scale(1.05);
+    button.approve:hover {
+        background-color: #0e633a;
+        color: white;
+        transition: 0.2s ease;
+    }
+
+    button.reject:hover {
+        background-color: #63071e;
+        color: white;
+        transition: 0.2s ease;
+    }
+
+    button.approve:active,
+    button.reject:active {
+        transform: scale(0.95);
     }
 
     td button {
