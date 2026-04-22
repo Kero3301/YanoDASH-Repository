@@ -228,9 +228,14 @@
     margin-top: -20px;
     float: right;
 }
+    #b-back {
+        padding: 10px 15px;
+    }
 
 }
 
 @media (min-width: 1024){
-    
+    #b-back {
+        padding: 10px 15px;
+    }
 }
