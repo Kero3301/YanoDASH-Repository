@@ -120,19 +120,18 @@ button.reject:active {
     transform: scale(0.95);
 }
 
-/* IMPORTANT DOCUMENTS PAGE */
 .pending {
-    color: #e67e22;
+    color: #6480db;
     font-weight: bold;
 }
 
 .approved {
-    color: #27ae60;
+    color: #0e633a;
     font-weight: bold;
 }
 
 .rejected {
-    color: #c0392b;
+    color: #63071e;
     font-weight: bold;
 }
 
@@ -219,7 +218,7 @@ button.reject:active {
     }
 
     .important-btn:hover {
-        background-color: maroon;
+        background-color: #63071e;
         color: white;
         transition: 0.3s ease;
     }

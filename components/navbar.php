@@ -38,7 +38,7 @@
             ? ""
             : ($_SESSION['role'] === 'admin'
                 ? menu("private-archive-menu", [
-                    "Home" => "/yanodash-repository/admin-pages/index.php",
+                    "Home" => "/yanodash-repository/admin-pages/index_priv-ar.php",
                     "Pending Archive Requests" => "/yanodash-repository/admin-pages/archive-rq.php",
                     "Important Documents" => "/yanodash-repository/admin-pages/key-docs.php"
                 ])
