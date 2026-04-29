@@ -4,6 +4,8 @@
         $isLoggedIn && ($_SESSION['role'] === "admin" || $_SESSION['role'] === "editor");
 
     require_once 'menu.php';
+    require_once 'sliding_switch.php';
+
     echo <<< HTML
         <link rel="stylesheet" href="/yanodash-repository/css/components/navbar.css">
         <script src="/yanodash-repository/script/navbar-hamburger.js"></script>
@@ -55,7 +57,7 @@
             ]);
 
         $about_menu = menu("about-menu", [
-            "What is the OSC?" => "#",
+            "What is the OSC?" => "/yanodash-repository/about/obrero-student-council/about.php",
             "Meet the Executives" => "#",
         ]);
 
@@ -72,7 +74,7 @@
                 ], isDark: true)
                 : menu("account-menu", [
                     "Logged in as:<br> <b><i>$fullname</i></b><br><p style='color: rgba(252, 151, 151, 0.9);'>Visit My Account</p>" => "/yanodash-repository/user/account.php",
-                    "Register/Approve an Account" => "#",
+                    "Manage YanoDASH Accounts" => "/yanodash-repository/user/manage.php",
                     "Logout" => "/yanodash-repository/auth/logout.php"
                 ], isDark: true);
             }
@@ -109,6 +111,8 @@
                     $dms_menu
                 </div>
             HTML;
+
+        $colorModeSwitch = slidingSwitch("toggle-color-mode");
 
         return <<< HTML
             <div id="navbar">
@@ -158,6 +162,8 @@
                         </a>
                         $about_menu
                     </div>
+
+                    $colorModeSwitch
 
                     <div id="myaccount" class="dropdown" style="margin-left: auto; margin-right: 24px;">
                         <a style="cursor: pointer;">

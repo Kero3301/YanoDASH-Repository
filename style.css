@@ -1,6 +1,20 @@
 /* ============================================================================================================ 
                                             START OF MOBILE VIEW 
 ============================================================================================================ */
+#footer a {
+    font-size: 1rem;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+#legal {
+    font-size: 1rem !important;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+
 * {
     margin: 0px;
     padding: 0px;
@@ -8,17 +22,27 @@
     font-family: "Times New Roman", Times, serif;
 }
 
+.content-text {
+    font-size: 1rem !important;
+}
+
+.content-title {
+    color: #63071e !important;
+    border: 3px solid lightgray;
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 .content-section {
     color: white;
     padding: 30px;
     height: auto;
+
 }
 
 #sec1-title {
     width: 60%;
     border-radius: 10px;
-    background-color: #FFD700;
+    background-color: white;
     font-size: 1.30rem;
     padding: 10px;
     color: #71100F;
@@ -36,7 +60,7 @@
 #stats-section-title {
     width: 42%;
     border-radius: 10px;
-    background-color: #FFD700;
+    background-color: white;
     font-size: 1.30rem;
     padding: 10px;
     color: #71100F;
@@ -46,7 +70,7 @@
 #dms-section-title {
     width: 69%;
     border-radius: 10px;
-    background-color: #FFD700;
+    background-color: white;
     font-size: 1.30rem;
     padding: 10px;
     color: #71100F;

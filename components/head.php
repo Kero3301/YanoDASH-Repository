@@ -17,6 +17,7 @@
             <link rel="icon" type="image/png" href="/yanodash-repository/images/favicon.png">
             <link rel="stylesheet" type="text/css" href="/yanodash-repository/style.css">
             <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/fonts.css">
+            <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/elements.css">
         HTML;
     }
 ?>

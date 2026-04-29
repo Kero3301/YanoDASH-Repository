@@ -24,6 +24,7 @@
         <link rel="stylesheet" href="../css/fonts.css">
         <link rel="stylesheet" href="../css/components/user-form.css">
          <link rel="stylesheet" text="text/css" href="../style.css">
+         <link rel="stylesheet" href="../css/elements.css">
         
         <style>
             * {
@@ -49,16 +50,16 @@
             }
 
             #uname {
-                box-sizing: border-box;
+                /* box-sizing: border-box; */
                 display: block;
                 height: 44px;
                 width: 240px;
                 margin-left: auto;
                 margin-right: auto;
                 margin-bottom: 10px;
-                padding: 0 4px;
+                /* padding: 0 4px;
                 border: 2px solid #ddd;
-                border-radius: 8px;
+                border-radius: 8px; */
             }
 
             #login-form {

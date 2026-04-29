@@ -3,6 +3,7 @@
 
     require_once '../components/head.php';
     require_once '../components/navbar.php';
+    require_once '../components/footer.php';
 ?>
 
 <!DOCTYPE html>
@@ -153,7 +154,6 @@ input[type="file"]::file-selector-button {
 <body>
 
 <?php echo navbar(0); ?>
-
 <div class="form-container">
 
     <a href="request.php" class="btn-back">Back to Menu</a>
@@ -198,6 +198,6 @@ input[type="file"]::file-selector-button {
     </form>
 
 </div>
-
+<?php echo footer(); ?>
 </body>
 </html>
