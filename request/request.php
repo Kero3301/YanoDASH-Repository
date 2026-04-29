@@ -2,6 +2,7 @@
 session_start();
 require_once '../components/head.php';
 require_once '../components/navbar.php';
+require_once '../components/footer.php';
 ?>
 
 <!DOCTYPE html>
@@ -98,15 +99,19 @@ body {
 
 <?php echo navbar(0); ?>
 
-<div class="container">
-    <h1 style="text-align:center; margin-bottom: 30px;">
+<div class="page-contents no-padding">
+    <div class="container">
+        <h1 style="text-align:center; margin-bottom: 30px;">
         Hey there! choose what you want to do
     </h1>
 
     <a href="archive.php" class="button">Request to Archive</a>
     <a href="track.php" class="button">Track your Request</a>
     <a href="overview.php" class="button">Request Overview</a>
+    </div>
 </div>
+
+<?php echo footer();?>
 
 </body>
 </html>

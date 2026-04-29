@@ -1,5 +1,5 @@
 <?php
-    require __DIR__. '/../utils/TextUtils.php';
+    require_once __DIR__. '/../utils/TextUtils.php';
 
     # A function to create a main section with a specified element ID, text, content, background image, background tint,
     # and inner content alignment (0 = left, 1 = center, 2 = right)
@@ -30,7 +30,7 @@
 
                 $html = <<< HTML
                     <a href="$sanitizedLink" id="$sanitizedButtonID" style="text-decoration: none;">
-                        <button style="padding: 8px; border: none; border-radius: 16px; cursor: pointer;">
+                        <button>
                             $sanitizedLabel
                         </button>
                     </a>

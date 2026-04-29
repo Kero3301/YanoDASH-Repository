@@ -132,6 +132,7 @@
 <body>
 
 <?php echo navbar(0); ?>
+<div class="page-contents no-padding">
 
 <div class="header-container">
     <h1 style="margin: -5px;">Request Overview</h1>
@@ -172,6 +173,7 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>
 
 </body>

@@ -13,10 +13,16 @@
 <html>
     <head>
         <?php initializePage("YanoDASH")?>
+        <link rel="stylesheet" href="css/elements.css">
+        <style>
+        </style>
     </head>
     <body>
         <?php echo navbar()?>
-        <?php 
+        <div class="contents">
+        
+        <div class="page-contents no-padding">
+                <?php 
             echo mainSection(
                 "sec1",
                 "Official documents, at your fingertips.",
@@ -65,9 +71,13 @@
                 linksList: [
                     ['Open YanoDASH DMS ↗', '/yanodash-repository/dms/create.php', 'oyddms']
                 ]
-            );
-
-            echo footer();
-        ?>        
+            ); 
+            ?>    
+            </div>
+        
+        </div>
+        </div>        
+        
+        <?php echo footer(); ?> 
     </body>
 </html>

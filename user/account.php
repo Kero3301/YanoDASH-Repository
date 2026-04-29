@@ -3,17 +3,25 @@
 
     require_once '../components/head.php';
     require_once '../components/navbar.php';
+    require_once '../components/footer.php';
     ?>
 
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <?php initializePage("My Account Dashboard | YanoDASH")?>
-    <!-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account Dashboard | YanoDASH </title> -->
+    
 
     <style>
+    @font-face {
+        font-family: 'Gupter';
+        src: url('../fonts/gupter/Gupter-Regular.ttf');
+    }
+
+    @font-face {
+        font-family: 'RobotoFlex';
+        src: url('../fonts/roboto-flex/RobotoFlex-Variable.ttf');
+    }
     :root{
         --maroon:#800000;
         --yellow:#FFD700;
@@ -24,13 +32,13 @@
         --r:12px;
     }
 
-    *{margin:0;padding:0;box-sizing:border-box;font-family: 'Segoe UI'}
-    body{font-family:Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+    *{margin:0;padding:0;box-sizing:border-box; font-family:'RobotoFlex'}
+    body{background:var(--bg); color:var(--text)}
 
 
     /* LAYOUT */
     .account-container{
-        padding:80px 16px 24px;
+        padding:20px 16px 24px;
         display:flex;
         flex-direction:column;
         gap:25px;
@@ -55,6 +63,7 @@
         padding-bottom:6px;
         text-transform:uppercase;
         font-size:.95rem;
+        font-family: 'RobotoFlex', serif !important;
     }
 
     /* SCROLL */
@@ -91,10 +100,11 @@
         justify-content:center;
         font-weight:bold;
         font-size:1.5rem;
-        margin-top: auto;
-        margin-bottom: auto;
     }
     .info{flex:1;min-width:240px}
+    .info h2 {
+        font-family: 'Gupter', serif !important;
+    }
     .badge{
         background:#e8f5e9;
         color:#2e7d32;
@@ -130,6 +140,11 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
+.card.div2 button {
+    background-color: maroon;
+    color: white;
+}
+
     /* TABLET */
     @media(min-width:768px){
         .account-container{
@@ -142,7 +157,7 @@ button:hover {
     @media(min-width:1024px){
         .account-container{
             grid-template-columns:repeat(5,1fr);
-            padding:100px 32px 32px;
+            padding:12px 32px 32px;
         }
 
         .div1{grid-column:1/-1}
@@ -152,9 +167,10 @@ button:hover {
     }
     </style>
     </head>
-    <?php echo navbar(0); ?>
     <body>
+    <?php echo navbar(0); ?>
 
+    <!-- <div class="page-contents no-padding"> -->
     <div class="account-container">
 
     <!-- PROFILE -->
@@ -206,6 +222,9 @@ button:hover {
     </div>
 
     </div>
+    <!-- </div> -->
+
+        <?php echo footer(); ?>
 
     </body>
     </html>
