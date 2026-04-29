@@ -2,7 +2,6 @@
 session_start();
 require_once '../components/head.php';
 require_once '../components/navbar.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -11,45 +10,58 @@ require_once '../components/navbar.php';
     <link rel="stylesheet" text="text/css" href="../style.css">
     <?php initializePage("Document Archiving Request | YanoDASH")?>
 
-    <!-- <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title> -->
-
 <style>
-body {
-   margin: 0px;
+.serif {
+    font-family: 'Gupter', serif;
 }
 
+.sans {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+body {
+    margin: 0px;
+}
+
+/* ✅ MAIN BUTTON (clean system style) */
 .button {
-    font: bold 15px Arial;
-    border: none;
+    font: bold 15px 'RobotoFlex', sans-serif;
+    background: #63071e;
     color: white;
+
+    border: 2px solid #63071e; /* always present → no shake */
+
     padding: 18px 20px;
     text-align: center;
     text-decoration: none;
+
     display: block;
     width: 165px;
     margin: 15px auto;
+
     cursor: pointer;
     border-radius: 15px;
-    transition: 0.2s ease;
+
+    transition: all 0.25s ease;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+
+    will-change: transform;
 }
 
-/* Hover effects */
+/* Hover */
 .button:hover {
-    opacity: 0.85;
-    transform: scale(1.02);
+    background: white;
+    color: #63071e;
+    transform: translateY(-2px);
 }
 
+/* Active */
 .button:active {
-    transform: scale(0.98);
+    background: white;
+    color: #63071e;
+    transform: translateY(0);
 }
-
-/* Colors */
-.button1 { background: #2E7D32; }
-.button2 { background: #1976D2; }
-.button3 { background: #ff7b00; }
 
 /* Container */
 .container {
@@ -61,15 +73,14 @@ body {
     padding: 10px;
 }
 
-
-/* Tablet (481px–768px) */
+/* Tablet */
 @media (min-width: 481px) {
     .button {
         width: 280px;
     }
 }
 
-/* Large Desktop (1024px and up) */
+/* Desktop */
 @media (min-width: 1024px) {
     .container {
         min-height: 70vh;
@@ -82,6 +93,7 @@ body {
 </style>
 
 </head>
+
 <body>
 
 <?php echo navbar(0); ?>
@@ -91,9 +103,9 @@ body {
         Hey there! choose what you want to do
     </h1>
 
-    <a href="archive.php" class="button button1">Request to Archive</a>
-    <a href="track.php" class="button button2">Track your Request</a>
-    <a href="overview.php" class="button button3">Request Overview</a>
+    <a href="archive.php" class="button">Request to Archive</a>
+    <a href="track.php" class="button">Track your Request</a>
+    <a href="overview.php" class="button">Request Overview</a>
 </div>
 
 </body>
