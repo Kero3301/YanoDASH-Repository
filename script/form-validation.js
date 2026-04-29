@@ -61,11 +61,16 @@ function validateInput(input) {
     let message = "";
 
     if (input.hasAttribute("required") && value === "") {
-        if (input.tagName === "SELECT") {
+        if (input.id === "notes") {
+            message = "Please enter a document ID";
+
+        } else if (input.tagName === "SELECT") {
             message = "Please choose an option";
+
         } else {
             message = "This field is required";
         }
+
         isValid = false;
     }
 
@@ -107,7 +112,6 @@ function toggleError(input, message) {
 
     let error = wrapper.querySelector(".error-message");
 
-    // ✅ ONLY create if there's an actual error
     if (message) {
 
         if (!error) {
@@ -126,7 +130,6 @@ function toggleError(input, message) {
         }
 
     } else {
-        // ✅ REMOVE completely when no error
         if (error) {
             error.remove();
         }
