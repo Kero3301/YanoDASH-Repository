@@ -1,6 +1,8 @@
 <!-- General Statistics -->
 <!-- Assigned Member: Carylle -->
 <?php
+    session_start();
+    
     require_once '../components/head.php';
     require_once '../components/navbar.php';
 ?>
@@ -17,9 +19,8 @@
         <div class="container">
             <h6 class="box"> Total Documents </br> <p class="num">10,540</p> </h6>    
             <h6 class="box"> Storage Used </br><p class="num"> 1GB/5GB(20%)</p> </h6>
-            <h6 class="box"> Total Collections </br><p class="num"> 45 </p></h6>
             <h6 class="box"> Pending Reviews </br><p class="num"> 15 </p></h6>
-            <h6 class="boxx"> Average Uploads per month </br><p class="num"> 20 </p></h6>
+            <h6 class="box"> Average Uploads per month </br><p class="num"> 20 </p></h6>
         </div>
         <div class="t-container">
             <h4> Top Downloaded Documents </h4>
