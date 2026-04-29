@@ -19,7 +19,35 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
-    font-family: "Times New Roman", Times, serif;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.error {
+    border: 2px solid #ff4d4f !important;
+}
+
+.error-message {
+    position: absolute;
+    top: 50%;
+    left: 105%;
+    transform: translateY(-50%) scale(0.95);
+
+    background: #ff4d4f;
+    color: #fff;
+    font-family:'RobotoFlex', sans-serif;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    margin-top: 0;
+    z-index: 999;
+
+    opacity: 1;
+}
+
+.password-input.error {
+    border: 2px solid #ff4d4f !important;
 }
 
 .content-text {

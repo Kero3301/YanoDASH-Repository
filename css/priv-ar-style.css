@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ======================================== MOBILE VIEW ======================================== */
+.title {
+    padding: 20px 7%;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Gupter', serif;
+}
+
+.archive-container {
+    padding: 1.5rem;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.document-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.box {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #ddd;
+    border-radius: 10px;
+}
+
+.doc-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.doc-preview {
+    border-radius: 10px 10px 0px 0px;
+    background: #e5e5e5;
+    aspect-ratio: 4 / 2;
+}
+
+.doc-info {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.doc-info h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.doc-actions {
+    display: flex;
+    gap: 6px;
+    padding: 0.6rem;
+}
+
+.doc-actions button {
+    flex: 1;
+    padding: 6px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: bold;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.view-btn {
+    color: #0e633a;
+    border: 1px solid #0e633a;
+}
+
+.view-btn:active {
+    background-color: #0e633a;
+    color: #fff;
+    transform: scale(0.95);
+}
+
+.delete-btn {
+    color: #63071e;
+    border: 1px solid #63071e;
+}
+
+.delete-btn:active {
+    background-color: #63071e;
+    color: #fff;
+    transform: scale(0.95);
+}
+/* ======================================== TABLET VIEW ======================================== */
+
+@media (min-width: 481px) {
+    .title {
+        font-size: 1.3rem;
+        padding-top: 15px;
+    }
+
+    .archive-container {
+        padding: 1.5rem;
+    }
+
+    .document-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .doc-preview {
+        aspect-ratio: 4 / 2.5;
+    }
+
+    .doc-info {
+        padding: 0.6rem;
+        font-size: 1rem;
+    }
+
+    .doc-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.3rem;
+    }
+}
+
+/* ======================================== DESKTOP VIEW ======================================== */
+
+@media (min-width: 1024px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .archive-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .document-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.2rem;
+    }
+
+    .doc-preview {
+        aspect-ratio: 4 / 3;
+    }
+
+    .doc-info {
+        padding: 0.6rem;
+        font-size: 0.9rem;
+    }
+
+    .doc-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+
+     .view-btn:hover {
+        background-color: #0e633a;
+        color: #fff;
+    }
+
+    .delete-btn:hover {
+        background-color: #63071e;
+        color: #fff;
+    }
+
+    .doc-actions button {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+}

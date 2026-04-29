@@ -26,7 +26,7 @@
         <!-- Optional: Back button -->
         <div class="top-actions">
             <a href="archive-rq.php" class="important-btn">
-                Back to Requests
+                Back to Pending Requests
             </a>
         </div>
 

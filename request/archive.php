@@ -166,7 +166,8 @@ input[type="file"]::file-selector-button {
         
         <div class="form-group">
             <label for="doc_type">Document Type</label>
-            <select id="doc_type" name="doc_type">
+            <select id="doc_type" name="doc_type" required>
+                <option value="" disabled selected>-- Please choose a document type --</option>
                 <option value="Voting Registration">Voting Registration</option>
                 <option value="Required attendance">Required attendance</option>
                 <option value="Budget event">Budget event</option>
@@ -191,7 +192,7 @@ input[type="file"]::file-selector-button {
 
         <div class="form-group">
             <label for="notes">Document ID</label>
-            <textarea id="notes" name="notes" rows="1" placeholder="Please refer to the document ID"></textarea>
+            <textarea id="notes" name="notes" rows="1" placeholder="Please refer to the document ID" required></textarea>
         </div>
 
         <button type="submit" class="btn-submit">Submit Request</button>
