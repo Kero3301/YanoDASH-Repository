@@ -11,6 +11,13 @@
   <?php initializePage("Request Overview | YanoDASH")?>
 
 <style>
+  .serif {
+    font-family: 'Gupter', serif;
+  }
+
+  .sans {
+    font-family: 'RobotoFlex', sans-serif;
+  }
   .header-container {
     position: relative;
     display: flex;
@@ -32,7 +39,7 @@
     padding: 10px 20px;
     border-radius: 25px;
     text-decoration: none;
-    font: bold 1em Arial, sans-serif;
+    font: bold 1em 'RobotoFlex', sans-serif;
     transition: 0.3s ease;
     margin-top: 80px;
   }
@@ -59,7 +66,7 @@
     border-radius: 15px;
     color: white;
     text-align: center;
-    font: bold 18px Arial;
+    font: bold 18px;
   }
 
   .activity-section {
@@ -75,7 +82,6 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    font: normal 1em Arial, sans-serif;
   }
 
   th {
@@ -116,7 +122,7 @@
         width: 280px;
     }
       h1 {
-      font: 14px;
+      font-size: 20px;
       
   }
 }

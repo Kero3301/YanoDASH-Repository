@@ -3,13 +3,20 @@
     require_once '../components/head.php';
     require_once '../components/navbar.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php initializePage("Track Request | YanoDASH")?>
 
     <style>
+        .serif {
+            font-family: 'Gupter', serif;
+        }
+
+        .sans {
+            font-family: 'RobotoFlex', sans-serif;
+        }
+
         .form-container { 
             width: 750px; 
             margin: 50px auto; 
@@ -27,7 +34,7 @@
             color: #333; 
             text-decoration: none; 
             border-radius: 50px; 
-            font: 700 13px Arial, sans-serif;
+            font: 700 13px 'RobotoFlex', sans-serif;
             border: 1px solid #ddd; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
             transition: all 0.3s ease; 
@@ -46,7 +53,6 @@
 
         .search-group label {
             display: block;
-            font-family: Arial, sans-serif;
             font-weight: bold;
             margin-bottom: 10px;
             color: #333;
@@ -63,7 +69,6 @@
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-family: Arial, sans-serif;
             font-size: 16px; 
         }
 
@@ -97,11 +102,10 @@
             position: relative;
         }
 
-        /* The vertical line connecting steps */
         .step:not(:last-child):after {
             content: "";
             position: absolute;
-            left: 14px; /* Centered exactly under the 28px circle */
+            left: 14px;
             top: 30px;
             bottom: -20px;
             width: 2px;
@@ -121,7 +125,6 @@
             font-weight: bold;
             margin-right: 15px;
             z-index: 1;
-            font-family: Arial, sans-serif;
             font-size: 12px;
         }
 
@@ -130,20 +133,17 @@
 
         .step-content h4 {
             margin: 0 0 4px 0;
-            font-family: Arial, sans-serif;
             font-size: 15px;
             color: #333;
         }
 
         .step-content p {
             margin: 0;
-            font-family: Arial, sans-serif;
             font-size: 13px;
             color: #777;
             line-height: 1.4;
         }
 
-        /* Tablet (481px–768px) */
         @media (min-width: 481px) {
             .form-container {
                 width: 80%;
@@ -163,7 +163,6 @@
             }
         }
 
-        /* Desktop (1024px+) */
         @media (min-width: 1024px) {
             .form-container {
                 max-width: 700px;
@@ -172,6 +171,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <?php echo navbar(0); ?>
@@ -179,7 +179,9 @@
 <div class="form-container">
     <a href="request.php" class="btn-back">← Back to Menu</a>
 
-    <h2 style="text-align: center; font-family: Arial, sans-serif; margin-bottom: 25px; color: #2e7d32;">Track Your Document</h2>
+    <h2 class="serif" style="text-align: center; margin-bottom: 25px; color: #2e7d32;">
+        Track Your Document
+    </h2>
     
     <div class="search-group">
         <label for="track_id">Enter Document ID</label>
