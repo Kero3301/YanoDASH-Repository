@@ -1,0 +1,232 @@
+body { 
+    font-family: 'Times New Roman', Times, serif; 
+    /* NEW: Uploaded Image set as background */
+    background-image: url('image_22.png'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps image still while scrolling */
+    background-color: #2c3e50; /* Fallback color */
+    margin: 0;
+    display: flex; 
+    flex-direction: column; /* Stacks the navbar and container vertically */
+    align-items: center;    /* Keeps the portal centered horizontally */
+    min-height: 100vh;      /* Full viewport height */
+}
+
+/* Navbar styles */
+#navbar {
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 2px solid #e0e0e0;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo {
+    height: 40px;
+    width: auto;
+    display: block;
+    margin-right: 5px;
+}
+
+.nav-divider {
+    width: 2px;
+    height: 35px;
+    background-color: #71100F;
+    margin: 0 15px;
+}
+
+.brand-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4B0082;
+    font-family: 'Times New Roman', serif;
+    line-height: 1;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #0000CD;
+    font-weight: 600;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #71100F;
+}
+
+.profile-icon {
+    display: flex;
+    align-items: center;
+}
+
+.user-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: block;
+    border: 1px solid #ddd;
+    object-fit: cover;
+}
+
+/* Document Portal Container styles */
+.container { 
+    background: rgba(0, 0, 0, 0.7); /* Slightly darker for better readability on new BG */
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);    
+    max-width: 400px; 
+    width: 90%; 
+    text-align: center;
+    margin-top: 80px; /* Space from navbar */
+    margin-bottom: 40px;
+}
+
+h2 { color: #FFFFFF; margin-bottom: 5px; font-size: 28px; }
+.subtitle { color: #FFFFFF; margin-bottom: 30px; font-size: 16px; }
+
+/* Upload input styles */
+input[type="file"] { display: none; }
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: #edf2f7;
+    border: 2px dashed #cbd5e0;
+    border-radius: 8px;
+    color: #2d3748;
+    font-weight: bold;
+    transition: all 0.3s;
+    width: 80%;
+    margin-bottom: 10px;
+}
+
+.custom-file-upload:hover {
+    background: #e2e8f0;
+    border-color: #a0aec0;
+}
+
+.file-info {
+    font-size: 14px;
+    color: #FFFFFF;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.upload-btn { 
+    background: #2563eb; 
+    color: white; 
+    border: none; 
+    padding: 15px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: bold;
+    font-size: 18px;
+    width: 100%;
+    transition: background 0.3s;
+}
+
+.upload-btn:hover { background: #1d4ed8; }
+
+.status { margin-top: 20px; font-size: 16px; }
+.success { color: #81e6d9; font-weight: bold; } /* Teal success for dark bg */
+.error { color: #feb2b2; font-weight: bold; }   /* Pink error for dark bg */
+
+
+/* Layout for the About Page */
+.about-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    width: 100%;
+}
+
+.about-card {
+    background: rgba(0, 0, 0, 0.95); /* Bright white with slight transparency */
+    display: flex;
+    max-width: 900px;
+    width: 95%;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+/* Left side with the logo */
+.about-left {
+    flex: 1;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-right: 1px solid #eee;
+}
+
+.large-about-logo {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.about-left h2 {
+    color: #71100F;
+    font-size: 32px;
+}
+
+/* Right side with the text */
+.about-right {
+    flex: 1.5;
+    padding: 50px;
+    text-align: left;
+}
+
+.about-right h1 {
+    color: #ffffff;
+    font-size: 28px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #71100F;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.about-right p {
+    color: #ffffff;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.contact-btn {
+    width: auto;
+    padding: 12px 30px;
+}
