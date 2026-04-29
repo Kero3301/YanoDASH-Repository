@@ -1,0 +1,189 @@
+/* ========== TEXT ========== */
+p {
+    font-family: 'RobotoFlex', sans-serif;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+b, i {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    font-family: 'Gupter', serif;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+
+/* ========== BUTTONS ========== */
+button, .default-btn, input[type="button"] {
+    font-family: 'RobotoFlex', sans-serif !important;
+    display: inline-block;
+    color: #333;
+    text-decoration: none;
+    border-radius: 50px;
+    font-family: 'RobotoFlex', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+button:not(.toggle-visibility), 
+.default-btn:not(.toggle-visibility), 
+input[type="button"]:not(.toggle-visibility) {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+button:not(.toggle-visibility), 
+.default-btn:not(.toggle-visibility),
+input[type="button"]:not(.toggle-visibility) {
+    padding: 10px 25px;
+}
+
+button.green:hover, .default-btn.green:hover, input[type="button"].green:hover {
+    background-color: #256E2E !important;
+}
+
+button.green.active, .default-btn.green.active, input[type="button"].green.active {
+    background-color: #2b8b30;
+}
+
+button.active, .default-btn.active, input[type="button"].active {
+    background-color: #b01717;
+    color: white;
+}
+
+button:hover:not(.toggle-visibility), 
+.default-btn:hover:not(.toggle-visibility), 
+input[type="button"]:hover:not(.toggle-visibility) {
+    background-color: #5f0000;
+    color: white;
+}
+
+button:hover:not(.toggle-visibility),
+.default-btn:hover:not(.toggle-visibility),
+input[type="button"]:hover:not(.toggle-visibility) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.locked, .locked:hover {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+button.locked,
+button:disabled, 
+.default-btn.locked, 
+.default-btn:disabled, 
+input[type="button"].locked, 
+input[type="button"]:disabled {
+    background-color: #DDD;
+    color: gray;
+}
+
+button.locked:hover, .default-btn.locked:hover, input[type="button"].locked:hover {
+    background: #DDD;
+    color: gray;
+    transition: none;
+}
+
+/* INPUTS */
+input {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+input.locked {
+    background: #DDD;
+    color: gray;
+}
+
+input[type="text"], input[type="password"] {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 10px 4px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.1s ease;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+input[type="text"].password-input-field,
+input[type="password"].password-input-field {
+    border: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 6px 0 0 6px;
+}
+
+input[type="text"].compact,
+input[type="password"].compact {
+    padding: 6px 4px;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover {
+    border-color: #f18e8e;
+    outline: none !important;
+}
+
+input[type="text"]:focus-within, input[type="password"]:focus-within {
+    border-color: #d36161;
+    background-color: rgba(255,0,0,0.1);
+    outline: none !important;
+}
+
+
+/* ========== FORMS ========== */
+form {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+/* ========= CONTAINERS ========== */
+.contents {
+    /* border-radius: 12px 12px 0 0; */
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.page-contents {
+    width: 99%;
+    height: max-content;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    border: 3px solid #f3f3f3;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.page-contents.no-padding {
+    padding: 0 !important;
+}
+
+/* body {
+    background-color: #F4F7F9;
+    background: linear-gradient(to bottom, #F4F7F9, rgb(159, 159, 159));
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+} */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, #F4F7F9, rgb(159, 159, 159));
+    z-index: -1;
+}

@@ -1,4 +1,8 @@
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW NAVBAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#toggle-color-mode {
+    display: none;
+}
+
 #navbar {
     background-color: white;
     display: flex;
@@ -8,12 +12,12 @@
     top: 8px;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 14px;
+    margin-bottom: 18px;
     padding: 10px;
     width: 98%;
     border-radius: 32px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
-    border: 3px solid rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.075), 0 6px 20px 0 rgba(0, 0, 0, 0.075);
+    border: 3px solid #f3f3f3;
     z-index: 1000;
 }
 
@@ -234,7 +238,6 @@
         width: 99%;
         margin-left: auto;
         margin-right: auto;
-        margin-bottom: 16px;
         box-sizing: border-box;
         position: sticky !important;
         top: 8px !important;
@@ -395,6 +398,35 @@
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DESKTOP VIEW NAVBAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @media(min-width: 1024px) {
+    #toggle-color-mode {
+        display: inline-block;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    #toggle-color-mode .slider {
+        background-color: #f8d304;
+    }
+
+    #toggle-color-mode .slider::before {
+        content: "☀️";
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        text-align: center;
+        background-color: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #toggle-color-mode input:checked+.slider:before {
+        content: "🌙";
+        background-color: white;
+    }
+
+    #toggle-color-mode input:checked+.slider {
+        background-color: #111;
+    }
+
     #myaccount a img {
         width: 44px !important;
         height: 44px !important;
