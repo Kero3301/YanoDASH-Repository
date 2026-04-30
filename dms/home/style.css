@@ -104,26 +104,6 @@ body {
 .essay { background: #0000CD; } /* Blue for Essay */
 .technical { background: #71100F; } /* Red for Technical */
 
-/* --- THE NAV RE-FIX --- */
-/* #navbar {
-    width: 100%;
-    background-color: #ffffff;
-    border-bottom: 2px solid #e0e0e0;
-    padding: 12px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-} */
-
-/* .nav-container {
-    max-width: 1400px; /* Slightly wider for better spacing */
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between; /* Pushes brand left and links right */
-    align-items: center;
-    padding: 0 40px;
-} */
-
 /* BRANDING SECTION (Logo | Text) */
 .nav-brand {
     display: flex;
