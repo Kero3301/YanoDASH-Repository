@@ -90,6 +90,7 @@
     background-color: #0000CD;
     z-index: 4;
     user-select: none;
+    box-sizing: border-box;
 }
 
 .doc-thumbnail {

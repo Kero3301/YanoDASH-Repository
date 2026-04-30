@@ -61,7 +61,7 @@
         $_SESSION['badge'] = match ($result->organization) {
             default => 'Organization Member',
             '' => 'Regular Student',
-            'CICLC' => 'Local Council Officer',
+            'CICLC', 'CTLC' => 'Local Council Officer',
             'Obrero Student Council' => 'OSC Officer'
         };
 

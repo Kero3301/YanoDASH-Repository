@@ -32,9 +32,9 @@
                                 <p>$sanitizedDescription</p>
 
                                 <div class="doc-actions">
-                                <button class="wow" title="View Document"><img src="/yanodash-repository/images/doc-actions/preview-doc.png"></button>
-                                <button class="wow" title="Edit Document"><img src="/yanodash-repository/images/doc-actions/edit-doc.png"></button>
-                                <button class="wow" title="Protect Document"><img src="/yanodash-repository/images/doc-actions/set-view-password.png"></button>
+                                <button class="wow" title="View Document"><img src="/yanodash-repository/images/doc-actions/preview-doc.png" draggable="false"></button>
+                                <button class="wow" title="Edit Document"><img src="/yanodash-repository/images/doc-actions/edit-doc.png" draggable="false"></button>
+                                <button class="wow" title="Protect Document"><img src="/yanodash-repository/images/doc-actions/set-view-password.png" draggable="false"></button>
                                 <button class="delete-btn">Delete</button>
                                 </div>
                             </div>
