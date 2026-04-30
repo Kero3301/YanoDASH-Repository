@@ -4,8 +4,7 @@
 }
 
 .doc-card-wrapper:hover .doc-card,
-.doc-card-wrapper:hover .doc-card-b1,
-.doc-card-wrapper:hover .doc-card-b2 {
+.doc-card-wrapper:hover .doc-card-b1 {
     transform: translateY(-8px);
 }
 
@@ -38,20 +37,16 @@
 
     border: 5px solid #EEF2F8;
     border-radius: 1.2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     min-width: 200px;
     max-width: 360px;
     max-height: 600px;
 
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
-/* .doc-card:hover {
-    transform: translateY(-12px);
-} */
-
-.doc-card:hover .doc-thumbnail {
+.doc-card-wrapper:hover .doc-card .doc-thumbnail {
     background-size: 115%;
 }
 
