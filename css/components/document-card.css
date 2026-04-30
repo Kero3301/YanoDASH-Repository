@@ -1,0 +1,209 @@
+.doc-card-wrapper {
+    display: inline-block;
+    margin: 12px;
+}
+
+.doc-card {
+    display: grid;
+    grid-template-rows: 180px 200px;
+    
+    cursor: pointer;
+
+    background: white;
+
+    border: 5px solid #EEF2F8;
+    border-radius: 1.2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    min-width: 200px;
+    max-width: 360px;
+    max-height: 600px;
+
+    transition: all 0.25s ease;
+}
+
+.doc-card:hover {
+    transform: translateY(-4px);
+    border-color: #5b2633;
+}
+
+.doc-card:hover .doc-thumbnail {
+    background-size: 115%;
+}
+
+.doc-title {
+    color: #6E192E;
+    margin: 0;
+    font-weight: bold;
+}
+
+.doc-preview {
+    position: relative;
+    grid-row: 1 / 2;
+    overflow: hidden;
+    background-color: #eee;
+    /* aspect-ratio: 4 / 2; */
+}
+
+.doc-info {
+    grid-row: 2/3;
+    padding: 0.75rem;
+    font-size: 0.75rem;
+    cursor: text !important;
+    z-index: 3;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.doc-preview .tag {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+    background-color: #0000CD;
+    z-index: 2;
+    user-select: none;
+}
+
+.doc-thumbnail {
+    position: absolute;
+    inset: 0;
+    /* top:0; right:0; bottom:0; left:0 */
+
+    background-size: 100%;
+    background-position: top;
+    background-repeat: no-repeat;
+
+    /* optional transparency layer */
+    opacity: 1;
+    z-index: 1;
+    transition: all 0.25s ease;
+}
+
+/* Optional: add a translucent overlay for readability */
+.doc-thumbnail::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* background: rgba(0, 0, 0, 0.1); */
+    /* adjust or remove */
+}
+
+.gsp {
+    background: #2D5A27 !important;
+}
+
+/* Green for Scouts */
+.research {
+    background: #4B0082 !important;
+}
+
+/* Purple for Research */
+.essay {
+    background: #0000CD !important;
+}
+
+/* Blue for Essay */
+.technical {
+    background: #71100F !important;
+}
+
+/* Red for Technical */
+
+.doc-tc {
+    font-family: 'Inconsolata', Courier, monospace;
+    background-color: #eee;
+    font-weight: bold;
+    color: black;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.doc-actions {
+    display: flex;
+    gap: 0;
+    /* padding: 0.6rem; */
+    /* padding-top: 0; */
+}
+
+.doc-actions button {
+    flex: 1;
+    padding: 5px !important;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: bold;
+    background: #fff;
+    transition: all 0.2s ease;
+}
+
+.view-btn {
+    color: #0e633a;
+    border: 1px solid #0e633a;
+}
+
+.view-btn:hover {
+    background-color: #0e633a !important;
+    color: #fff;
+    transform: scale(0.95);
+}
+
+.edit-btn {
+    color: #270e63;
+    border: 1px solid #270e63;
+}
+
+.edit-btn:hover {
+    background-color: #270e63 !important;
+    color: #fff;
+}
+
+.protect-btn {
+    color: #630e5a;
+    border: 1px solid #630e5a;
+}
+
+.protect-btn:hover {
+    background-color: #630e5a !important;
+    color: #fff;
+}
+
+.delete-btn {
+    /* all: unset; */
+    color: #63071e;
+    display: inline-block !important;
+    border: 1px solid #63071e;
+    padding: 4px !important;
+    max-width: 64px !important;
+    max-height: 36px !important;
+}
+
+.delete-btn:hover {
+    background-color: #63071e !important;
+    color: #fff;
+    transform: scale(0.95);
+}
+
+.wow {
+    all: unset;
+    display: inline-block !important;
+    max-width: 36px !important;
+    max-height: 36px !important;
+    padding: 0 !important;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.wow img {
+    width: 32px;
+    transition: transform 0.3s ease;
+}
+
+.wow:hover img {
+    transform: scale(1.1);
+}
