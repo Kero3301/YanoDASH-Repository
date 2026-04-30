@@ -1,5 +1,5 @@
 <?php
-    require_once '../utils/TextUtils.php';
+    require_once __DIR__. '/../utils/text_utils.php';
 
     echo <<< HTML
         <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/accordion.css">
@@ -7,7 +7,7 @@
     HTML;
 
     function accordion(string $id, array $entries, bool $allowMultipleOpen = false) {
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
 
         $entriesList = [];
         foreach ($entries as $summary => $content) {

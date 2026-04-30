@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php initializePage('Important Documents | YanoDASH')?>	
+    <?php initialize_page('Important Documents | YanoDASH')?>	
 	<link rel="stylesheet" type="text/css" href="../css/rqstyle.css">
 </head>
 <body class="important-page">

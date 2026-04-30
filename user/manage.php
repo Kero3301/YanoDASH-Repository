@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage('Manage Accounts | YanoDASH'); ?>
+        <?php initialize_page('Manage Accounts | YanoDASH'); ?>
         <link rel="stylesheet" href="../css/elements.css">
     </head>
     <body>

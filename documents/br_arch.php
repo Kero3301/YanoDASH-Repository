@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php initializePage("All Documents | YanoDASH")?>
+    <?php initialize_page("All Documents | YanoDASH")?>
     <link rel="stylesheet" href="../css/docsss.css"/>
 </head>
 <body>

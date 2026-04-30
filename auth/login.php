@@ -12,7 +12,7 @@
     require_once '../components/head.php';
     require_once '../components/navbar.php';
     require_once '../components/password_input.php';
-    require_once '../utils/security/csrf_token.php';
+    require_once '../utils/csrf_token.php';
 ?>
 
 <!DOCTYPE html>
@@ -176,7 +176,7 @@
                 color: red;
             }
         </style>
-        <?php initializePage("Login | YanoDASH")?>
+        <?php initialize_page("Login | YanoDASH")?>
     </head>
     <body>
         <div class="container">
@@ -192,13 +192,13 @@
                 </div>
                 <div class="login-area">
                     <form id="form-login" action="process_login.php" method="POST" style="padding: 60px 80px; border-radius: 16px; border-top: 6px solid maroon; background: #f4f4f4;">
-                        <?= CSRFInputField() ?>
+                        <?= csrf_input_field() ?>
                         
                         <div>
                             <h1 style="font-family: 'Gupter', serif; margin-bottom: 8px;">Login</h1>
                         </div>
                         <input type="email" id="uname" name="email" placeholder="Email Address" style="font-family: 'RobotoFlex'" required minlength="3">
-                        <?php echo passwordInput("login-enter-password", inputName: "password", height: 44, width: 240)?>
+                        <?php echo password_input("login-enter-password", inputName: "password", height: 44, width: 240)?>
                         <div style="display: flex; flex-direction: row; margin-top: 8px;">
                             <input id="remember-me" type="checkbox" style="margin-right: 4px">
                             <p style="font-family: 'RobotoFlex'">Remember me</p>

@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initializePage("Request Document | YanoDASH")?>
+    <?php initialize_page("Request Document | YanoDASH")?>
 
 <style>
 /* ✅ GLOBAL FONT SYSTEM */

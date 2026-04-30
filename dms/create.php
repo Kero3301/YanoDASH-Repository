@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initializePage("Upload Document")?>
+    <?php initialize_page("Upload Document")?>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>

@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage("Account Requesting | YanoDASH")?>
+        <?php initialize_page("Account Requesting | YanoDASH")?>
         <style>
             #title {
                 font-family: 'Gupter';

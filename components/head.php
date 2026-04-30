@@ -7,7 +7,7 @@
 
        <?php initializePage("Your page title goes here")?>
     */
-    function initializePage(string $title) {
+    function initialize_page(string $title) {
         $sanitizedTitle = htmlspecialchars($title);
 
         echo <<< HTML

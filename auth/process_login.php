@@ -2,7 +2,7 @@
     session_start();
 
     require __DIR__. '/../vendor/autoload.php';
-    require_once '../utils/security/csrf_token.php';
+    require_once '../utils/csrf_token.php';
 
     csrf_protect();
 

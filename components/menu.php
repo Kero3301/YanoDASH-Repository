@@ -1,10 +1,12 @@
 <?php
+    require_once __DIR__. '/../utils/text_utils.php';
+
     echo <<< HTML
         <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/menu.css">
     HTML;
 
     function menu(string $id, array $choices, bool $isDark = false) {
-        $sanitizedID = htmlspecialchars($id);
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $classList = $isDark? "menu dark" : "menu";
         
         $choiceList = [];

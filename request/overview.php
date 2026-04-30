@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <?php initializePage("Request Overview | YanoDASH")?>
+  <?php initialize_page("Request Overview | YanoDASH")?>
 
 <style>
   .serif {

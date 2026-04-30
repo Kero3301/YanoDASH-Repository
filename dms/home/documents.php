@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initializePage("DMS Portal | YanoDASH ")?>
+    <?php initialize_page("DMS Portal | YanoDASH ")?>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>

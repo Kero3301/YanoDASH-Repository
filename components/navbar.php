@@ -112,7 +112,7 @@
                 </div>
             HTML;
 
-        $colorModeSwitch = slidingSwitch("toggle-color-mode");
+        $colorModeSwitch = sliding_switch("toggle-color-mode");
 
         return <<< HTML
             <div id="navbar">

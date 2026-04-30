@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage("YanoDASH")?>
+        <?php initialize_page("YanoDASH")?>
         <link rel="stylesheet" href="css/elements.css">
         <style>
         </style>
@@ -23,7 +23,7 @@
         
         <div class="page-contents no-padding">
                 <?php 
-            echo mainSection(
+            echo main_section(
                 "sec1",
                 "Official documents, at your fingertips.",
                 "Browse documents publicized by the University of 
@@ -41,7 +41,7 @@
                 ]
             );
 
-            echo mainSection(
+            echo main_section(
                 "stats-section",
                 "Numbers tell a story.",
                 "Are you curious about the current endeavors of 
@@ -57,7 +57,7 @@
                 ]
             );
 
-            echo mainSection(
+            echo main_section(
                 "dms-section",
                 "Fast, precise document management.",
                 "Use YanoDASH's full-featured document management system 

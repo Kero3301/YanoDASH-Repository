@@ -3,7 +3,7 @@
         <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/document-card.css">
     HTML;
 
-    function documentCard(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = true, string $title = "Untitled", string $thumbnailPath = "/yanodash-repository/images/ui-indicators/doc-placeholder-thumbnail.png", string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
+    function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = true, string $title = "Untitled", string $thumbnailPath = "/yanodash-repository/images/ui-indicators/doc-placeholder-thumbnail.png", string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
         $sanitizedAuthor = htmlspecialchars($author);
         $sanitizedTitle = htmlspecialchars($title);
         $sanitizedTag = htmlspecialchars($tag);

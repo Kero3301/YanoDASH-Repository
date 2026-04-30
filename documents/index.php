@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage("Documents | YanoDASH")?>
+        <?php initialize_page("Documents | YanoDASH")?>
         <link rel="stylesheet" href="../css/index_docs.css"/>
     </head>
     <body>

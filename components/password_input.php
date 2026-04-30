@@ -1,5 +1,5 @@
 <?php
-    require_once '../utils/TextUtils.php';
+    require_once __DIR__. '/../utils/text_utils.php';
 
     echo <<< HTML
         <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/password-input.css">
@@ -10,16 +10,16 @@
     const MIN_HEIGHT = 32;
     const MAX_HEIGHT = 64;
 
-    function passwordInput(
+    function password_input(
         string $id, 
         string $inputName, 
         string $watermark = "Password", 
         int $width = MIN_WIDTH, 
         int $height = MIN_HEIGHT
     ): string {
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedInputID = $sanitizedID. "-inputfield";
-        $sanitizedInputName = htmlspecialchars(TextUtils::sanitizeIdentifier($inputName));
+        $sanitizedInputName = htmlspecialchars(normalize_identifier($inputName));
         $sanitizedWatermark = htmlspecialchars($watermark);
         $sanitizedButtonID = $sanitizedID. "-visibilitytoggle";
 

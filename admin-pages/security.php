@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Security </title>
 
-    <?php initializePage("Security"); ?>
+    <?php initialize_page("Security"); ?>
 
     <link rel="stylesheet" href="../css/securitystyle.css">
 </head>

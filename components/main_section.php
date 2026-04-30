@@ -1,9 +1,9 @@
 <?php
-    require_once __DIR__. '/../utils/TextUtils.php';
+    require_once __DIR__. '/../utils/text_utils.php';
 
     # A function to create a main section with a specified element ID, text, content, background image, background tint,
     # and inner content alignment (0 = left, 1 = center, 2 = right)
-    function mainSection(
+    function main_section(
         string $id, 
         string $title, 
         string $content, 
@@ -14,7 +14,7 @@
         : string {
 
         # Escaped outputs
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedTitle = htmlspecialchars($title);
         $sanitizedContent = htmlspecialchars($content);
         $sanitizedBGImage = htmlspecialchars($bgImage);
@@ -26,7 +26,7 @@
             foreach ($linksList as $link) {
                 $sanitizedLabel = htmlspecialchars($link[0]);
                 $sanitizedLink = htmlspecialchars($link[1]);
-                $sanitizedButtonID = htmlspecialchars(TextUtils::sanitizeIdentifier($link[2]));
+                $sanitizedButtonID = htmlspecialchars(normalize_identifier($link[2]));
 
                 $html = <<< HTML
                     <a href="$sanitizedLink" id="$sanitizedButtonID" style="text-decoration: none;">

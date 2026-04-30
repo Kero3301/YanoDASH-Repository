@@ -48,7 +48,7 @@
         return generate_token();
     }
 
-    function CSRFInputField() {
+    function csrf_input_field() {
         $token = htmlspecialchars(get_token(), ENT_QUOTES, 'UTF-8');
         return <<< HTML
             <input type="hidden" name="_csrfToken" value="$token">

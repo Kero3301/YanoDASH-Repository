@@ -9,7 +9,7 @@ require_once '../components/footer.php';
 <html lang="en">
 <head>
     <link rel="stylesheet" text="text/css" href="../style.css">
-    <?php initializePage("Document Archiving Request | YanoDASH")?>
+    <?php initialize_page("Document Archiving Request | YanoDASH")?>
 
 <style>
 .serif {

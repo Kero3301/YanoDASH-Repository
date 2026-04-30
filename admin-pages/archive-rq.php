@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php initializePage('Archive Requests | YanoDASH')?>
+    <?php initialize_page('Archive Requests | YanoDASH')?>
     <link rel="stylesheet" type="text/css" href="../css/rqstyle.css">
 </head>
 

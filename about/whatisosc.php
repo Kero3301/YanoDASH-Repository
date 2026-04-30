@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage("About | YanoDASH")?>
+        <?php initialize_page("About | YanoDASH")?>
         <link rel="stylesheet" href="../css/about1.css"/>
     </head>
     <body>

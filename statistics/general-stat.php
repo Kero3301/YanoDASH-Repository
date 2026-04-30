@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage("General Statistics | YanoDASH")?>
+        <?php initialize_page("General Statistics | YanoDASH")?>
         <link rel="stylesheet" href="../css/stats.css"/>
     </head>
     <body>

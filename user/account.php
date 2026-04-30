@@ -9,7 +9,7 @@
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <?php initializePage("My Account Dashboard | YanoDASH")?>
+        <?php initialize_page("My Account Dashboard | YanoDASH")?>
     
 
     <style>

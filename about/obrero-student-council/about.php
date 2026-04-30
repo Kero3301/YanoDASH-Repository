@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initializePage("What is the OSC? | YanoDASH");?>
+    <?php initialize_page("What is the OSC? | YanoDASH");?>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>

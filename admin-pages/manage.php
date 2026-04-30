@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php initializePage('Manage Documents | YanoDASH')?>
+    <?php initialize_page('Manage Documents | YanoDASH')?>
 	<link rel="stylesheet" type="text/css" href="../css/managestyle.css">
 </head>
 <body>

@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php initializePage("Latest Releases | YanoDASH")?>
+    <?php initialize_page("Latest Releases | YanoDASH")?>
     <link rel="stylesheet" href="../css/docsss.css"/>
 </head>
 <body>
