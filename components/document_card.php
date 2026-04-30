@@ -15,29 +15,33 @@
 
         return <<< HTML
             <div class="doc-card-wrapper">
-            <div class="doc-card">
-                <div class="doc-preview">
-                    <div class="doc-thumbnail" style="background-image:url('$thumbnailPath')"></div>
-                    <span class="tag $sanitizedTagclass">$sanitizedTag</span>
-                </div>
-                <div class="doc-info">
-                    <h2 class="doc-title">$sanitizedTitle</h2>
-                    <p>📆 $sanitizedDate</p>
-                    <p style="display: inline;">👤 $sanitizedAuthor</p> 
-                    <p style="display: inline;">🏢 $sanitizedDepartment</p>
-                    <br>
-                    <p>🔎 <span class="doc-tc">$sanitizedTrackingCode</span></p>
-                    <p>$sanitizedDescription</p>
+                <div class="doc-card-b2">
+                    <div class="doc-card-b1">
+                        <div class="doc-card">
+                            <div class="doc-preview">
+                                <div class="doc-thumbnail" style="background-image:url('$thumbnailPath')"></div>
+                                <span class="tag $sanitizedTagclass">$sanitizedTag</span>
+                            </div>
+                            <div class="doc-info">
+                                <h2 class="doc-title">$sanitizedTitle</h2>
+                                <p>📆 $sanitizedDate</p>
+                                <p style="display: inline;">👤 $sanitizedAuthor</p> 
+                                <p style="display: inline;">🏢 $sanitizedDepartment</p>
+                                <br>
+                                <p>🔎 <span class="doc-tc">$sanitizedTrackingCode</span></p>
+                                <p>$sanitizedDescription</p>
 
-                    <div class="doc-actions">
-                    <button class="wow" title="View Document"><img src="/yanodash-repository/images/doc-actions/preview-doc.png"></button>
-                    <button class="wow" title="Edit Document"><img src="/yanodash-repository/images/doc-actions/edit-doc.png"></button>
-                    <button class="wow" title="Protect Document"><img src="/yanodash-repository/images/doc-actions/set-view-password.png"></button>
-                    <button class="delete-btn">Delete</button>
+                                <div class="doc-actions">
+                                <button class="wow" title="View Document"><img src="/yanodash-repository/images/doc-actions/preview-doc.png"></button>
+                                <button class="wow" title="Edit Document"><img src="/yanodash-repository/images/doc-actions/edit-doc.png"></button>
+                                <button class="wow" title="Protect Document"><img src="/yanodash-repository/images/doc-actions/set-view-password.png"></button>
+                                <button class="delete-btn">Delete</button>
+                                </div>
+                            </div>
+                            
+                        </div>
                     </div>
                 </div>
-                
-            </div>
             </div>
         HTML;
     }

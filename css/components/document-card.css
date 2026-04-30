@@ -3,6 +3,31 @@
     margin: 12px;
 }
 
+.doc-card-wrapper:hover .doc-card,
+.doc-card-wrapper:hover .doc-card-b1,
+.doc-card-wrapper:hover .doc-card-b2 {
+    transform: translateY(-8px);
+}
+
+.doc-card-wrapper:hover .doc-card {
+    border-color: #5b2633;
+}
+
+.doc-card-b1, .doc-card-b2 {
+    border-radius: 1.2rem;
+    transition: transform 0.25s ease;
+}
+
+.doc-card-b1 {
+    background: #ccc;
+    z-index: 2; 
+}
+
+.doc-card-b2 {
+    background: #eee;
+    z-index: 1
+}
+
 .doc-card {
     display: grid;
     grid-template-rows: 180px 200px;
@@ -22,10 +47,9 @@
     transition: all 0.25s ease;
 }
 
-.doc-card:hover {
-    transform: translateY(-4px);
-    border-color: #5b2633;
-}
+/* .doc-card:hover {
+    transform: translateY(-12px);
+} */
 
 .doc-card:hover .doc-thumbnail {
     background-size: 115%;
@@ -49,9 +73,9 @@
     grid-row: 2/3;
     padding: 0.75rem;
     font-size: 0.75rem;
-    cursor: text !important;
-    z-index: 3;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* cursor: text !important; */
+    z-index: 5;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .doc-preview .tag {
@@ -64,7 +88,7 @@
     border-radius: 5px;
     color: white;
     background-color: #0000CD;
-    z-index: 2;
+    z-index: 4;
     user-select: none;
 }
 
@@ -79,7 +103,7 @@
 
     /* optional transparency layer */
     opacity: 1;
-    z-index: 1;
+    z-index: 3;
     transition: all 0.25s ease;
 }
 
