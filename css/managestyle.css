@@ -52,7 +52,8 @@ body {
 }
 
 th {
-    background-color: #e6f0fa;
+    background-color: #63071e;
+    color: white;
     padding: 15px;
     text-align: left;
     font-weight: 600;
@@ -76,23 +77,24 @@ td button {
 }
 
 button.edit {
-    background-color: #7bb661;
-    color: white;
+    background-color: #fff;
+    color: #0e633a;
+    border: 1px solid #0e633a;
 }
 
-button.edit:hover {
-    background-color: #6aa452;
+button.edit:active {
+    background-color: #0e633a;
     transform: scale(1.05);
 }
 
 button.delete {
-    background-color: white;
-    color: #c0392b;
-    border: 1px solid #c0392b;
+    background-color: #fff;
+    color: #63071e;
+    border: 1px solid #63071e;
 }
 
-button.delete:hover {
-    background-color: #c0392b;
+button.delete:active {
+    background-color: #63071e;
     color: white;
     transform: scale(1.05);
 }
@@ -124,7 +126,6 @@ button.delete:hover {
         font-size: 1.1rem;
     }
 
-    /* 🔥 CENTER THE TABLE PROPERLY */
     .table-container {
         width: 85%;
         max-width: 1000px;
@@ -171,5 +172,17 @@ button.delete:hover {
         width: 100%;
         margin-bottom: 8px;
         font-size: 0.9rem;
+    }
+
+    button.edit:hover {
+        background-color: #0e633a;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    button.delete:hover {
+        background-color: #63071e;
+        color: white;
+        transform: scale(1.05);
     }
 }
