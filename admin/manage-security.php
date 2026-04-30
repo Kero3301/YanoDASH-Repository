@@ -15,7 +15,7 @@
 
     <?php initialize_page("Security"); ?>
 
-    <link rel="stylesheet" href="../css/securitystyle.css">
+    <link rel="stylesheet" href="../css/pages/securitystyle.css">
 </head>
 
 <body>

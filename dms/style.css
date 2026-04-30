@@ -1,155 +1,160 @@
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body { 
-    font-family: 'Times New Roman', Times, serif; 
-    background-image: url('../images/backgrounds/eagle-background.jpg'); 
+    font-family: 'Times New Roman', serif;
+    background: url('image_be1802.jpg') no-repeat center center fixed;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-color: #2c3e50;
-    min-height: 100vh;
+    color: white;
 }
 
-input {
-    padding: 8px;
-    width: 250px;
-    font-family: 'RobotoFlex';
+/* NAVBAR */
+/* #navbar {
+    background: white;
+    padding: 10px 0;
+    border-bottom: 3px solid #71100F;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+} */
+
+/* .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+} */
+
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.brand-logo { height: 40px; }
+.nav-divider { width: 2px; height: 30px; background: #71100F; }
+.brand-text { color: #4B0082; font-weight: bold; font-size: 24px; }
+
+.nav-links { list-style: none; display: flex; gap: 20px; align-items: center; }
+.nav-links a { text-decoration: none; color: #0000CD; font-weight: bold; font-size: 18px; }
+.user-circle { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd; }
+
+/* MAIN CONTENT */
+.main-wrapper { padding: 50px 20px; text-align: center; }
+.page-title { margin-bottom: 40px; font-size: 38px; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
+
+/* GRID SYSTEM */
+.document-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-p, select, select option, button, label {
-    font-family: 'RobotoFlex';
+.doc-card {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 15px;
+    border-top: 6px solid lightgray;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    text-align: left;
+    cursor: pointer;
 }
 
-select {
-    width: 250px;
+.doc-card:hover { transform: translateY(-10px); border-color: maroon;}
+
+/* THUMBNAIL AREA */
+.doc-thumbnail {
+    width: 100%;
+    height: 180px;
+    background: #f0f0f0;
+    position: relative;
+    overflow: hidden;
 }
 
-
-.user-circle {
-    width: 38px;  
-    height: 38px;
-    border-radius: 50%;
-    display: block; 
-    border: 1px solid #ddd; 
-    object-fit: cover; 
+.doc-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
 }
 
+.doc-card:hover img { transform: scale(1.1); }
+
+/* CONTENT AREA */
+.doc-content { padding: 20px; color: #333; }
+.doc-content h3 { font-size: 20px; margin-bottom: 8px; color: #71100F; }
+.doc-date { font-size: 12px; color: #777; font-style: italic; margin-bottom: 12px; }
+.doc-brief { font-size: 14px; line-height: 1.5; color: #444; }
+
+/* TAG STYLES */
+.tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    color: white;
+    z-index: 10;
+}
+
+.gsp { background: #2D5A27; } /* Green for Scouts */
+.research { background: #4B0082; } /* Purple for Research */
+.essay { background: #0000CD; } /* Blue for Essay */
+.technical { background: #71100F; } /* Red for Technical */
+
+/* BRANDING SECTION (Logo | Text) */
 .nav-brand {
     display: flex;
-    align-items: center; 
+    align-items: center;
 }
 
 .brand-logo {
-    height: 80px;
-    width: auto;  
-    display: block;
-    margin-right: 5px; 
+    height: 45px; /* Size matched to your screenshot */
+    width: auto;
 }
 
 .nav-divider {
     width: 2px;
-    height: 35px; 
-    background-color: #71100F;
-    margin: 0 15px;
+    height: 35px;
+    background-color: #71100F; /* That signature dark red */
+    margin: 0 15px; /* Spacing between logo and text */
 }
 
 .brand-text {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-    color: #4B0082; 
+    color: #4B0082; /* Deep purple color */
     font-family: 'Times New Roman', serif;
-    line-height: 1;
 }
 
+/* NAVIGATION LINKS SECTION */
 .nav-links {
     list-style: none;
     display: flex;
     align-items: center;
-    gap: 25px; 
+    gap: 30px; /* Space between each link */
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #0000CD;
+    color: #0000CD; /* Dark blue links */
     font-weight: 600;
     font-size: 18px;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #71100F; 
+    color: #71100F; /* Changes to red on hover */
 }
 
+/* PROFILE ICON */
 .user-circle {
-    width: 35px;
-    height: 35px;
-    background-color: #000;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    display: inline-block;
+    border: 1px solid #ccc;
+    object-fit: cover;
+    margin-left: 10px;
 }
-
-.container { 
-    background: rgba(0, 0, 0, 0.5); 
-    backdrop-filter: blur(10px); 
-    -webkit-backdrop-filter: blur(10px);
-    padding: 40px; 
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 20px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);    
-    max-width: 400px; 
-    width: 90%; 
-    text-align: center;
-    margin-top: 80px; 
-    margin-bottom: 40px; 
-}
-
-h2 { color: #FFFFFF; margin-bottom: 5px; font-size: 28px; }
-.subtitle { color: #FFFFFF; margin-bottom: 30px; font-size: 16px; }
-
-input[type="file"] {
-    display: none;
-}
-
-.custom-file-upload {
-    display: inline-block;
-    padding: 10px 20px;
-    cursor: pointer;
-    background: #edf2f7;
-    border: 2px dashed #cbd5e0;
-    border-radius: 8px;
-    color: #2d3748;
-    font-weight: bold;
-    transition: all 0.3s;
-    width: 80%;
-    margin-bottom: 10px;
-}
-
-.custom-file-upload:hover {
-    background: #e2e8f0;
-    border-color: #a0aec0;
-}
-
-.file-info {
-    font-size: 14px;
-    color: #FFFFFF;
-    margin-bottom: 25px;
-    font-style: italic;
-}
-
-.upload-btn { 
-    background: #2563eb; 
-    color: white; 
-    border: none; 
-    padding: 15px; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    font-weight: bold;
-    font-size: 18px;
-    width: 100%;
-    transition: background 0.3s;
-}
-
-.upload-btn:hover { background: #1d4ed8; }
-
-.status { margin-top: 20px; font-size: 16px; }
-.success { color: #065f46; font-weight: bold; }
-.error { color: #991b1b; font-weight: bold; }

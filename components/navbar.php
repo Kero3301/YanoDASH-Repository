@@ -31,7 +31,7 @@
         $request_menu = !$shouldShowPrivate
             ? ""
             : menu("request-menu", [
-                "Request Menu" => "/yanodash-repository/request/request.php",
+                "Request Menu" => "/yanodash-repository/request/",
                 "Request Document Archiving" => "/yanodash-repository/request/archive.php",
                 "Requests Overview" => "/yanodash-repository/request/overview.php"
             ]);
@@ -40,41 +40,41 @@
             ? ""
             : ($_SESSION['role'] === 'admin'
                 ? menu("private-archive-menu", [
-                    "Home" => "/yanodash-repository/admin-pages/index_priv-ar.php",
-                    "Pending Archive Requests" => "/yanodash-repository/admin-pages/archive-rq.php",
-                    "Important Documents" => "/yanodash-repository/admin-pages/key-docs.php"
+                    "Home" => "/yanodash-repository/private-archive/index_priv-ar.php",
+                    "Pending Archive Requests" => "/yanodash-repository/private-archive/archive-rq.php",
+                    "Important Documents" => "/yanodash-repository/private-archive/key-docs.php"
                 ])
                 : menu("private-archive-menu", [
-                    "Home" => "/yanodash-repository/admin-pages/index_priv-ar.php"                
+                    "Home" => "/yanodash-repository/private-archive/index_priv-ar.php"                
                 ]));
 
         $dms_menu = !$shouldShowPrivate
             ? ""
             : menu("dms-menu", [
-                "Home" => "/yanodash-repository/dms/home/documents.php",
-                "Add New Document" => "/yanodash-repository/dms/create.php",
-                "Manage Documents" => "/yanodash-repository/dms/manage.php"
+                "Home" => "/yanodash-repository/dms/",
+                "Add New Document" => "/yanodash-repository/dms/add-document",
+                "Manage Documents" => "/yanodash-repository/dms/manage-documents"
             ]);
 
         $about_menu = menu("about-menu", [
-            "What is the OSC?" => "/yanodash-repository/about/obrero-student-council/about.php",
+            "What is the OSC?" => "/yanodash-repository/about/osc",
             "Meet the Executives" => "#",
         ]);
 
         $account_menu = menu("account-menu", [
             "Login" => "/yanodash-repository/auth/login.php",
-            "Request an Account" => "/yanodash-repository/request-account"
+            "Request an Account" => "/yanodash-repository/auth/request-account.php"
         ], isDark: true);
         if ($isLoggedIn) {
             $fullname = $_SESSION['fullname'];
             $account_menu = $_SESSION['role'] !== "admin"
                 ? menu("account-menu", [
-                    "Logged in as:<br> <b><i>$fullname</i></b><br><p style='color: rgba(252, 151, 151, 0.9);'>Visit My Account</p>" => "/yanodash-repository/user/account.php",
+                    "Logged in as:<br> <b><i>$fullname</i></b><br><p style='color: rgba(252, 151, 151, 0.9);'>Visit My Account</p>" => "/yanodash-repository/account/my-account.php",
                     "Logout" => "/yanodash-repository/auth/logout.php"
                 ], isDark: true)
                 : menu("account-menu", [
-                    "Logged in as:<br> <b><i>$fullname</i></b><br><p style='color: rgba(252, 151, 151, 0.9);'>Visit My Account</p>" => "/yanodash-repository/user/account.php",
-                    "Manage YanoDASH Accounts" => "/yanodash-repository/user/manage.php",
+                    "Logged in as:<br> <b><i>$fullname</i></b><br><p style='color: rgba(252, 151, 151, 0.9);'>Visit My Account</p>" => "/yanodash-repository/account/my-account.php",
+                    "Manage YanoDASH Accounts" => "/yanodash-repository/admin/manage-accounts.php",
                     "Logout" => "/yanodash-repository/auth/logout.php"
                 ], isDark: true);
             }

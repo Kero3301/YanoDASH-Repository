@@ -15,7 +15,6 @@
 <html>
     <head>
         <?php initialize_page('Manage Accounts | YanoDASH'); ?>
-        <link rel="stylesheet" href="../css/elements.css">
     </head>
     <body>
         <?php echo navbar(); ?>

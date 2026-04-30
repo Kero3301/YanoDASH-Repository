@@ -11,7 +11,7 @@
 <html>
     <head>
         <?php initialize_page("Documents | YanoDASH")?>
-        <link rel="stylesheet" href="../css/index_docs.css"/>
+        <link rel="stylesheet" href="../css/pages/index_docs.css"/>
     </head>
     <body>
         <?php echo navbar(1)?>

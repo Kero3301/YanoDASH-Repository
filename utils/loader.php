@@ -1,0 +1,47 @@
+<?php
+    define('UTIL_BASE_PATH', __DIR__. '/');
+    define('COMPONENT_BASE_PATH', dirname(UTIL_BASE_PATH). '/components/');
+    define('ALLOWED_COMPONENTS', [
+        'accordion',
+        'button_list',
+        'document_card',
+        'footer',
+        'head',
+        'main_section',
+        'menu',
+        'navbar',
+        'password_input',
+        'sliding_switch',
+        'user_form',
+    ]);
+    define('ALLOWED_UTILS', [
+        'csrf_token',
+        'text_utils'
+    ]);
+
+    function load_utils(string ...$utils) {
+        foreach ($utils as $util) {
+            if ($util === 'loader') continue;
+            if (!in_array($util, ALLOWED_UTILS, true)) continue;
+
+            $utilPath = UTIL_BASE_PATH. $util. '.php';
+            if (!is_file($utilPath)) continue;
+
+            require_once $utilPath;
+        }
+    }
+
+    function load_components(string ...$components) {
+        require_once COMPONENT_BASE_PATH. 'head.php';
+
+        foreach ($components as $component) {
+            if ($component === 'head') continue;
+            if (!in_array($component, ALLOWED_COMPONENTS, true)) continue;
+
+            $componentPath = COMPONENT_BASE_PATH. $component. '.php';
+            if (!is_file($componentPath)) continue;
+            
+            require_once $componentPath;
+        }
+    }
+?>

@@ -156,7 +156,7 @@ input[type="file"]::file-selector-button {
 <?php echo navbar(0); ?>
 <div class="form-container">
 
-    <a href="request.php" class="btn-back">Back to Menu</a>
+    <a href="index.php" class="btn-back">Back to Menu</a>
 
     <h2 class="serif" style="text-align: center; margin-bottom: 30px; color: #2e7d32;">
         Request a New Document

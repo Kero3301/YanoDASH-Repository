@@ -1,9 +1,9 @@
 <?php
     session_start();
 
-    require_once '../../components/head.php';
-    require_once '../../components/navbar.php';
-    require_once '../../components/footer.php';
+    require_once '../components/head.php';
+    require_once '../components/navbar.php';
+    require_once '../components/footer.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

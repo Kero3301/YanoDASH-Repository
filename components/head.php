@@ -5,7 +5,7 @@
 
        Use it like this inside your page's <head></head> tag:
 
-       <?php initializePage("Your page title goes here")?>
+       <?php initialize_page("Your page title goes here")?>
     */
     function initialize_page(string $title) {
         $sanitizedTitle = htmlspecialchars($title);
@@ -15,9 +15,8 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <link rel="icon" type="image/png" href="/yanodash-repository/images/favicon.png">
-            <link rel="stylesheet" type="text/css" href="/yanodash-repository/style.css">
+            <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/style.css">
             <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/fonts.css">
-            <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/elements.css">
             <script src="/yanodash-repository/script/form-validation.js" defer></script>
         HTML;
     }

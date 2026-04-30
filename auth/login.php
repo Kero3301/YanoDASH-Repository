@@ -1,4 +1,6 @@
 <?php
+    require_once '../utils/loader.php';
+
     session_start();
 
     if (isset($_SESSION['username'])) {
@@ -9,18 +11,16 @@
     $error = $_SESSION['errorMsg'] ?? '';
     unset($_SESSION['errorMsg']);
 
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
-    require_once '../components/password_input.php';
-    require_once '../utils/csrf_token.php';
+    load_components(
+        'password_input'
+    );
+    load_utils('csrf_token');
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        
         <script src="../script/control-actions.js" defer></script>
-        <link rel="stylesheet" href="../css/base-layout.css">
         <link rel="stylesheet" href="../css/fonts.css">
         <link rel="stylesheet" href="../css/components/user-form.css">
          <link rel="stylesheet" text="text/css" href="../style.css">
@@ -219,7 +219,7 @@
                         <hr style="border: 1px solid rgba(0,0,0,0.1)">
 
                         <p style="text-align: center; margin-top: 16px; font-family: 'RobotoFlex'">Don't have an account?</p>
-                        <a href="/yanodash-repository/request-account" class="btn-back" style="display: block; margin: auto; width: 180px; margin-top: 8px; font-family: 'RobotoFlex'">Request an account</a>
+                        <a href="/yanodash-repository/auth/request-account.php" class="btn-back" style="display: block; margin: auto; width: 180px; margin-top: 8px; font-family: 'RobotoFlex'">Request an account</a>
                     </form>
                 </div>
             </div>

@@ -4,15 +4,15 @@
 <?php
     session_start();
 
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
+    require_once '../../components/head.php';
+    require_once '../../components/navbar.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <?php initialize_page('Manage Documents | YanoDASH')?>
-	<link rel="stylesheet" type="text/css" href="../css/managestyle.css">
+	<link rel="stylesheet" type="text/css" href="../../css/managestyle.css">
 </head>
 <body>
 	<?php echo navbar(0) ?>

@@ -170,7 +170,7 @@ button:hover {
     <body>
     <?php echo navbar(0); ?>
 
-    <!-- <div class="page-contents no-padding"> -->
+
     <div class="account-container">
 
     <!-- PROFILE -->
@@ -222,7 +222,6 @@ button:hover {
     </div>
 
     </div>
-    <!-- </div> -->
 
         <?php echo footer(); ?>
 

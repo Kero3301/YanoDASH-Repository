@@ -4,14 +4,14 @@
 <?php
     session_start();
     
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
+    require_once '../../components/head.php';
+    require_once '../../components/navbar.php';
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <?php initialize_page("About | YanoDASH")?>
-        <link rel="stylesheet" href="../css/about1.css"/>
+        <link rel="stylesheet" href="../../css/pages/about1.css"/>
     </head>
     <body>
         <?php echo navbar(5)?>
@@ -45,6 +45,8 @@
             </div>
         </div>
     </div>
-
+    <div style="display: flex; justify-content: center; align-items: center;">
+    <a class="default-btn" href="#">Meet the Executives ↗</a>
+    </div>
     </body>
 </html>
