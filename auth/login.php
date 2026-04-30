@@ -197,7 +197,7 @@
                         <div>
                             <h1 style="font-family: 'Gupter', serif; margin-bottom: 8px;">Login</h1>
                         </div>
-                        <input type="text" id="uname" name="username" placeholder="Username or Email Address" style="font-family: 'RobotoFlex'" required minlength="3">
+                        <input type="email" id="uname" name="email" placeholder="Email Address" style="font-family: 'RobotoFlex'" required minlength="3">
                         <?php echo passwordInput("login-enter-password", inputName: "password", height: 44, width: 240)?>
                         <div style="display: flex; flex-direction: row; margin-top: 8px;">
                             <input id="remember-me" type="checkbox" style="margin-right: 4px">
@@ -244,15 +244,24 @@
             const form = document.querySelector("#form-login");
             const loginButton = document.querySelector("#login-button");
 
-            form.addEventListener("submit", () => {
-                hidePassword('login-enter-password-visibilitytoggle'); 
-                setElementsLockedByIDs(['uname', 'login-enter-password-inputfield', 'remember-me']);
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
 
-                requestAnimationFrame(() => {
-                    loginButton.disabled = true;
-                    loginButton.value = "Logging in...";
-                    loginButton.classList.add("locked");
-                });
+                const isValid = validateForm(form);
+                if (!isValid) return;
+
+                hidePassword('login-enter-password-visibilitytoggle');
+                setElementsLockedByIDs([
+                    'uname',
+                    'login-enter-password-inputfield',
+                    'remember-me'
+                ]);
+
+                loginButton.disabled = true;
+                loginButton.value = "Logging in...";
+                loginButton.classList.add("locked");
+
+                form.submit();
             });
         </script>
     </body>

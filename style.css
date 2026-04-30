@@ -29,7 +29,7 @@
 .error-message {
     position: absolute;
     top: 50%;
-    left: 105%;
+    left: 100%;
     transform: translateY(-50%) scale(0.95);
 
     background: #ff4d4f;
@@ -44,6 +44,9 @@
     z-index: 999;
 
     opacity: 1;
+
+    pointer-events: none;
+    user-select: none;
 }
 
 .password-input.error {

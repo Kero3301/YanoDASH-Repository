@@ -69,7 +69,7 @@
                 "images/backgrounds/dms-section-bg.webp",
                 "rgba(147, 169, 241, 0.6)",
                 linksList: [
-                    ['Open YanoDASH DMS ↗', '/yanodash-repository/dms/create.php', 'oyddms']
+                    ['Open YanoDASH DMS ↗', '/yanodash-repository/dms/home/documents.php', 'oyddms']
                 ]
             ); 
             ?>    

@@ -45,13 +45,13 @@
                     "Important Documents" => "/yanodash-repository/admin-pages/key-docs.php"
                 ])
                 : menu("private-archive-menu", [
-                    "Home" => "#"                
+                    "Home" => "/yanodash-repository/admin-pages/index_priv-ar.php"                
                 ]));
 
         $dms_menu = !$shouldShowPrivate
             ? ""
             : menu("dms-menu", [
-                "Home" => "#",
+                "Home" => "/yanodash-repository/dms/home/documents.php",
                 "Add New Document" => "/yanodash-repository/dms/create.php",
                 "Manage Documents" => "/yanodash-repository/dms/manage.php"
             ]);

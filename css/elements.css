@@ -102,7 +102,7 @@ input.locked {
     color: gray;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="email"], input[type="password"]  {
     box-sizing: border-box;
     display: inline-block;
     padding: 10px 4px;
@@ -128,14 +128,15 @@ input[type="password"].compact {
 }
 
 input[type="text"]:hover,
+input[type="email"]:hover,
 input[type="password"]:hover {
     border-color: #f18e8e;
     outline: none !important;
 }
 
-input[type="text"]:focus-within, input[type="password"]:focus-within {
+input[type="text"]:focus-within, input[type="email"]:focus-within, input[type="password"]:focus-within {
     border-color: #d36161;
-    background-color: rgba(255,0,0,0.1);
+    background-color: #ffe5e5;
     outline: none !important;
 }
 
@@ -147,7 +148,6 @@ form {
 
 /* ========= CONTAINERS ========== */
 .contents {
-    /* border-radius: 12px 12px 0 0; */
     overflow: hidden;
     width: 100%;
     box-sizing: border-box;
@@ -171,14 +171,6 @@ form {
 .page-contents.no-padding {
     padding: 0 !important;
 }
-
-/* body {
-    background-color: #F4F7F9;
-    background: linear-gradient(to bottom, #F4F7F9, rgb(159, 159, 159));
-    background-attachment: fixed;
-    min-height: 100vh;
-    margin: 0;
-} */
 
 body::before {
     content: "";

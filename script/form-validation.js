@@ -1,17 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-    
     document.querySelectorAll("input:not([type='checkbox']), textarea, select")
-    .forEach(input => {
-        if (!input.closest(".input-wrapper") && !input.closest(".password-input")) {
-            const wrapper = document.createElement("div");
-            wrapper.classList.add("input-wrapper");
+        .forEach(input => {
 
-            input.parentNode.insertBefore(wrapper, input);
-            wrapper.appendChild(input);
+            const alreadyWrapped =
+                input.closest(".input-wrapper") ||
+                input.closest(".password-input-wrapper");
 
-            wrapper.style.position = "relative";
-        }
-    });
+            if (!alreadyWrapped) {
+                const wrapper = document.createElement("div");
+                wrapper.classList.add("input-wrapper");
+
+                input.parentNode.insertBefore(wrapper, input);
+                wrapper.appendChild(input);
+
+                wrapper.style.position = "relative";
+            }
+        });
 
     const forms = document.querySelectorAll("form");
 
@@ -27,16 +31,35 @@ document.addEventListener("DOMContentLoaded", () => {
             select
         `);
 
+
         inputs.forEach(input => {
             input.addEventListener("input", () => {
-                if (input.classList.contains("error")) {
-                    validateInput(input);
+
+                const wrapper =
+                    input.closest(".input-wrapper") ||
+                    input.closest(".password-input-wrapper");
+
+                const error = wrapper?.querySelector(".error-message");
+                if (!error) return;
+
+                const isValid = validateInput(input);
+
+                if (isValid) {
+                    clearError(input);
                 }
             });
         });
 
         form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
             let isValid = true;
+
+            const inputs = form.querySelectorAll(`
+                input:not([type='submit']):not([type='button']):not([type='reset']):not([type='checkbox']),
+                textarea,
+                select
+            `);
 
             inputs.forEach(input => {
                 if (!validateInput(input)) {
@@ -44,16 +67,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            if (!isValid) {
-                e.preventDefault();
+            if (!form.checkValidity()) {
+                isValid = false;
             }
+
+            if (!isValid) return;
+
+            // ONLY now allow submission
+            form.submit(); // safe because we fully validated manually
         });
     });
 });
 
 
 function validateInput(input) {
-
     if (input.type === "checkbox") return true;
 
     const value = input.value.trim();
@@ -108,7 +135,9 @@ function validateInput(input) {
 function toggleError(input, message) {
     if (input.type === "checkbox") return;
 
-    let wrapper = input.closest(".input-wrapper") || input.closest(".password-input");
+    let wrapper =
+        input.closest(".input-wrapper") ||
+        input.closest(".password-input-wrapper");
 
     let error = wrapper.querySelector(".error-message");
 
@@ -123,8 +152,8 @@ function toggleError(input, message) {
         error.textContent = message;
         error.classList.add("show");
 
-        if (input.closest(".password-input")) {
-            input.closest(".password-input").classList.add("error");
+        if (input.closest(".password-input-wrapper")) {
+            input.closest(".password-input-wrapper").classList.add("error");
         } else {
             input.classList.add("error");
         }
@@ -134,10 +163,32 @@ function toggleError(input, message) {
             error.remove();
         }
 
-        if (input.closest(".password-input")) {
-            input.closest(".password-input").classList.remove("error");
+        if (input.closest(".password-input-wrapper")) {
+            input.closest(".password-input-wrapper").classList.remove("error");
         } else {
             input.classList.remove("error");
         }
     }
+}
+
+function validateForm(form) {
+    let isValid = true;
+
+    const inputs = form.querySelectorAll(`
+        input:not([type='submit']):not([type='button']):not([type='reset']):not([type='checkbox']),
+        textarea,
+        select
+    `);
+
+    inputs.forEach(input => {
+        if (!validateInput(input)) {
+            isValid = false;
+        }
+    });
+
+    if (!form.checkValidity()) {
+        isValid = false;
+    }
+
+    return isValid;
 }

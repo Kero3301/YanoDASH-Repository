@@ -9,10 +9,9 @@
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') die();
-    if (!isset($_POST['login'])) die();
 
-    $username = trim($_POST['username'] ?? '');
-    $password = trim($_POST['password'] ?? '');
+    $email = (string) trim($_POST['email'] ?? '');
+    $password = (string) trim($_POST['password'] ?? '');
     $role = null;
 
     $validCredentials = false;
@@ -22,7 +21,7 @@
     $collection_accessLevels = $client->yano_dash->access_levels_schema;
 
     $result = $collection_accounts->findOne([
-        'email_address' => $username
+        'email_address' => $email
     ]);
 
     $fetchedEmail = $result?->email_address;
@@ -43,7 +42,7 @@
 
         if (password_verify($password, $result_pw)) {
             $validCredentials = true;
-            $username = $result_email;
+            $email = $result_email;
             $role = $result_access_level;
         }
     }
@@ -56,7 +55,7 @@
         ];
         $_SESSION['fullname'] = $_SESSION['name']['firstName']. " ". $_SESSION['name']['lastName'];
         $_SESSION['initials'] = strtoupper(($_SESSION['name']['firstName'])[0]). strtoupper(($_SESSION['name']['lastName'])[0]);
-        $_SESSION['username'] = $username;
+        $_SESSION['username'] = $email;
         $_SESSION['role'] = $role;
         $_SESSION['position'] = ($result->organization. ' ' ?? ''). ($result->position);
         $_SESSION['badge'] = match ($result->organization) {
