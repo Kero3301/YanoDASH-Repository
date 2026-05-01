@@ -157,12 +157,6 @@ form {
 }
 
 /* ========= CONTAINERS ========== */
-.contents {
-    overflow: hidden;
-    width: 100%;
-    box-sizing: border-box;
-}
-
 .page-contents {
     width: 99%;
     height: max-content;

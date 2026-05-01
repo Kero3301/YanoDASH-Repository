@@ -1,6 +1,8 @@
 .doc-card-wrapper {
     display: inline-block;
     margin: 12px;
+    min-width: 300px;
+    max-width: 400px;
 }
 
 .doc-card-wrapper:hover .doc-card,
@@ -13,6 +15,8 @@
 }
 
 .doc-card-b1, .doc-card-b2 {
+    min-width: 300px;
+    max-width: 400px;
     border-radius: 1.2rem;
     transition: transform 0.25s ease;
 }
@@ -40,8 +44,8 @@
 
     box-shadow: 0 4px 16px #cfdee9;
     overflow: hidden;
-    min-width: 200px;
-    max-width: 360px;
+    min-width: 300px;
+    max-width: 400px;
     max-height: 600px;
 
     transition: all 0.3s ease;

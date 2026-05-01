@@ -3,21 +3,21 @@
 
 <?php
     session_start();
-    
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
+
+    require_once '../utils/loader.php';
+    load_components(
+        'navbar',
+        'document_card'
+    );
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Admin Space </title>
+    <?php initialize_page('Private Archive | YanoDASH')?>    
     <link rel="stylesheet" type="text/css" href="../css/pages/priv-ar-style.css">
 </head>
 <body>    
-
     <?php echo navbar(0); ?>
 
     <header class="title">
@@ -27,90 +27,83 @@
     <main class="archive-container">
         <div class="document-grid">
 
-            <div class="doc-card">
-                <div class="doc-preview"></div>
-                <div class="doc-info">
-                    <h3>OSC Budget Allocation 2026</h3>
-                    <p>Document ID: OSC-BUD-2026-001</p>
-                    <p>Approved budget distribution for student programs</p>
-                </div>
+            <?php 
+                echo document_card(
+                    title: "OSC Budget Allocation 2026",
+                    thumbnailPath: "#",
+                    tc: "OSC-BUD-2026-001",
+                    tag: "Financial Statement",
+                    tagclass: "technical",
+                    date: "2026-02-20 | 11:49 PM",
+                    description: "Approved budget distribution for student programs",
+                    readOnly: true
+                );
+            ?>
 
-                <div class="doc-actions">
-                    <button class="view-btn" data-id="OSC-BUD-2026-001">View</button>
-                    <button class="delete-btn" data-id="OSC-BUD-2026-001">Delete</button>
-                </div>
-            </div>
+            <?php 
+                echo document_card(
+                    title: "General Assembly Minutes",
+                    thumbnailPath: "#",
+                    tc: "OSC-GA-2026-002",
+                    tag: "Meeting Minutes",
+                    tagclass: "gsp",
+                    date: "2026-03-29 | 10:30 AM",
+                    description: "Summary of discussions from the latest assembly",
+                    readOnly: true
+                );
+            ?>
 
-            <div class="doc-card">
-                <div class="doc-preview"></div>
-                <div class="doc-info">
-                    <h3>General Assembly Minutes</h3>
-                    <p>Document ID: OSC-GA-2026-002</p>
-                    <p>Summary of discussions from the latest assembly</p>
-                </div>
+            <?php 
+                echo document_card(
+                    title: "Event Proposal: Intramurals 2026",
+                    thumbnailPath: "#",
+                    tc: "OSC-EVT-2026-003",
+                    tag: "Activity Design",
+                    tagclass: "essay",
+                    date: "2026-03-29 | 11:39 AM",
+                    description: "Proposal for university intramural event",
+                    readOnly: true
+                );
+            ?>
 
-                <div class="doc-actions">
-                    <button class="view-btn" data-id="OSC-BUD-2026-001">View</button>
-                    <button class="delete-btn" data-id="OSC-BUD-2026-001">Delete</button>
-                </div>
-            </div>
+            <?php 
+                echo document_card(
+                    title: "Partnership Agreement Draft",
+                    thumbnailPath: "#",
+                    tc: "OSC-AGR-2026-004",
+                    tag: "Agreement",
+                    tagclass: "technical",
+                    date: "2026-01-09 | 4:15 PM",
+                    description: "Draft agreement with external sponsors",
+                    readOnly: true
+                );
+            ?>
 
-            <div class="doc-card">
-                <div class="doc-preview"></div>
-                <div class="doc-info">
-                    <h3>Event Proposal: Intramurals 2026</h3>
-                    <p>Document ID: OSC-EVT-2026-003</p>
-                    <p>Proposal for university intramural event</p>
-                </div>
+            <?php 
+                echo document_card(
+                    title: "Student Complaint Report",
+                    thumbnailPath: "#",
+                    tc: "OSC-REP-2026-005",
+                    tag: "Other",
+                    tagclass: "gsp",
+                    date: "2026-01-15 | 8:09 AM",
+                    description: "Compiled concerns submitted by students",
+                    readOnly: true
+                );
+            ?>
 
-                <div class="doc-actions">
-                    <button class="view-btn" data-id="OSC-BUD-2026-001">View</button>
-                    <button class="delete-btn" data-id="OSC-BUD-2026-001">Delete</button>
-                </div>
-            </div>
-
-            <div class="doc-card">
-                <div class="doc-preview"></div>
-                <div class="doc-info">
-                    <h3>Partnership Agreement Draft</h3>
-                    <p>Document ID: OSC-AGR-2026-004</p>
-                    <p>Draft agreement with external sponsors</p>
-                </div>
-
-                <div class="doc-actions">
-                    <button class="view-btn" data-id="OSC-BUD-2026-001">View</button>
-                    <button class="delete-btn" data-id="OSC-BUD-2026-001">Delete</button>
-                </div>
-            </div>
-
-            <div class="doc-card">
-                <div class="doc-preview"></div>
-                <div class="doc-info">
-                    <h3>Student Complaint Report</h3>
-                    <p>Document ID: OSC-REP-2026-005</p>
-                    <p>Compiled concerns submitted by students</p>
-                </div>
-
-                <div class="doc-actions">
-                    <button class="view-btn" data-id="OSC-BUD-2026-001">View</button>
-                    <button class="delete-btn" data-id="OSC-BUD-2026-001">Delete</button>
-                </div>
-            </div>
-
-            <div class="doc-card">
-                <div class="doc-preview"></div>
-                <div class="doc-info">
-                    <h3>Security & Event Protocols</h3>
-                    <p>Document ID: OSC-SEC-2026-006</p>
-                    <p>Guidelines for managing large student events</p>
-                </div>
-
-                <div class="doc-actions">
-                    <button class="view-btn" data-id="OSC-BUD-2026-001">View</button>
-                    <button class="delete-btn" data-id="OSC-BUD-2026-001">Delete</button>
-                </div>
-            </div>
-
+            <?php 
+                echo document_card(
+                    title: "Security & Event Protocols",
+                    thumbnailPath: "#",
+                    tc: "OSC-SEC-2026-006",
+                    tag: "Guidelines",
+                    tagclass: "technical",
+                    date: "2026-02-15 | 8:15 PM",
+                    description: "Guidelines for managing large student events",
+                    readOnly: true
+                );
+            ?>
         </div>
     </main>
 

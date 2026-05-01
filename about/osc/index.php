@@ -46,7 +46,7 @@
         </div>
     </div>
     <div style="display: flex; justify-content: center; align-items: center;">
-    <a class="default-btn" href="#">Meet the Executives ↗</a>
+    <a class="btn" href="#">Meet the Executives ↗</a>
     </div>
     </body>
 </html>

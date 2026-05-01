@@ -9,8 +9,9 @@
 
     define ('DEFAULT_THUMBNAIL_PATH', "$app_url/images/ui-indicators/doc-placeholder-thumbnail.png");
 
-    function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = true, string $title = "Untitled", string $thumbnailPath = DEFAULT_THUMBNAIL_PATH, string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
+    function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = false, string $title = "Untitled", string $thumbnailPath = DEFAULT_THUMBNAIL_PATH, string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
         global $app_url;
+        $isAdmin = $_SESSION['role'] === 'admin';
         $sanitizedAuthor = htmlspecialchars($author);
         $sanitizedTitle = htmlspecialchars($title);
         $sanitizedTag = htmlspecialchars($tag);
@@ -19,6 +20,18 @@
         $sanitizedDepartment = htmlspecialchars($dept);
         $sanitizedDate = htmlspecialchars($date);
         $sanitizedTagclass = htmlspecialchars($tagclass);
+
+        $edit_visibility = $readOnly
+            ? ""
+            : "<button class=\"wow\" title=\"Edit Document\"><img src=\"$app_url/images/doc-actions/edit-doc.png\" draggable=\"false\"></button>";
+
+        $protect_visibility = !$isAdmin
+            ? ""
+            : "<button class=\"wow\" title=\"Protect Document\"><img src=\"$app_url/images/doc-actions/set-view-password.png\" draggable=\"false\"></button>";
+        
+        $delete_visibility = !$isAdmin
+            ? ""
+            : "<button class=\"delete-btn\">Delete</button>";
 
         return <<< HTML
             <div class="doc-card-wrapper">
@@ -40,9 +53,9 @@
 
                                 <div class="doc-actions">
                                 <button class="wow" title="View Document"><img src="$app_url/images/doc-actions/preview-doc.png" draggable="false"></button>
-                                <button class="wow" title="Edit Document"><img src="$app_url/images/doc-actions/edit-doc.png" draggable="false"></button>
-                                <button class="wow" title="Protect Document"><img src="$app_url/images/doc-actions/set-view-password.png" draggable="false"></button>
-                                <button class="delete-btn">Delete</button>
+                                $edit_visibility
+                                $protect_visibility
+                                $delete_visibility
                                 </div>
                             </div>
                         </div>
