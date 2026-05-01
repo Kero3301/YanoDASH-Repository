@@ -20,7 +20,8 @@
         'text_utils'
     ]);
 
-    # Bootstrap inclusion of head.php
+    # Bootstrap inclusion of basic configurational files
+    require_once dirname(UTIL_BASE_PATH). '/directory_config.php';
     require_once COMPONENT_BASE_PATH. 'head.php';
 
     # Loader function for loading a list of utils by name

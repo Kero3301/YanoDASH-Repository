@@ -1,8 +1,11 @@
 <?php
-    require_once __DIR__. '/../utils/text_utils.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils('text_utils');
+
+    global $app_url;
 
     echo <<< HTML
-        <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/password-input.css">
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/password-input.css">
     HTML;
 
     const MIN_WIDTH = 200;

@@ -38,8 +38,8 @@
                 "images/backgrounds/headerimg.jpeg",
                 "rgba(236, 53, 47, 0.7)",
                 linksList: [
-                    ['Browse Public Archive ↗', '/yanodash-repository/documents/br_arch.php', 'bpa'],
-                    ['Latest Releases ↗', '/yanodash-repository/documents/latest_rel.php', 'lr']
+                    ['Browse Public Archive ↗', APP_URL. '/documents/br_arch.php', 'bpa'],
+                    ['Latest Releases ↗', APP_URL. '/documents/latest_rel.php', 'lr']
                 ]
             );
 
@@ -71,7 +71,7 @@
                 "images/backgrounds/dms-section-bg.webp",
                 "rgba(147, 169, 241, 0.6)",
                 linksList: [
-                    ['Open YanoDASH DMS ↗', '/yanodash-repository/dms/home/documents.php', 'oyddms']
+                    ['Open YanoDASH DMS ↗', APP_URL. '/dms/', 'oyddms']
                 ]
             ); 
             ?>    

@@ -1,9 +1,12 @@
 <?php
-    require_once __DIR__. '/../utils/text_utils.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils('text_utils');
+    
+    global $app_url;
 
     echo <<< HTML
-        <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/accordion.css">
-        <script src="/yanodash-repository/script/accordion.js"></script>
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/accordion.css">
+        <script src="$app_url/script/accordion.js"></script>
     HTML;
 
     function accordion(string $id, array $entries, bool $allowMultipleOpen = false) {

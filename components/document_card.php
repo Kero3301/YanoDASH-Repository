@@ -1,9 +1,16 @@
 <?php
+    require_once dirname(__DIR__). '/utils/loader.php';
+
+    global $app_url;
+
     echo <<< HTML
-        <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/document-card.css">
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/document-card.css">
     HTML;
 
-    function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = true, string $title = "Untitled", string $thumbnailPath = "/yanodash-repository/images/ui-indicators/doc-placeholder-thumbnail.png", string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
+    define ('DEFAULT_THUMBNAIL_PATH', "$app_url/images/ui-indicators/doc-placeholder-thumbnail.png");
+
+    function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = true, string $title = "Untitled", string $thumbnailPath = DEFAULT_THUMBNAIL_PATH, string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
+        global $app_url;
         $sanitizedAuthor = htmlspecialchars($author);
         $sanitizedTitle = htmlspecialchars($title);
         $sanitizedTag = htmlspecialchars($tag);
@@ -32,13 +39,12 @@
                                 <p>$sanitizedDescription</p>
 
                                 <div class="doc-actions">
-                                <button class="wow" title="View Document"><img src="/yanodash-repository/images/doc-actions/preview-doc.png" draggable="false"></button>
-                                <button class="wow" title="Edit Document"><img src="/yanodash-repository/images/doc-actions/edit-doc.png" draggable="false"></button>
-                                <button class="wow" title="Protect Document"><img src="/yanodash-repository/images/doc-actions/set-view-password.png" draggable="false"></button>
+                                <button class="wow" title="View Document"><img src="$app_url/images/doc-actions/preview-doc.png" draggable="false"></button>
+                                <button class="wow" title="Edit Document"><img src="$app_url/images/doc-actions/edit-doc.png" draggable="false"></button>
+                                <button class="wow" title="Protect Document"><img src="$app_url/images/doc-actions/set-view-password.png" draggable="false"></button>
                                 <button class="delete-btn">Delete</button>
                                 </div>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
