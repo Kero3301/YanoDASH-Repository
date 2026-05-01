@@ -8,7 +8,7 @@ require_once '../components/footer.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" text="text/css" href="../style.css">
+    <link rel="stylesheet" text="text/css" href="../css/style.css">
     <?php initialize_page("Document Archiving Request | YanoDASH")?>
 
 <style>

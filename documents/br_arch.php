@@ -9,7 +9,7 @@
 <html>
 <head>
     <?php initialize_page("All Documents | YanoDASH")?>
-    <link rel="stylesheet" href="../css/docsss.css"/>
+    <link rel="stylesheet" href="../css/pages/docsss.css"/>
 </head>
 <body>
     <?php echo navbar(1)?>

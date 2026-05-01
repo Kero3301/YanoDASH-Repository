@@ -9,7 +9,7 @@
 <html lang="en">
 <head>
     <?php initialize_page("DMS Portal | YanoDASH ")?>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/dmsstyle.css">
 </head>
 <body>
     <?php echo navbar();?>

@@ -12,7 +12,7 @@
 <html>
 <head>
     <?php initialize_page('Archive Requests | YanoDASH')?>
-    <link rel="stylesheet" type="text/css" href="../css/rqstyle.css">
+    <link rel="stylesheet" type="text/css" href="../css/pages/rqstyle.css">
 </head>
 
 <body>

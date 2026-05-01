@@ -19,7 +19,7 @@
 <html>
 <head>
     <?php initialize_page("Latest Releases | YanoDASH")?>
-    <link rel="stylesheet" href="../css/docsss.css"/>
+    <link rel="stylesheet" href="../css/pages/docsss.css"/>
 </head>
 <body>
     <?php echo navbar(1) ?>

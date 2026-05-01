@@ -1,22 +1,26 @@
 <?php
-    require_once '../../components/head.php';
-    require_once '../../components/navbar.php';
-    require_once '../../components/footer.php';
+    session_start();
+
+    require_once '../utils/loader.php';
+    
+    load_components(
+        'navbar',
+        'footer'
+    );
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initialize_page("What is the OSC? | YanoDASH");?>
-    <link rel="stylesheet" href="style.css">
+    <?php initialize_page("Contact Us | YanoDASH");?>
+    <link rel="stylesheet" href="../css/pages/contactstyle.css">
 </head>
 <body>
     <?php echo navbar()?>
-
     <div class="about-wrapper">
         <div class="about-card">
             <div class="about-left">
                 <a href="https://www.facebook.com/obrerosc" target="_blank" class="about-logo-link">
-                    <img src="YanoDASH Logo Semifinal Draft.png" alt="Large Logo" class="large-about-logo">
+                    <img src="../images/YanoDASH Logo Semifinal Draft.png" alt="Large Logo" class="large-about-logo">
                 </a>
                 <h2>YanoDASH</h2>
             </div>
@@ -36,6 +40,6 @@
             </div>
         </div>
     </div>
-
+    <?php echo footer() ?>
 </body>
 </html>

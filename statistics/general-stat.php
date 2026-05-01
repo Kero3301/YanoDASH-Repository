@@ -11,7 +11,7 @@
 <html>
     <head>
         <?php initialize_page("General Statistics | YanoDASH")?>
-        <link rel="stylesheet" href="../css/stats.css"/>
+        <link rel="stylesheet" href="../css/pages/stats.css"/>
     </head>
     <body>
         <?php echo navbar(2)?>

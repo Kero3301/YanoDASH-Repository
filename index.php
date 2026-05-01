@@ -3,10 +3,12 @@
 <?php
     session_start();
 
-    require_once 'components/head.php';
-    require_once 'components/navbar.php';
-    require_once 'components/main_section.php';
-    require_once 'components/footer.php';   
+    require_once 'utils/loader.php';
+    load_components(
+        'navbar',
+        'main_section',
+        'footer'
+    );
 ?>
 
 <!DOCTYPE html>

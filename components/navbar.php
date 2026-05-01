@@ -1,8 +1,4 @@
 <?php
-    $isLoggedIn = isset($_SESSION['username']);
-    $shouldShowPrivate = 
-        $isLoggedIn && ($_SESSION['role'] === "admin" || $_SESSION['role'] === "editor");
-
     require_once 'menu.php';
     require_once 'sliding_switch.php';
 
@@ -12,8 +8,9 @@
     HTML;
 
     function navbar(int $activeIndex = 0): string {
-        global $isLoggedIn;
-        global $shouldShowPrivate;
+        $isLoggedIn = isset($_SESSION['username']);
+        $shouldShowPrivate = 
+            $isLoggedIn && ($_SESSION['role'] === "admin" || $_SESSION['role'] === "editor");
 
         $documents_activeness = $activeIndex === 1? "active" : "";
         $request_activeness = $activeIndex === 2? "active" : "";
@@ -151,7 +148,7 @@
                     $dms_content
 
                     <div class="nav-item">
-                        <a class="nav-item-link" href="#">
+                        <a class="nav-item-link" href="/yanodash-repository/contact/">
                             <h3>Contact</h3>
                         </a>
                     </div>

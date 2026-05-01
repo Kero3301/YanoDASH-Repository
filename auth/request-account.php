@@ -1,11 +1,14 @@
 <?php
     session_start();
+
+    require_once '../utils/loader.php';
     
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
-    require_once '../components/accordion.php';
-    require_once '../components/footer.php';
-    require_once '../components/user_form.php';
+    load_components(
+        'navbar',
+        'accordion',
+        'footer',
+        'user_form'
+    );
 ?>
 <!DOCTYPE html>
 <html>

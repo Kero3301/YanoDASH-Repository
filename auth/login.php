@@ -1,8 +1,5 @@
 <?php
-    require_once '../utils/loader.php';
-
     session_start();
-
     if (isset($_SESSION['username'])) {
         header("location: /yanodash-repository/");
         exit;
@@ -11,9 +8,9 @@
     $error = $_SESSION['errorMsg'] ?? '';
     unset($_SESSION['errorMsg']);
 
-    load_components(
-        'password_input'
-    );
+    require_once '../utils/loader.php';
+
+    load_components('password_input');
     load_utils('csrf_token');
 ?>
 
@@ -23,8 +20,6 @@
         <script src="../script/control-actions.js" defer></script>
         <link rel="stylesheet" href="../css/fonts.css">
         <link rel="stylesheet" href="../css/components/user-form.css">
-         <link rel="stylesheet" text="text/css" href="../style.css">
-         <link rel="stylesheet" href="../css/elements.css">
         
         <style>
             * {

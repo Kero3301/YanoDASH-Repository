@@ -15,7 +15,7 @@
 <html lang="en">
 <head>
     <?php initialize_page("Upload Document")?>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../css/pages/adddocstyles.css">
 </head>
 <body>
     <?php echo navbar()?>
