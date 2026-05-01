@@ -31,7 +31,7 @@
 
                 $html = <<< HTML
                     <a href="$sanitizedLink" id="$sanitizedButtonID" style="text-decoration: none;">
-                        <button>
+                        <button class="btn">
                             $sanitizedLabel
                         </button>
                     </a>

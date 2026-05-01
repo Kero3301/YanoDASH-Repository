@@ -39,12 +39,12 @@
             Thank you for taking interest in YanoDASH's features. This form will guide you through the process of requesting your own account using your university email address.
             <br><br>
         </p>
-        <a id="begin" class="btn-back">Begin</a>
+        <a id="begin" class="btn">Begin</a>
         <p style="text-align: center; width: 40%; display: block; margin: auto">
             <br><i>Not a student of the University of Southeastern Philippines?<br> You can always continue <a href="/yanodash-repository/">browsing as a guest.</i></a> 
             <br><br>Already have an account?<br>
         </p>
-        <a id="continue-login" class="btn-back" href="/yanodash-repository/auth/login.php">
+        <a id="continue-login" class="btn" href="/yanodash-repository/auth/login.php">
             Continue to Login Page →
         </a>
         <div style="width: 75%; margin: auto;">

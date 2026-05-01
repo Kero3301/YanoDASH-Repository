@@ -36,10 +36,17 @@ h6 {
     margin-bottom: 0.7rem;
 }
 
+.nav-item-link h3 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
 /* ========== BUTTONS ========== */
-button,
-.default-btn,
-input[type="button"] {
+button {
+    cursor: pointer;
+}
+
+.btn {
     font-family: 'RobotoFlex', sans-serif !important;
     display: inline-block;
     color: #333;
@@ -50,53 +57,31 @@ input[type="button"] {
     font-size: 14px;
     border: 1px solid #ddd;
     transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-button:not(.toggle-visibility),
-.default-btn:not(.toggle-visibility),
-input[type="button"]:not(.toggle-visibility) {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: white;
-}
-
-button:not(.toggle-visibility),
-.default-btn:not(.toggle-visibility),
-input[type="button"]:not(.toggle-visibility) {
     padding: 10px 25px;
 }
 
-button.green:hover,
-.default-btn.green:hover,
-input[type="button"].green:hover {
-    background-color: #256E2E !important;
+.btn:hover {
+    background-color: #5f0000;
+    border-color: #5f0000;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-button.green.active,
-.default-btn.green.active,
-input[type="button"].green.active {
-    background-color: #2b8b30;
-}
-
-button.active,
-.default-btn.active,
-input[type="button"].active {
+.btn.active {
     background-color: #b01717;
     color: white;
 }
 
-button:hover:not(.toggle-visibility),
-.default-btn:hover:not(.toggle-visibility),
-input[type="button"]:hover:not(.toggle-visibility) {
-    background-color: #5f0000;
-    color: white;
+.btn.green:hover {
+    background-color: #256E2E !important;
+    border-color: #256E2E !important;
 }
 
-button:hover:not(.toggle-visibility),
-.default-btn:hover:not(.toggle-visibility),
-input[type="button"]:hover:not(.toggle-visibility) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.btn.green.active {
+    background-color: #2b8b30;
 }
 
 .locked,
@@ -105,20 +90,11 @@ input[type="button"]:hover:not(.toggle-visibility) {
     pointer-events: none !important;
 }
 
-button.locked,
-button:disabled,
-.default-btn.locked,
-.default-btn:disabled,
-input[type="button"].locked,
-input[type="button"]:disabled {
+.btn.locked,
+.btn:disabled,
+.btn.locked:hover,
+.btn:disabled:hover {
     background-color: #DDD;
-    color: gray;
-}
-
-button.locked:hover,
-.default-btn.locked:hover,
-input[type="button"].locked:hover {
-    background: #DDD;
     color: gray;
     transition: none;
 }
@@ -163,15 +139,14 @@ input[type="password"].compact {
 input[type="text"]:hover,
 input[type="email"]:hover,
 input[type="password"]:hover {
-    border-color: #f18e8e;
+    border-color: #cb7878;
     outline: none !important;
 }
 
 input[type="text"]:focus-within,
 input[type="email"]:focus-within,
 input[type="password"]:focus-within {
-    border-color: #d36161;
-    background-color: #ffe5e5;
+    border-color: maroon;
     outline: none !important;
 }
 
