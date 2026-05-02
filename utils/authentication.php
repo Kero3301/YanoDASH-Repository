@@ -49,6 +49,7 @@
             $storedPosition = $accountQueryResult->position;
             $storedEmail = $accountQueryResult->email_address;
             $storedAccessLevel = $accessLevelQueryResult->level;
+            $storedScopeOfAccess = json_decode(json_encode($accessLevelQueryResult->scope_of_access), true);
             $storedAccessDomains = json_decode(json_encode($accountQueryResult->access_domains), true);
 
             if (session_status() !== PHP_SESSION_ACTIVE) session_start();
@@ -62,6 +63,7 @@
                 'position' => $storedPosition,
                 'email' => $storedEmail,
                 'access_level' => $storedAccessLevel,
+                'scope_of_access' => $storedScopeOfAccess,
                 'access_domains' => $storedAccessDomains ?? []
             ];
             return new LoginResult(true);
