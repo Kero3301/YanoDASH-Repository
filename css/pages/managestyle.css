@@ -1,0 +1,188 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* ======================================== MOBILE VIEW ======================================== */
+body {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.title {
+    padding: 20px 7%;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Gupter', serif;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 7% 20px;
+}
+
+.controls input,
+.controls select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.controls input:focus,
+.controls select:focus {
+    border-color: #7bb661;
+}
+
+.table-container {
+    width: 90%;
+    margin: 0 auto 30px;
+    overflow-x: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #63071e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+td button {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s ease;
+}
+
+button.edit {
+    background-color: #fff;
+    color: #0e633a;
+    border: 1px solid #0e633a;
+}
+
+button.edit:active {
+    background-color: #0e633a;
+    transform: scale(1.05);
+}
+
+button.delete {
+    background-color: #fff;
+    color: #63071e;
+    border: 1px solid #63071e;
+}
+
+button.delete:active {
+    background-color: #63071e;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* ======================================== TABLET VIEW ======================================== */
+
+@media (min-width: 481px) {
+    .title {
+        font-size: 1.3rem;
+    }
+
+    .controls {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .controls input {
+        font-size: 1.1rem;
+        width: 60%;
+    }
+
+    .controls select {
+        font-size: 1.1rem;
+        width: 35%;
+    }
+
+    td, th {
+        font-size: 1.1rem;
+    }
+
+    .table-container {
+        width: 85%;
+        max-width: 1000px;
+        margin: 0 auto 30px;
+    }
+}
+
+/* ======================================== DESKTOP VIEW ======================================== */
+
+@media (min-width: 1024px) {
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .controls input {
+        width: 300px;
+    }
+
+    .controls select {
+        width: 200px;
+    }
+
+    .table-container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto 30px;
+    }
+
+    .table-container table {
+        width: 100%;
+    }
+
+    td, th {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    td button {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    button.edit:hover {
+        background-color: #0e633a;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    button.delete:hover {
+        background-color: #63071e;
+        color: white;
+        transform: scale(1.05);
+    }
+}

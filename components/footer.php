@@ -1,5 +1,9 @@
 <?php
+    require_once dirname(__DIR__). '/utils/loader.php';
+
     function footer(): string {
+        global $app_url;
+
         $html = <<< HTML
             <style>
                 .footer-section {
@@ -41,11 +45,11 @@
                 <div class="footer-section" style="margin-left: auto;">
                     <div id="contacts" style="display: flex; gap: 16px;">
                         <div id="phone">
-                            <img class="indicator" src="/yanodash-repository/images/navigation/phone.png" width="32px" draggable="false">
+                            <img class="indicator" src="$app_url/images/navigation/phone.png" width="32px" draggable="false">
                             <p>***-****</p>
                         </div>
                         <div id="email">
-                            <img class="indicator" src="/yanodash-repository/images/navigation/email.png" width="32px" draggable="false">
+                            <img class="indicator" src="$app_url/images/navigation/email.png" width="32px" draggable="false">
                             <p>sc_obrero@usep.edu.ph</p>
                         </div>
                     </div>

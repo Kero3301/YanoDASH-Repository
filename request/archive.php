@@ -1,14 +1,30 @@
 <?php
     session_start();
 
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_components(
+        'navbar',
+        'footer'
+    );
+    load_utils(
+        'authentication',
+        'authorization'
+    );
+
+    if (!is_logged_in()) {
+        header('location: '. $app_url. '/auth/login.php');
+        exit;
+    }
+
+    if (!can_use_dms()) {
+        die("You do not have permission to access this resource.");
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initializePage("Request Document | YanoDASH")?>
+    <?php initialize_page("Request Document | YanoDASH")?>
 
 <style>
 /* ✅ GLOBAL FONT SYSTEM */
@@ -153,10 +169,9 @@ input[type="file"]::file-selector-button {
 <body>
 
 <?php echo navbar(0); ?>
-
 <div class="form-container">
 
-    <a href="request.php" class="btn-back">Back to Menu</a>
+    <a href="index.php" class="btn-back">Back to Menu</a>
 
     <h2 class="serif" style="text-align: center; margin-bottom: 30px; color: #2e7d32;">
         Request a New Document
@@ -166,7 +181,8 @@ input[type="file"]::file-selector-button {
         
         <div class="form-group">
             <label for="doc_type">Document Type</label>
-            <select id="doc_type" name="doc_type">
+            <select id="doc_type" name="doc_type" required>
+                <option value="" disabled selected>-- Please choose a document type --</option>
                 <option value="Voting Registration">Voting Registration</option>
                 <option value="Required attendance">Required attendance</option>
                 <option value="Budget event">Budget event</option>
@@ -191,13 +207,13 @@ input[type="file"]::file-selector-button {
 
         <div class="form-group">
             <label for="notes">Document ID</label>
-            <textarea id="notes" name="notes" rows="1" placeholder="Please refer to the document ID"></textarea>
+            <textarea id="notes" name="notes" rows="1" placeholder="Please refer to the document ID" required></textarea>
         </div>
 
         <button type="submit" class="btn-submit">Submit Request</button>
     </form>
 
 </div>
-
+<?php echo footer(); ?>
 </body>
 </html>

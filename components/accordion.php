@@ -1,13 +1,16 @@
 <?php
-    require_once '../utils/TextUtils.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils('text_utils');
+    
+    global $app_url;
 
     echo <<< HTML
-        <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/accordion.css">
-        <script src="/yanodash-repository/script/accordion.js"></script>
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/accordion.css">
+        <script src="$app_url/script/accordion.js"></script>
     HTML;
 
     function accordion(string $id, array $entries, bool $allowMultipleOpen = false) {
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
 
         $entriesList = [];
         foreach ($entries as $summary => $content) {

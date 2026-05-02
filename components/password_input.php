@@ -1,32 +1,41 @@
 <?php
-    require_once '../utils/TextUtils.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils('text_utils');
 
-    # Define the minimum dimensions (width and height), in px unit, allowed for the password input
+    global $app_url;
+
+    echo <<< HTML
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/password-input.css">
+    HTML;
+
     const MIN_WIDTH = 200;
     const MAX_WIDTH = 400;
     const MIN_HEIGHT = 32;
     const MAX_HEIGHT = 64;
 
-    # Use this function to create a password input component with a specified unique ID, a name for the underlying input field, and an optional watermark
-    function passwordInput(string $id, string $inputName, string $watermark = "Password", int $width = MIN_WIDTH, int $height = MIN_HEIGHT): string {
-        # Sanitize and escape the string parameters to prevent reflected XSS attack
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+    function password_input(
+        string $id, 
+        string $inputName, 
+        string $watermark = "Password", 
+        int $width = MIN_WIDTH, 
+        int $height = MIN_HEIGHT
+    ): string {
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedInputID = $sanitizedID. "-inputfield";
-        $sanitizedInputName = htmlspecialchars(TextUtils::sanitizeIdentifier($inputName));
+        $sanitizedInputName = htmlspecialchars(normalize_identifier($inputName));
         $sanitizedWatermark = htmlspecialchars($watermark);
+        $sanitizedButtonID = $sanitizedID. "-visibilitytoggle";
 
-        # Ensure that the final dimensions of the password input never goes beyond the min or max allowed width and height
         $finalWidth = max(MIN_WIDTH, min($width, MAX_WIDTH));
         $finalHeight = max(MIN_HEIGHT, min($height, MAX_HEIGHT));
 
-        # Create the event handler script for when the toggle password visibility button of this password field is clicked
-        $v = $finalWidth - $finalHeight;
-        $html = <<< HTML
-            <div id="$sanitizedID" class="password-input" style="width: {$finalWidth}px; height: {$finalHeight}px; border: 2px solid #ddd; display: grid; grid-template-columns: auto {$finalHeight}px; box-sizing: border-box;">
-                <input id="$sanitizedInputID" class="password-input-field" name="$sanitizedInputName" type="password" placeholder="$watermark" style="grid-column: 1; border: none; width: 100%; height: 100%; box-sizing: border-box; padding: 0 4px;">
-                <button type="button" style="grid-column: 2; border: none;" onclick="togglePasswordVisibility(this)">⊘</button>
+        return <<< HTML
+            <div id="$sanitizedID" class="password-input-wrapper" style="--w: {$finalWidth}px; --h: {$finalHeight}px;">
+                <div class="password-input">
+                    <input id="$sanitizedInputID" class="password-input-field" name="$sanitizedInputName" type="password" placeholder="$sanitizedWatermark" required>
+                    <button id="$sanitizedButtonID" class="toggle-visibility" type="button" onclick="togglePasswordVisibility(this)">⊘</button>
+                </div>
             </div>
         HTML;
-        return $html;
     }
 ?>

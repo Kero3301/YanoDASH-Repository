@@ -1,0 +1,279 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ======================================== MOBILE VIEW ======================================== */
+.title {
+    padding: 20px 7%;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'Gupter', serif;
+}
+
+.top-actions {
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.8rem;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.important-btn {
+    padding: 10px 15px;
+    background-color: #fff;
+    color: black;
+    text-decoration: none;
+    border: 2px solid #63071e;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.important-btn:active {
+    background-color: #63071e;
+    color: white;
+    transition: 0.3s ease;
+}
+
+.important-btn:active{
+    transform: scale(0.95);
+}
+
+.table-container {
+    width: 95%;
+    margin: 0 auto 30px;
+    overflow-x: auto;
+    padding: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+table, th, td {
+    border: none;
+}
+
+th {
+    background-color: #63071e;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+td button {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s ease;
+}
+
+button.approve {
+    background-color: #fff;
+    color: #0e633a;
+    border: 1px solid #0e633a;
+}
+
+button.approve:active {
+    background-color: #0e633a;
+    color: white;
+    transition: 0.2s ease;
+}
+
+button.reject {
+    background-color: white;
+    color: #63071e;
+    border: 1px solid #63071e;
+}
+
+button.reject:active {
+    background-color: #63071e;
+    color: white;
+    transition: 0.2s ease;
+}
+
+button.approve:active,
+button.reject:active {
+    transform: scale(0.95);
+}
+
+.pending {
+    color: #6480db;
+    font-weight: bold;
+}
+
+.approved {
+    color: #0e633a;
+    font-weight: bold;
+}
+
+.rejected {
+    color: #63071e;
+    font-weight: bold;
+}
+
+/* ======================================== TABLET VIEW ======================================== */
+
+@media (min-width: 481px) {
+    .title {
+        font-size: 1.3rem;
+        padding-top: 15px;
+    }
+
+    .top-actions {
+        font-size: 1.1rem;
+    }
+
+    main {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .table-container {
+        width: 90%;
+        max-width: 1100px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1.1rem;
+    }
+
+    th {
+        padding: 22px 15px;
+    }
+
+    td {
+        padding: 20px 15px;
+    }
+
+    td button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .important-page .top-actions {
+        width: 90%;
+        max-width: 1100px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .important-page .important-btn {
+        display: inline-block; /* prevents stretching */
+    }
+
+    .important-page main {
+        display: block; /* 🔥 stop side-by-side layout */
+    }
+}
+
+/* ======================================== DESKTOP VIEW ======================================== */
+
+@media (min-width: 1024px) {
+    .title {
+        font-size: 1.5rem;
+        padding-left: 10%;
+    }
+
+    .top-actions {
+        width: 90%;
+        max-width: 1100px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: flex-end;
+        font-size: 1rem;
+    }
+
+    .table-container {
+        width: 90%;
+        max-width: 1100px;
+        margin: 0 auto 30px;
+    }
+
+    .important-btn:hover {
+        background-color: #63071e;
+        color: white;
+        transition: 0.3s ease;
+    }
+
+    th, td {
+        padding: 14px 20px;
+        font-size: 1rem;
+    }
+
+    tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    button.approve:hover {
+        background-color: #0e633a;
+        color: white;
+        transition: 0.2s ease;
+    }
+
+    button.reject:hover {
+        background-color: #63071e;
+        color: white;
+        transition: 0.2s ease;
+    }
+
+    button.approve:active,
+    button.reject:active {
+        transform: scale(0.95);
+    }
+
+    td button {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+
+    .important-page .title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 10%;
+    }
+
+    .important-page .top-actions {
+        margin-top: 0;
+    }
+
+    .important-page .important-btn {
+        font-size: 0.95rem;
+        padding: 10px 18px;
+    }
+
+    .important-page td span {
+        display: inline-block;
+        min-width: 80px;
+    }
+}

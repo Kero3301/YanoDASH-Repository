@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php initializePage("Track Request | YanoDASH")?>
+    <?php initialize_page("Track Request | YanoDASH")?>
 
     <style>
         .serif {

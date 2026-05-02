@@ -1,8 +1,10 @@
 <?php
-    require_once __DIR__. '/../utils/TextUtils.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils('text_utils');
+    global $app_url;
 
     echo <<< HTML
-        <link rel="stylesheet" type="text/css" href="../css/components/user-form.css">
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/user-form.css">
     HTML;
 
     /* 
@@ -25,7 +27,7 @@
             )
         ?>
     */
-    function userForm(
+    function user_form(
         string $id, 
         string $label,
         array $formGroups, 
@@ -37,7 +39,7 @@
         string $postcontent = ""
     ) {
         # Sanitization
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedLabel = htmlspecialchars($label);
         $sanitizedAction = htmlspecialchars($action);
         $sanitizedMethod = htmlspecialchars($method);
@@ -66,7 +68,7 @@
         HTML;
     }
 
-    function formGroup(string $label, string $labelFor, string $content, bool $inline = false) {
+    function form_group(string $label, string $labelFor, string $content, bool $inline = false) {
         $sanitizedLabel = htmlspecialchars($label);
         $separation = $inline? "" : "<br>";
 
@@ -80,7 +82,7 @@
     }
 
     function options(string $id, array $options) {
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         
         $optionList = [];
         foreach ($options as $value) {
@@ -107,7 +109,7 @@
     }
 
     function input(string $id, string $type = "text", bool $required = true, string $placeholder = null) {
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedInputType = htmlspecialchars($type);
     
         $requirement = $required? "required" : "";
@@ -122,8 +124,8 @@
         HTML;     
     }
 
-    function fileUpload(string $id, array $acceptedFiletypes = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png'], bool $required = true) {
-        $sanitizedID = htmlspecialchars(TextUtils::sanitizeIdentifier($id));
+    function file_upload(string $id, array $acceptedFiletypes = ['.pdf', '.doc', '.docx', '.jpg', '.jpeg', '.png'], bool $required = true) {
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
 
         $acceptedFiletypesAsString = count($acceptedFiletypes) > 0
             ? htmlspecialchars(implode(",", $acceptedFiletypes))

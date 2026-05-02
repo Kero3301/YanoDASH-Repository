@@ -1,0 +1,12 @@
+{
+    "name": "prismacode/yano-dash",
+    "type": "project",
+    "require": {
+        "mongodb/mongodb": "^2.2"
+    },
+    "authors": [
+        {
+            "name": "Prismacode Systems"
+        }
+    ]
+}

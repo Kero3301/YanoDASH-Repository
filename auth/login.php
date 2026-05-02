@@ -1,23 +1,28 @@
 <?php
-    if (isset($_SESSION['username'])) {
-        header("location: /yanodash-repository/");
+    session_start();
+
+    require_once '../utils/loader.php';
+    load_components('password_input');
+    load_utils(
+        'authentication',
+        'csrf_token'
+    );
+
+    if (is_logged_in()) {
+        header("location: ". $app_url. '/account/my-account.php');
         exit;
     }
 
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
-    require_once '../components/password_input.php';
+    $error = $_SESSION['errorMsg'] ?? '';
+    unset($_SESSION['errorMsg']);
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        
         <script src="../script/control-actions.js" defer></script>
-        <link rel="stylesheet" href="../css/base-layout.css">
         <link rel="stylesheet" href="../css/fonts.css">
         <link rel="stylesheet" href="../css/components/user-form.css">
-         <link rel="stylesheet" text="text/css" href="../style.css">
         
         <style>
             * {
@@ -43,15 +48,16 @@
             }
 
             #uname {
-                box-sizing: border-box;
+                /* box-sizing: border-box; */
                 display: block;
                 height: 44px;
                 width: 240px;
                 margin-left: auto;
                 margin-right: auto;
                 margin-bottom: 10px;
-                padding: 0 4px;
+                /* padding: 0 4px;
                 border: 2px solid #ddd;
+                border-radius: 8px; */
             }
 
             #login-form {
@@ -137,14 +143,44 @@
             #ab:hover {
                 background-color: #226D2C;
             }
+
+            .locked {
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+
+            input.locked {
+                background: #DDD;
+                color: gray;
+            }
+
+            #login-button.locked:hover {
+                background: #DDD;
+                color: gray;
+                transition: none;
+            }
+
+            #message-container {
+                min-height: 16px;
+                min-width: 16px;
+                padding: 1px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            #message-container #err-message {
+                font-family: 'RobotoFlex';
+                font-size: 13px;
+                color: red;
+            }
         </style>
-        <?php initializePage("Login | YanoDASH")?>
+        <?php initialize_page("Login | YanoDASH")?>
     </head>
     <body>
         <div class="container">
             <div class="left-section">
                 <div class="nav-area">
-                    <a class="btn-back" id="ab" href="/yanodash-repository/" style="display: block; width: 110px; margin-top: 16px; margin-bottom: 8px; margin-left: 12px; cursor: pointer; text-align: center; font-family: 'RobotoFlex'">← Home</a>                  
+                    <a class="btn green" id="ab" href="/yanodash-repository/" style="display: block; width: 110px; margin-top: 16px; margin-bottom: 8px; margin-left: 12px; cursor: pointer; text-align: center; font-family: 'RobotoFlex'">← Home</a>                  
                     <div id="yanodash-a">
                         <a href="/yanodash-repository/">
                             <img src="/yanodash-repository/images/navbar-logo.png" draggable="false">
@@ -153,24 +189,35 @@
                     </div>
                 </div>
                 <div class="login-area">
-                    <form action="process_login.php" method="POST" style="padding: 60px 80px; border-radius: 16px; border-top: 6px solid maroon; background: #f4f4f4;">
+                    <form id="form-login" action="process_login.php" method="POST" style="padding: 60px 80px; border-radius: 16px; border-top: 6px solid maroon; background: #f4f4f4;">
+                        <?= csrf_input_field() ?>
+                        
                         <div>
                             <h1 style="font-family: 'Gupter', serif; margin-bottom: 8px;">Login</h1>
                         </div>
-                        <input type="text" id="uname" name="username" placeholder="Username or Email Address" style="font-family: 'RobotoFlex'">
-                        <?php echo passwordInput("login-enter-password", inputName: "password", height: 44, width: 240)?>
+                        <input type="email" id="uname" name="email" placeholder="Email Address" style="font-family: 'RobotoFlex'" required minlength="3">
+                        <?php echo password_input("login-enter-password", inputName: "password", height: 44, width: 240)?>
                         <div style="display: flex; flex-direction: row; margin-top: 8px;">
-                            <input type="checkbox" style="margin-right: 4px">
+                            <input id="remember-me" type="checkbox" style="margin-right: 4px">
                             <p style="font-family: 'RobotoFlex'">Remember me</p>
                         </div>
 
-                        <input class="btn-back" type="submit" name="login" value="Login" style="display: block; width: 100px; margin-top: 16px; margin-bottom: 8px; margin-left: auto; margin-right: auto; cursor: pointer; text-align: center">
-
-                        <a style="text-align: center; cursor: pointer;"><p style="margin-top: 16px; margin-bottom: 16px; font-family: 'RobotoFlex'">I forgot my password</p></a>
+                        <input id="login-button" class="btn" type="submit" name="login" value="Login" style="display: block; width: 128px; margin-top: 16px; margin-bottom: 8px; margin-left: auto; margin-right: auto; cursor: pointer; text-align: center">
+                        <div id="message-container">
+                            <?php 
+                                if ($error) {
+                                    $sanitizedError = htmlspecialchars($error);
+                                    echo <<< HTML
+                                        <p id="err-message">$sanitizedError</p>
+                                    HTML;
+                                }
+                            ?>
+                        </div>
+                        <p style="text-align: center"><a href="#" class="inline-link" style="text-align: center;">I forgot my password</a></p>
                         <hr style="border: 1px solid rgba(0,0,0,0.1)">
 
                         <p style="text-align: center; margin-top: 16px; font-family: 'RobotoFlex'">Don't have an account?</p>
-                        <a href="/yanodash-repository/request-account" class="btn-back" style="display: block; margin: auto; width: 180px; margin-top: 8px; font-family: 'RobotoFlex'">Request an account</a>
+                        <a href="/yanodash-repository/auth/request-account.php" class="btn" style="display: block; margin: auto; width: 180px; margin-top: 8px; font-family: 'RobotoFlex'">Request an account</a>
                     </form>
                 </div>
             </div>
@@ -180,20 +227,40 @@
                 </div>
             </div>
         </div>
+        <script>
+            const inputs = document.querySelectorAll("#uname, #login-enter-password-inputfield");
+            const errorMsg = document.getElementById("err-message");
 
-        
-        <!-- <div id="background">
-            <div class="form-container" style="width: 320px; z-index: 10;">
-                <h1 style="text-align: center;">Login</h1>
-                <input type="text" id="uname" name="username" placeholder="Username or Email Address">
-                <br>
-                <a class="btn-back" style="display: block; margin: auto; width: 64px; cursor: pointer; text-align: center;">Login</a>
-                <a style="text-align: center; cursor: pointer"><p style="margin: 0;">I forgot my password</p></a>
-                <p style="text-align: center; margin-bottom: 0;">Don't have an account?</p>
-                <a href="/yanodash-repository/request-account">
-                    <button style="display: block; margin: auto; width: 150px; height: 32px; color: black; background-color: white;">Request an account</button>
-                </a>
-                </div>
-        </div> -->
+            inputs.forEach(input => {
+                input.addEventListener("input", () => {
+                    if (errorMsg) {
+                        errorMsg.textContent = "";
+                    }
+                });
+            });
+
+            const form = document.querySelector("#form-login");
+            const loginButton = document.querySelector("#login-button");
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const isValid = validateForm(form);
+                if (!isValid) return;
+
+                hidePassword('login-enter-password-visibilitytoggle');
+                setElementsLockedByIDs([
+                    'uname',
+                    'login-enter-password-inputfield',
+                    'remember-me'
+                ]);
+
+                loginButton.disabled = true;
+                loginButton.value = "Logging in...";
+                loginButton.classList.add("locked");
+
+                form.submit();
+            });
+        </script>
     </body>
 </html>

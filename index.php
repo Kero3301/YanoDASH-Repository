@@ -3,21 +3,29 @@
 <?php
     session_start();
 
-    require_once 'components/head.php';
-    require_once 'components/navbar.php';
-    require_once 'components/main_section.php';
-    require_once 'components/footer.php';   
+    require_once 'utils/loader.php';
+    load_components(
+        'navbar',
+        'main_section',
+        'footer'
+    );
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <?php initializePage("YanoDASH")?>
+        <?php initialize_page("YanoDASH")?>
+        <link rel="stylesheet" href="css/elements.css">
+        <style>
+        </style>
     </head>
     <body>
         <?php echo navbar()?>
-        <?php 
-            echo mainSection(
+        <div class="contents">
+        
+        <div class="page-contents no-padding">
+                <?php 
+            echo main_section(
                 "sec1",
                 "Official documents, at your fingertips.",
                 "Browse documents publicized by the University of 
@@ -30,12 +38,12 @@
                 "images/backgrounds/headerimg.jpeg",
                 "rgba(236, 53, 47, 0.7)",
                 linksList: [
-                    ['Browse Public Archive ↗', '/yanodash-repository/documents/br_arch.php', 'bpa'],
-                    ['Latest Releases ↗', '/yanodash-repository/documents/latest_rel.php', 'lr']
+                    ['Browse Public Archive ↗', APP_URL. '/documents/br_arch.php', 'bpa'],
+                    ['Latest Releases ↗', APP_URL. '/documents/latest_rel.php', 'lr']
                 ]
             );
 
-            echo mainSection(
+            echo main_section(
                 "stats-section",
                 "Numbers tell a story.",
                 "Are you curious about the current endeavors of 
@@ -51,7 +59,7 @@
                 ]
             );
 
-            echo mainSection(
+            echo main_section(
                 "dms-section",
                 "Fast, precise document management.",
                 "Use YanoDASH's full-featured document management system 
@@ -63,11 +71,15 @@
                 "images/backgrounds/dms-section-bg.webp",
                 "rgba(147, 169, 241, 0.6)",
                 linksList: [
-                    ['Open YanoDASH DMS ↗', '/yanodash-repository/dms/project.php', 'oyddms']
+                    ['Open YanoDASH DMS ↗', APP_URL. '/dms/', 'oyddms']
                 ]
-            );
-
-            echo footer();
-        ?>        
+            ); 
+            ?>    
+            </div>
+        
+        </div>
+        </div>        
+        
+        <?php echo footer(); ?> 
     </body>
 </html>

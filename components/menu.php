@@ -1,10 +1,15 @@
 <?php
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils('text_utils');
+
+    global $app_url;
+
     echo <<< HTML
-        <link rel="stylesheet" type="text/css" href="/yanodash-repository/css/components/menu.css">
+        <link rel="stylesheet" type="text/css" href="$app_url/css/components/menu.css">
     HTML;
 
     function menu(string $id, array $choices, bool $isDark = false) {
-        $sanitizedID = htmlspecialchars($id);
+        $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $classList = $isDark? "menu dark" : "menu";
         
         $choiceList = [];

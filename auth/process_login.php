@@ -1,47 +1,36 @@
 <?php
-    const SAMPLE_CREDENTIALS = [
-        [
-            "username" => "admin",
-            "password" => "admin",
-            "role" => "admin"
-        ],
-        [
-            "username" => "editor",
-            "password" => "editor",
-            "role" => "editor"
-        ],
-        [
-            "username" => "viewer",
-            "password" => "viewer",
-            "role" => "viewer"
-        ]
-    ];
+    session_start();
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') die();
-    if (!isset($_POST['login'])) die();
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils(
+        'authentication',
+        'csrf_token'
+    );
 
-    $username = trim($_POST['username'] ?? '');
-    $password = trim($_POST['password'] ?? '');
-    $role = null;
-
-    $validCredentials = false;
-
-    foreach (SAMPLE_CREDENTIALS as $cred) {
-        if ($username === $cred['username'] && $password === $cred['password']) {
-            $validCredentials = true;
-            $role = $cred['role'];
-            break;
-        }
+    if (is_logged_in()) {
+        header('location: '. $app_url. '/account/my-account.php');
+        exit;
     }
 
-    if ($validCredentials) {
-        session_start();
-        $_SESSION['username'] = $username;
-        $_SESSION['role'] = $role;
+    $csrf_token_valid = csrf_protect();
+    if (!$csrf_token_valid) {
+        $_SESSION['errorMsg'] = "We couldn't verify your request. Please try again.";
+        header('location: login.php');
+        exit;
+    }
 
-        header("location: /yanodash-repository/");
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') die();
+    $email = (string) trim($_POST['email'] ?? '');
+    $password = (string) trim($_POST['password'] ?? '');
+
+    $loginResult = login_user($email, $password);
+
+    if (!$loginResult->success) {
+        $_SESSION['errorMsg'] = $loginResult->message;
+        header('location: login.php');
+        exit;
     } else {
-        header("location: login.php");
+        header('location: '. $app_url);
         exit;
     }
 ?>
