@@ -16,7 +16,11 @@
         'user_form',
     ]);
     define('ALLOWED_UTILS', [
+        'authentication',
+        'authorization',
         'csrf_token',
+        'document_fetcher',
+        'schema_validator',
         'text_utils'
     ]);
 

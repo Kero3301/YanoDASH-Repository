@@ -12,6 +12,33 @@ body::before {
     z-index: -1;
 }
 
+/* ========== ANCHORS ========== */
+a.inline-link {
+    text-decoration: none;
+    color: #a60000;
+    border-bottom: 2px solid transparent;
+    transition: border 0.3s ease, background 0.3s ease, transform 0.2s ease;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    transform-origin: center;
+}
+
+a.inline-link:hover {
+    background-color: rgba(189, 0, 60, 0.15);
+    border-color: #a60000;
+    transform: translateY(-2px);
+}
+
+a.inline-link:active {
+    transform: translateY(-2px) scale(0.97);
+}
+
+/* ========== LISTS ========== */
+ul li::marker {
+    color: #a60000;
+}
+
 /* ========== TEXT ========== */
 p {
     font-family: 'RobotoFlex', sans-serif;

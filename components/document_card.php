@@ -11,7 +11,7 @@
 
     function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = false, string $title = "Untitled", string $thumbnailPath = DEFAULT_THUMBNAIL_PATH, string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
         global $app_url;
-        $isAdmin = $_SESSION['role'] === 'admin';
+        $isAdmin = $_SESSION['auth']['access_level'] === 'admin';
         $sanitizedAuthor = htmlspecialchars($author);
         $sanitizedTitle = htmlspecialchars($title);
         $sanitizedTag = htmlspecialchars($tag);

@@ -4,6 +4,10 @@
         'menu',
         'sliding_switch'
     );
+    load_utils(
+        'authentication',
+        'authorization'
+    );
 
     global $app_url;
 
@@ -15,9 +19,9 @@
     function navbar(int $activeIndex = 0): string {
         global $app_url;
         
-        $isLoggedIn = isset($_SESSION['username']);
+        $isLoggedIn = is_logged_in();
         $shouldShowPrivate = 
-            $isLoggedIn && ($_SESSION['role'] === "admin" || $_SESSION['role'] === "editor");
+            $isLoggedIn && ($_SESSION['auth']['access_level'] === "admin" || $_SESSION['auth']['access_level'] === "editor");
 
         $documents_activeness = $activeIndex === 1? "active" : "";
         $request_activeness = $activeIndex === 2? "active" : "";
@@ -39,33 +43,53 @@
 
         $request_menu = !$shouldShowPrivate
             ? ""
-            : menu("request-menu", [
-                "Request Menu" 
-                    => "$app_url/request",
+            : (
+                can_access_admin_pages()
+                ? menu("request-menu", [
+                    "Request Menu" 
+                        => "$app_url/request",
 
-                "Request Document Archiving" 
-                    => "$app_url/request/archive.php",
+                    "Request Document Archiving" 
+                        => "$app_url/request/archive.php",
 
-                "Requests Overview" 
-                    => "$app_url/request/overview.php"
-            ]);
+                    "Requests Overview" 
+                        => "$app_url/request/overview.php"
+                ])
+                : menu("request-menu", [
+                    "Request Menu" 
+                        => "$app_url/request",
+
+                    "Request Document Archiving" 
+                        => "$app_url/request/archive.php",
+                ])
+            );
 
         $privateArchive_menu = !$shouldShowPrivate
             ? ""
-            : ($_SESSION['role'] === 'admin'
-                ? menu("private-archive-menu", [
-                    "Home" 
-                        => "$app_url/private-archive/index_priv-ar.php",
+            : ($_SESSION['auth']['access_level'] === 'admin'
+                ? (
+                    is_president()
+                    ? menu("private-archive-menu", [
+                        "Home" 
+                            => "$app_url/private-archive/",
 
-                    "Pending Archive Requests" 
-                        => "$app_url/private-archive/archive-rq.php",
-                    
-                    "Important Documents" 
-                        => "$app_url/private-archive/key-docs.php"
-                ])
+                        "Pending Archive Requests" 
+                            => "$app_url/private-archive/archive-rq.php",
+                        
+                        "Important Documents" 
+                            => "$app_url/private-archive/key-docs.php"
+                    ])
+                    : menu("private-archive-menu", [
+                        "Home" 
+                            => "$app_url/private-archive/",
+
+                        "Pending Archive Requests" 
+                            => "$app_url/private-archive/archive-rq.php",
+                    ])
+                )
                 : menu("private-archive-menu", [
                     "Home" 
-                        => "$app_url/private-archive/index_priv-ar.php"                
+                        => "$app_url/private-archive/"                
                 ]));
 
         $dms_menu = !$shouldShowPrivate
@@ -98,8 +122,13 @@
         ], isDark: true);
 
         if ($isLoggedIn) {
-            $fullname = $_SESSION['fullname'];
-            $account_menu = $_SESSION['role'] !== "admin"
+            $name = $_SESSION['auth']['name'];
+            $fullname =
+                ($name['first_name'] ?? '') . ' ' .
+                ($name['middle_name'] ?? '') . ' ' .
+                ($name['last_name'] ?? '');
+                
+            $account_menu = $_SESSION['auth']['access_level'] !== "admin"
                 ? menu("account-menu", [
                     "Logged in as:<br> <b><i>$fullname</i></b><br><p style='color: rgba(252, 151, 151, 0.9);'>Visit My Account</p>" 
                         => "$app_url/account/my-account.php",

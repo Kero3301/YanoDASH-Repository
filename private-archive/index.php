@@ -9,6 +9,19 @@
         'navbar',
         'document_card'
     );
+    load_utils(
+        'authentication',
+        'authorization'
+    );
+
+    if (!is_logged_in()) {
+        header('location: '. $app_url. '/auth/login.php');
+        exit;
+    }
+
+    if (!can_use_dms()) {
+        die("You do not have permission to access this resource.");
+    }
 ?>
 
 <!DOCTYPE html>

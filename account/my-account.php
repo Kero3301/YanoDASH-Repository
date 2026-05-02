@@ -1,9 +1,20 @@
     <?php
     session_start();
 
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
-    require_once '../components/footer.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_components(
+        'navbar',
+        'footer'
+    );
+    load_utils(
+        'authentication'
+    );
+
+    if (!is_logged_in()) {
+        header('location: '. $app_url. '/auth/login.php');
+        exit;
+    }
+
     ?>
 
     <!DOCTYPE html>
@@ -177,12 +188,33 @@ button:hover {
     <div class="card div1">
         <div class="title">User Profile</div>
         <div class="profile">
-            <div class="avatar"><?= $_SESSION['initials']?></div>
+            <div class="avatar">AB</div>
             <div class="info">
-                <h2><?= $_SESSION['fullname']?> <span class="badge"><?= $_SESSION['badge']?></span></h2>
-                <p><b><?= strtoupper($_SESSION['role']) ?></b></p>
-                <p>📧<?= $_SESSION['username']?></p>
-                <p>Role: <?= $_SESSION['position'] ?? '(unknown)'?></p>
+                <?php
+                    $name = $_SESSION['auth']['name'];
+                    $fullname =
+                        ($name['first_name'] ?? '') . ' ' .
+                        ($name['middle_name'] ?? '') . ' ' .
+                        ($name['last_name'] ?? '');
+                    $badge = match($_SESSION['auth']['organization']) {
+                        default => "Student",
+                        'CICLC', 'CTLC' => "LC Officer",
+                        'Obrero Student Council', 'OSC' => "OSC Officer"
+                    };
+
+                    $albadge = match ($_SESSION['auth']['access_level']) {
+                        'admin' => "Administrator",
+                        'editor' => "Editor",
+                        'viewer' => "Viewer"
+                    };
+
+                    echo <<< HTML
+                        <h2>$fullname <span class="badge">$albadge</span></h2>
+                    HTML;
+                ?>
+                <p>📧<?= $_SESSION['auth']['email']?></p>
+                <p>Organization: <?= $_SESSION['auth']['organization'] ?></p>
+                <p>Role: <?= $_SESSION['auth']['position'] ?? '(unknown)'?></p>
                 <p>Joined: Sept 2023</p>
             </div>
         </div>

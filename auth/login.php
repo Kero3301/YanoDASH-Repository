@@ -1,16 +1,20 @@
 <?php
     session_start();
-    if (isset($_SESSION['username'])) {
-        header("location: /yanodash-repository/");
+
+    require_once '../utils/loader.php';
+    load_components('password_input');
+    load_utils(
+        'authentication',
+        'csrf_token'
+    );
+
+    if (is_logged_in()) {
+        header("location: ". $app_url. '/account/my-account.php');
         exit;
     }
 
     $error = $_SESSION['errorMsg'] ?? '';
     unset($_SESSION['errorMsg']);
-
-    require_once '../utils/loader.php';
-    load_components('password_input');
-    load_utils('csrf_token');
 ?>
 
 <!DOCTYPE html>
@@ -209,7 +213,7 @@
                                 }
                             ?>
                         </div>
-                        <a style="text-align: center; cursor: pointer;"><p style="margin-top: 4px; margin-bottom: 16px; font-family: 'RobotoFlex'">I forgot my password</p></a>
+                        <p style="text-align: center"><a href="#" class="inline-link" style="text-align: center;">I forgot my password</a></p>
                         <hr style="border: 1px solid rgba(0,0,0,0.1)">
 
                         <p style="text-align: center; margin-top: 16px; font-family: 'RobotoFlex'">Don't have an account?</p>

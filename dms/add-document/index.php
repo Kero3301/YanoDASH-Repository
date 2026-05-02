@@ -1,14 +1,22 @@
 <?php
     session_start();
 
-    require_once '../../auth/login_enforcer.php';
-    require_once '../../components/head.php';
-    require_once '../../components/navbar.php';
+    require_once('../../utils/loader.php');
+    load_components(
+        'navbar'
+    );
+    load_utils(
+        'authentication',
+        'authorization'
+    );
 
-    $role = $_SESSION['role'];
+    if (!is_logged_in()) {
+        header('location: '. $app_url. '/auth/login.php');
+        exit;
+    }
 
-    if ($role !== "admin" && $role !== "editor")
-        die("You do not have permission to view this resource.");
+    if (!can_use_dms())
+        die("You do not have permission to access this resource.");
 ?>
 
 <!DOCTYPE html>

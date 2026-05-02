@@ -55,14 +55,13 @@
         HTML;
     }
 
-    function csrf_protect() {
+    function csrf_protect(): bool {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = $_POST['_csrfToken'] ?? '';
-
             if (!verify_token($token)) {
-                http_response_code(403);
-                die('CSRF validation failed.');
+                return false;
             }
         }
+        return true;
     }
 ?>

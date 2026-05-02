@@ -1,15 +1,24 @@
 <?php
     session_start();
 
-    require_once '../auth/login_enforcer.php';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_components(
+        'navbar',
+        'footer'
+    );
+    load_utils(
+        'authentication',
+        'authorization'
+    );
 
-    if ($_SESSION['role'] !== 'admin') {
-        die('You are not allowed to access this resource.');
+    if (!is_logged_in()) {
+        header('location: '. $app_url. '/auth/login.php');
+        exit;
     }
 
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
-    require_once '../components/footer.php'
+    if (!can_access_admin_pages()) {
+        die("You do not have permission to access this resource.");
+    }
 ?>
 <!DOCTYPE html>
 <html>
