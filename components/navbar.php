@@ -206,6 +206,8 @@
                 </button>
 
                 <div id="nav-links">
+                    <div id="nav-highlight"></div>
+
                     <div class="nav-item dropdown $documents_activeness">
                         <a class="nav-item-link" href="$app_url/documents/">
                             <h3>Documents</h3>

@@ -225,7 +225,7 @@
 }
 
 .dropdown.open .nav-item-link {
-    background-color: rgba(255, 52, 52, 0.15);
+    /* background-color: rgba(255, 52, 52, 0.15); */
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW NAVBAR ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -263,8 +263,64 @@
     }    
 }
 
+@media(max-width: 768px) {
+    .nav-item.dropdown .menu {
+        border: none;
+        background: #f5f5f5 !important;
+    }
+}
+
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 @media(min-width: 768px) {
+    /* NEW */
+
+
+    #nav-links {
+            position: relative;
+        }
+    
+        /* moving highlight */
+        #nav-highlight {
+
+            opacity: 0;
+
+                transform: scaleX(0);
+                    /* 👈 start hidden as width = 0 */
+
+            transform-origin: left center;
+
+            position: absolute;
+            /* top: 0; */
+            left: 0;
+    
+            /* height: 100%; */
+
+            top: 4px;
+                bottom: 4px;
+                height: auto;
+            width: 0;
+    
+            background: rgba(255, 52, 52, 0.15);
+            border-radius: 8px;
+    
+            /* transition: transform 0.25s ease, width 0.25s ease;
+            
+            */
+
+            transition: transform 0.25s ease, opacity 0.15s ease;
+            pointer-events: none;
+    
+            z-index: 0;
+        }
+    
+        /* ensure links stay above highlight */
+        .nav-item-link {
+            position: relative;
+            z-index: 1;
+        }
+    
+    /* END NEW */
+
     .menu a {
         padding-top: 6px !important;
         padding-bottom: 6px !important;
@@ -294,7 +350,7 @@
     }
 
     .nav-item-link {
-        border-radius: 20px;
+        border-radius: 8px;
         padding: 4px 8px;
     }
 
@@ -349,7 +405,7 @@
     }
 
     .nav-item-link:hover {
-        background: rgba(255, 52, 52, 0.15);
+        /* background: rgba(255, 52, 52, 0.15); */
     }
 
     .dropdown .menu {
