@@ -6,6 +6,7 @@
         'accordion',
         'button_list',
         'document_card',
+        'document_list',
         'footer',
         'head',
         'main_section',
@@ -19,9 +20,12 @@
         'authentication',
         'authorization',
         'csrf_token',
+        'document_factory',
         'document_fetcher',
         'schema_validator',
-        'text_utils'
+        'text_utils',
+        
+        'data/DocEd'
     ]);
 
     # Bootstrap inclusion of basic configurational files

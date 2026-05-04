@@ -1,5 +1,6 @@
 <?php
     require_once dirname(__DIR__). '/utils/loader.php';
+    load_utils("data/DocEd");
 
     global $app_url;
 
@@ -9,29 +10,58 @@
 
     define ('DEFAULT_THUMBNAIL_PATH', "$app_url/images/ui-indicators/doc-placeholder-thumbnail.png");
 
-    function document_card(string $tagclass = "", string $date = "unknown", string $author = "unknown", bool $readOnly = false, string $title = "Untitled", string $thumbnailPath = DEFAULT_THUMBNAIL_PATH, string $dept = "OSC", string $tag = "Document", string $description = "Lorem ipsum dolor sit amet consectetur adipiscing elit.", string $tc = "ABC-1234-56789") {
+    function document_card(Document $document, string $tagclass = "", bool $readOnly = true) {
         global $app_url;
         $isAdmin = $_SESSION['auth']['access_level'] === 'admin';
+
+        $_id = $document->_id;
+        $title = $document->doc_title;
+        $tag = $document->categories[0];
+        $date = (string) $document->dates['date_added']->toDateTime()->format('Y-m-d g:i A');
+        $author = $document->author;
+        $dept = $document->area_of_origin;
+        $tc = $document->tracking_code;
+        $description = $document->description;
+
+        $sanitizedDocumentID = htmlspecialchars($_id); 
         $sanitizedAuthor = htmlspecialchars($author);
         $sanitizedTitle = htmlspecialchars($title);
         $sanitizedTag = htmlspecialchars($tag);
+        $sanitizedDate = htmlspecialchars($date);
         $sanitizedTrackingCode = htmlspecialchars($tc);
         $sanitizedDescription = htmlspecialchars($description);
         $sanitizedDepartment = htmlspecialchars($dept);
-        $sanitizedDate = htmlspecialchars($date);
         $sanitizedTagclass = htmlspecialchars($tagclass);
 
-        $edit_visibility = $readOnly
-            ? ""
-            : "<button class=\"wow\" title=\"Edit Document\"><img src=\"$app_url/images/doc-actions/edit-doc.png\" draggable=\"false\"></button>";
+        $view_button = <<< HTML
+            <button class="document-action" title="View Document" data-linked-document="$sanitizedDocumentID">
+                <img src="$app_url/images/doc-actions/preview-doc.png" draggable="false">
+            </button>
+        HTML;
 
-        $protect_visibility = !$isAdmin
+        $edit_button = $readOnly
             ? ""
-            : "<button class=\"wow\" title=\"Protect Document\"><img src=\"$app_url/images/doc-actions/set-view-password.png\" draggable=\"false\"></button>";
+            : <<< HTML
+                <button class="document-action" title="Edit Document" data-linked-document="$sanitizedDocumentID">
+                    <img src="$app_url/images/doc-actions/edit-doc.png" draggable="false">
+                </button>
+            HTML;
+
+        $protect_button = !$isAdmin
+            ? ""
+            : <<< HTML
+                <button class="document-action" title="Protect Document" data-linked-document="$sanitizedDocumentID">
+                    <img src="$app_url/images/doc-actions/set-view-password.png" draggable="false">
+                </button>
+            HTML;
         
-        $delete_visibility = !$isAdmin
+        $delete_button = !$isAdmin
             ? ""
-            : "<button class=\"delete-btn\">Delete</button>";
+            : <<< HTML
+                <button class="delete-btn" title="Delete Document" data-linked-document="$sanitizedDocumentID">Delete</button>
+            HTML;
+
+        $thumbnailPath = DEFAULT_THUMBNAIL_PATH;
 
         return <<< HTML
             <div class="doc-card-wrapper">
@@ -52,10 +82,10 @@
                                 <p>$sanitizedDescription</p>
 
                                 <div class="doc-actions">
-                                <button class="wow" title="View Document"><img src="$app_url/images/doc-actions/preview-doc.png" draggable="false"></button>
-                                $edit_visibility
-                                $protect_visibility
-                                $delete_visibility
+                                    $view_button
+                                    $edit_button
+                                    $protect_button
+                                    $delete_button
                                 </div>
                             </div>
                         </div>

@@ -197,7 +197,7 @@
     transform: scale(0.95);
 }
 
-.wow {
+.document-action {
     all: unset;
     display: inline-block !important;
     max-width: 36px !important;
@@ -209,11 +209,11 @@
     box-shadow: none !important;
 }
 
-.wow img {
+.document-action img {
     width: 32px;
     transition: transform 0.3s ease;
 }
 
-.wow:hover img {
+.document-action:hover img {
     transform: scale(1.1);
 }
