@@ -2,8 +2,8 @@
     session_start();
     require_once '../components/head.php';
     require_once '../components/navbar.php';
-    require_once 'docEd.php';
-    $all_docs = Documents::getAll();
+    require_once '../utils/data/DocEd.php';
+    $all_docs = Document::getAll();
 ?>
 <!DOCTYPE html>
 <html>

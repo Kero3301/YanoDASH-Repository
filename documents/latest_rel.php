@@ -2,9 +2,9 @@
     session_start();
     require_once '../components/head.php';
     require_once '../components/navbar.php';
-    require_once 'docEd.php'; // Connects to the same data
+    require_once '../utils/data/DocEd.php';
 
-    $all_docs = Documents::getAll();
+    $all_docs = Document::getAll();
     
     // Sort by date: Newest first
     usort($all_docs, function($a, $b) {
