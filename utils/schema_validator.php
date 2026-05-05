@@ -251,7 +251,7 @@
                     'optional' => true,
                     'regex' => '/^\d{4}-\d{5}$/'
                 ],
-                'organization' => ['type' => 'string'],
+                'organization' => ['type' => 'objectid'],
                 'position' => ['type' => 'string'],
 
                 'email_address' => [
