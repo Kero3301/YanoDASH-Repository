@@ -19,10 +19,7 @@
     <div class="about-wrapper">
         <div class="about-card">
             <div class="about-left">
-                <a href="https://www.facebook.com/obrerosc" target="_blank" class="about-logo-link">
                     <img src="../images/YanoDASH Logo Semifinal Draft.png" alt="Large Logo" class="large-about-logo">
-                </a>
-                <h2>YanoDASH</h2>
             </div>
             
             <div class="about-right">
@@ -36,7 +33,9 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
                 </p>
-                <button class="upload-btn contact-btn">CONTACT US</button>
+                <a href="https://www.facebook.com/obrerosc" class="upload-btn contact-btn" target="_blank" style="display: inline-block; padding: 10px;">
+    <img src="Facebook_logo_(square).png" alt="Facebook" style="width: 30px; vertical-align: middle;">
+</a>
             </div>
         </div>
     </div>
