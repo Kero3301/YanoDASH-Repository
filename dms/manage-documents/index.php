@@ -66,7 +66,7 @@
                     <td> 2026-04-01 </td>
                     <td> Active </td>
                     <td>
-                        <button class="edit">Edit</button>
+                        <a href="editPage.php?doc_id=1"><button class="edit">Edit</button></a>
 						<button class="delete">Delete</button>
                     </td>
                 </tr>
