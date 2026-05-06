@@ -1,9 +1,9 @@
 <!-- Private Archive Home Page -->
 <!-- Assigned Member: Shannon -->
-
 <?php
     session_start();
 
+    require_once '../utils/doc_query.php';
     require_once '../utils/loader.php';
     load_components(
         'navbar',
