@@ -24,7 +24,7 @@
 
     use MongoDB\Client;
 
-    $client = new Client("mongodb+srv://yanoDash_RW:yanodash35278@cluster0.psn5zxh.mongodb.net/yanoDASH?retryWrites=true&w=majority");
+    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
 
     $db = $client->yano_dash;
     $collection = $db->documents_schema;
@@ -34,7 +34,6 @@
 
     $query = [];
 
-    // search by title
     if (!empty($search)) {
         $query['title'] = [
             '$regex' => $search,
@@ -42,7 +41,6 @@
         ];
     }
 
-    // category filter
     if (!empty($category) && $category !== 'All Categories') {
         $query['category'] = $category;
     }

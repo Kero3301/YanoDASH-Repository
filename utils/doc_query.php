@@ -9,14 +9,22 @@ require __DIR__ . '/../vendor/autoload.php';
 use MongoDB\Client;
 use MongoDB\BSON\ObjectId;
 
-$mongoUri = "mongodb+srv://yanoDash_RW:yanodash35278@cluster0.psn5zxh.mongodb.net/?appName=Cluster0";
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+}
+
+$mongoUri = getenv('YANODASH_V_DBU_URI');
+
+if (!$mongoUri) {
+    die("Missing environment variable: YANODASH_V_DBU_URI");
+}
 
 try {
     $client = new Client($mongoUri);
     $db = $client->yano_dash;
 } catch (Exception $e) {
-
-    $db_connection_error = $e->getMessage();
+    die("Database connection failed: " . $e->getMessage());
 }
 
 function buildQuery($user, $access, $pageType = 'dms') {
