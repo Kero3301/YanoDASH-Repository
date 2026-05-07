@@ -1,18 +1,35 @@
 <?php
     session_start();
-    require_once '../components/head.php';
-    require_once '../components/navbar.php';
-    require_once '../utils/data/DocEd.php';
 
-    $all_docs = Document::getAll();
-    
-    // Sort by date: Newest first
-    usort($all_docs, function($a, $b) {
-        return strtotime($b['dates']) - strtotime($a['dates']);
-    });
-    
-    // Only show the 5 most recent
-    $latest_docs = array_slice($all_docs, 0, 5);
+    ini_set('display_errors', 'Off');
+
+    require_once '../vendor/autoload.php';
+    require_once '../utils/loader.php';
+
+    load_components(
+        'navbar',
+        'document_list',
+        'document_modal',
+        'page_header'
+    );
+    load_utils(
+        'data/DocEd',
+        'document_factory'
+    );
+    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+
+    $collection_documents = $client->yano_dash->documents_schema;
+    $results = $collection_documents->find(
+        [
+            'doc_status' => 'ARCHIVED',
+            'is_publicized' => true
+        ],
+        [
+            'sort' => ['date_added' => -1], // newest first
+            'limit' => 3
+        ]
+    );
+    $all_docs = get_all($results);
 ?>
 
 <!DOCTYPE html>
@@ -23,56 +40,18 @@
 </head>
 <body>
     <?php echo navbar(1) ?>
-<div class="archive-container">
-    <a href="index.php" id="b-back">Back to Index</a>
-    <header id="title"> <h1>Latest Releases</h1> </header>
-</div> 
+    <?php echo page_header("Latest Releases")?>
 
-<div class="docs-grid" id="docsGrid"></div>
-
-<div id="docModal" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitle"></h3>
-        <p id="modalCategory"></p>
-        <p id="modalDate"></p>
-        <div class="modal-buttons">
-            <button class="btn btn-secondary" onclick="closeModal()">Close</button>
-            <a id="downloadBtn" href="#" class="btn btn-primary" download>Download</a>
+    <div id="docs-list-container">
+        <div class="docs-grid" id="docsGrid">
+            <?php list_all_documents($all_docs)?>
         </div>
+        <h2 style="text-align: center">< Page x of y ></h2>
     </div>
-</div>
 
-<script> 
-    const Documents = <?php echo json_encode($latest_docs); ?>;
-    const docsGrid = document.getElementById('docsGrid');
+    <?php echo document_modal()?>
 
-    function renderDocs() {
-        docsGrid.innerHTML = '';
-        Documents.forEach(doc => {
-            const card = document.createElement('div');
-            card.className = 'doc-card';
-            card.onclick = () => openModal(doc);
-            card.innerHTML = `
-                <div class="card-content">
-                    <span class="doc-badge">${doc.category}</span>
-                    <h2 class="doc-title">${doc.doc_title}</h2>
-                    <div class="doc-meta"><span>📅 ${doc.dates}</span>
-                            <span>🏢 ${doc.area}</span></div>
-                </div>`;
-            docsGrid.appendChild(card);
-        });
-    }
+    <script src="../script/documents-display.js"></script>
 
-    function openModal(doc) {
-        document.getElementById('modalTitle').innerText = doc.doc_title;
-        document.getElementById('modalCategory').innerText = doc.category;
-        document.getElementById('modalDate').innerText = "Released on: " + doc.dates;
-        document.getElementById('downloadBtn').href = "../uploads/" + doc.file_path;
-        document.getElementById('docModal').style.display = 'flex';
-    }
-
-    function closeModal() { document.getElementById('docModal').style.display = 'none'; }
-    renderDocs();
-</script>
 </body>
 </html>

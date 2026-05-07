@@ -188,26 +188,28 @@ button:hover {
     <div class="card div1">
         <div class="title">User Profile</div>
         <div class="profile">
-            <div class="avatar">AB</div>
+            <?php
+                $name = $_SESSION['auth']['name'];
+                $fullname =
+                    ($name['first_name'] ?? '') . ' ' .
+                    ($name['middle_name'] ?? '') . ' ' .
+                    ($name['last_name'] ?? '');
+                $initials = ($name['first_name'][0] ?? ''). ($name['last_name'][0] ?? ''); 
+                $badge = match($_SESSION['auth']['organization']) {
+                    default => "Student",
+                    'CICLC', 'CTLC' => "LC Officer",
+                    'Obrero Student Council', 'OSC' => "OSC Officer"
+                };
+
+                $albadge = match ($_SESSION['auth']['access_level']) {
+                    'admin' => "Administrator",
+                    'editor' => "Editor",
+                    'viewer' => "Viewer"
+                };
+            ?>
+            <div class="avatar"><?= $initials ?></div>
             <div class="info">
                 <?php
-                    $name = $_SESSION['auth']['name'];
-                    $fullname =
-                        ($name['first_name'] ?? '') . ' ' .
-                        ($name['middle_name'] ?? '') . ' ' .
-                        ($name['last_name'] ?? '');
-                    $badge = match($_SESSION['auth']['organization']) {
-                        default => "Student",
-                        'CICLC', 'CTLC' => "LC Officer",
-                        'Obrero Student Council', 'OSC' => "OSC Officer"
-                    };
-
-                    $albadge = match ($_SESSION['auth']['access_level']) {
-                        'admin' => "Administrator",
-                        'editor' => "Editor",
-                        'viewer' => "Viewer"
-                    };
-
                     echo <<< HTML
                         <h2>$fullname <span class="badge">$albadge</span></h2>
                     HTML;

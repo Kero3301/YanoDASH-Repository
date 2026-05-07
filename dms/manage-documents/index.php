@@ -5,6 +5,7 @@
     session_start();
 
     require_once '../../utils/loader.php';
+    require_once '../../vendor/autoload.php';
    
     load_components('navbar');
     load_utils(
@@ -20,9 +21,6 @@
     if (!can_use_dms())
         die("You do not have permission to access this resource.");
 
-    require_once '../../vendor/autoload.php';
-
-    use MongoDB\Client;
 
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
 
@@ -103,7 +101,7 @@
 <table>
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Tracking Code</th>
             <th>Document Title</th>
             <th>Category</th>
             <th>Date Uploaded</th>
@@ -116,7 +114,7 @@
 
     <?php foreach ($documents as $doc): ?>
         <tr>
-            <td><?php echo (string)$doc->_id; ?></td>
+            <td><?php echo (string)$doc->tracking_code; ?></td>
             <td><?php echo $doc->doc_title ?? ''; ?></td>
             <td>
                 <?php  
@@ -135,7 +133,7 @@
             <td><?php echo $doc->doc_status ?? ''; ?></td>
 
             <td>
-                <a href="editPage.php?id=<?php echo $doc->_id; ?>">
+                <a href="editPage.php?doc_id=<?php echo $doc->tracking_code; ?>">
                     <button class="edit">Edit</button>
                 </a>
 

@@ -14,6 +14,7 @@ class Document {
         public array $dates,
         public int $version,
         public string $tracking_code,
+        public string $main_category,
         public bool $is_publicized) {}
 
     public static function getAll(): array {

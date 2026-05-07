@@ -13,6 +13,7 @@
         $collection_accounts = $client->yano_dash->account_schema;
         $collection_loginCredentials = $client->yano_dash->login_credentials_schema;
         $collection_accessLevels = $client->yano_dash->access_levels_schema;
+        $collection_orgs = $client->yano_dash->organizations_schema;
 
         if (trim($email) === '' || trim($password) === '') 
             return new LoginResult(false, "Credentials cannot be blank.");
@@ -40,12 +41,18 @@
         if (!$accessLevelQueryResult || !baseline_schema_validate($accessLevelQueryResult, 'ACCESS_LEVELS'))
             return new LoginResult(false, "User's access level could not be verified.");
 
+
+        $orgNameResult = $collection_orgs->findOne([
+            '_id' => $accountQueryResult->organization
+        ]);
+        $orgName = $orgNameResult->organization_name;
+
         $storedPassword = $loginCredsQueryResult->password_hash;
 
         if (password_verify($password, $storedPassword)) {
             $storedName = json_decode(json_encode($accountQueryResult->name), true);            
             $storedStudentIDNumber = $accountQueryResult->student_id_number ?? "(N/A)";
-            $storedOrganization = $accountQueryResult->organization;
+            $storedOrganization = $orgName;
             $storedPosition = $accountQueryResult->position;
             $storedEmail = $accountQueryResult->email_address;
             $storedAccessLevel = $accessLevelQueryResult->level;
