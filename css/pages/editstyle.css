@@ -5,6 +5,12 @@
     font-family: "Times New Roman", Times, serif;
 }
 
+.title {
+    padding-top: 30px;
+    text-align: center;
+    margin-bottom: -30px;
+}
+
 #editDocumentForm {
     max-width: 750px;
     background: #ffffff;
@@ -12,7 +18,7 @@
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     border-top: 8px solid #000000;
-    margin: 50px auto;
+    margin: 50px 50px;
 }
 
 .tca {
@@ -23,16 +29,56 @@
 }
 
 .box {
-    float: right;
-    width: 400px;
+    width: 200px;
 }
 
-.btn {
+.btn{
     background-color: #ffffff;
     color: #000000;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid #000000;
     border-radius: 5px;
     cursor: pointer;
-    justify-items: center;
+    display: block;
+    margin: 20px auto;
+    
+}
+
+.ay {
+    text-align: center;
+    border: 1px solid black;
+    width: 200px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+@media (min-width: 480px) {
+
+    .box {
+        width: 300px;
+        margin-top: 30px;
+    }
+
+    .ay {
+        width: 300px;
+    }
+
+}
+
+@media (min-width: 1024px) {
+
+    #editDocumentForm {
+        max-width: 900px;
+        margin: 50px auto;
+    }
+
+    .box {
+        width: 400px;
+        margin-top: 30px;
+    }
+
+    .ay {
+        width: 400px;
+    }
+
 }

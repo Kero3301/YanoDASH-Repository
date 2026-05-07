@@ -69,6 +69,7 @@
 }
 
 .container {
+    background: white;
     padding: 30px 15px;
     margin: 15px;
 }
@@ -94,25 +95,40 @@
 }
 
 .button{
-    text-decoration: none;
-    font-weight: bold;
+    font: 15px 'RobotoFlex', sans-serif;
+    background: #63071e;
     color: white;
+
+    border: 2px solid #63071e; /* always present → no shake */
+
+    padding: 18px 20px;
     text-align: center;
-    background-color: #63071e; 
-    padding: 22px 15px;
-    border-radius: 20px;
-    width: 70%;
-    max-width: 300px;
-    transition: transform 0.2s ease, background-color 0.2s ease;
+    text-decoration: none;
+
+    display: block;
+    width: 165px;
+    margin: 15px auto;
+
+    cursor: pointer;
+    border-radius: 15px;
+
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+
+    will-change: transform;
 }
 
 .button:hover {
-  background-color: #0e633a;
-  transform: scale(1.05);
+  background: white;
+    color: #63071e;
+    transform: translateY(-2px);
 }
 
 .button:active {
-  transform: scale(0.95);
+  background: white;
+    color: #63071e;
+    transform: translateY(0);
 }
 
 /* || TABLEEETTT */

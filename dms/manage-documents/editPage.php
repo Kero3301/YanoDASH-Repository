@@ -8,6 +8,15 @@
         'sidebar'
     );
 
+    require_once '../../vendor/autoload.php';
+
+    use MongoDB\Client;
+
+    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+
+    $db = $client->yano_dash;
+    $collection = $db->documents_schema;
+
 
 ?>
 
@@ -21,19 +30,19 @@
     <?php echo navbar(0) ?>
     <!-- Edit Document Content -->
     <div> 
-        <h1>Edit Document</h1>
-        <form id="editDocumentForm" method="POST" action="../utils/editLogic.php">
+        <h1 class="title">Edit Document</h1>
+        <form id="editDocumentForm" method="POST" action="../../utils/editLogic.php">
             
         <div class="tca">
-            <input type="hidden" name="doc_id" value="<?php echo $_GET['doc_id']; ?>">
-            <label  class="doc_title" for="doc_title">Document Title:</label>
-            <input class="box" type="text" name="doc_title" required> 
+            <?php $document = $collection->findOne(['_id' => new MongoDB\BSON\ObjectId($_GET['_id'])]);?>
+            <input type="hidden" name="tracking_code" value="<?php echo $document->tracking_code; ?>">
+            <input type="text" name="doc_title" value="<?php echo $document->doc_title; ?>">
         </div>
 
             
         <div class="tca">
             <label for="category">Category:</label>
-            <select name="category" required>
+            <select class="ay" name="category" required>
                 <option value="">Select Category</option>
                 <option value="Activity Designs">Activity Designs</option>
                 <option value="Memorandum">Memorandum</option>

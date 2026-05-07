@@ -7,13 +7,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_title = $_POST['doc_title'];
     $current_version = (int)$_POST['current_version'];
 
-    if (isset($_FILES['new_file']) && $_FILES['new_files']['error'] === UPLOAD_ERR_OK){
+    if (isset($_FILES['new_file']) && $_FILES['new_file']['error'] === UPLOAD_ERR_OK){
 
         $new_version = $current_version + 1;
         $extension = pathinfo($_FILES['new_file']['name'], PATHINFO_EXTENSION);
 
         $new_filename = $tracking_code . "_v" . $new_version . "." . $extension;
-        $upload_path = '../uploads/' . $new_filename;
+        $upload_path = '../Dowloads/' . $new_filename;
 
         if (move_upload_file($_FILES['new_file']['tmp_name'], $upload_path)) {
             
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } 
 
     } else {
-        header("Location: manage.php?success=metadata_updated");
+        header("Location: dms/manage-style/index.php?success=metadata_updated");
     }
 
 }

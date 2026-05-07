@@ -139,7 +139,7 @@
                     <button class="edit">Edit</button>
                 </a>
 
-                <a href="deletePage.php?id=<?php echo $doc->_id; ?>"
+                <a href="deletePage.php?doc_id=<?php echo $doc->_id; ?>"
                    onclick="return confirm('Delete this document?')">
                     <button class="delete">Delete</button>
                 </a>

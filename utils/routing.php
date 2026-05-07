@@ -10,8 +10,6 @@
 
     if(!in_array($_SESSION['auth']['access_level'], $allowed_roles)) {
         header("Location: add-document.php?error=access_denied");
-        // header("Location: manage-documents.php?error=access_denied");
-        // header("Location: add-document.php?error=access_denied");
         exit();
     }
 
