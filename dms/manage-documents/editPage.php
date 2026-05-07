@@ -5,7 +5,8 @@
     require_once '../../utils/loader.php';
     load_components(
         'navbar',
-        'sidebar'
+        'sidebar',
+        'accordion'
     );
 
     require_once '../../vendor/autoload.php';
@@ -15,20 +16,32 @@
     $client = new MongoDB\Client(getenv('YANODASH_RW_DBU_URI'));
 
     $collection_documents = $client->yano_dash->documents_schema;
-    $fetchedDocument = $collection_documents->findOne([
-        'tracking_code' => $docID
-    ]);
+
+    $documentFound = false;
+    $fetchedDocument = null;
+
+    try {
+        $fetchedDocument = $collection_documents->findOne([
+            '_id' => new MongoDB\BSON\ObjectId($docID)
+        ]);
+
+        $documentFound = (bool) $fetchedDocument;
+
+    } catch (Exception $e) {
+        $documentFound = false;
+    }
 
     $title = "";
     $area = "";
     $category = "Select Category";
+    $currentVersion = 1;
 
-    if ($fetchedDocument) {
+    if ($documentFound) {
         $title = $fetchedDocument->doc_title;
         $area = $fetchedDocument->area_of_origin;
         $category = $fetchedDocument->main_category;
+        $currentVersion = $fetchedDocument->current_version_id;
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -40,41 +53,91 @@
 <body>
     <?php echo navbar(0) ?>
     <!-- Edit Document Content -->
-    <div> 
-        <h1>Edit Document</h1>
-        <form id="editDocumentForm" method="POST" action="../../utils/editLogic.php">
-            
-        <div class="tca">
-            <input type="hidden" name="doc_id" value="<?php echo $_GET['doc_id']; ?>">
-            <label  class="doc_title" for="doc_title">Document Title:</label>
-            <input class="box" type="text" name="doc_title" required value="<?php echo $title ?>"> 
-        </div>
+    <div id="contents"> 
+        <!-- Display this if the document is found -->
+        <?php if ($documentFound): ?>
+            <h1>Edit Document</h1>
 
-            
-        <div class="tca">
-            <label for="category">Category:</label>
-            <select id="category" name="category" required>
-                <option value="">Select Category</option>
-                <option value="Activity Designs">Activity Design</option>
-                <option value="Memorandum">Memorandum</option>
-                <option value="Financial Statements">Financial Statement</option>
-                <option value="Minutes of Meetings">Minutes of Meeting</option>
-                <option value="Accomplishment Report">Accomplishment Report</option>
-                <option value="Project Proposal">Project Proposal</option>
-            </select>
-        </div>
+            <form id="editDocumentForm"
+                method="POST"
+                action="../../utils/editLogic.php"
+                enctype="multipart/form-data">
 
-        <div class="tca">
-            <label for="area">Area:</label>
-            <input class="box" type="text" name="area" required value=<?php echo $area?>>
-        </div>
+                <div class="tca">
+                    <input type="hidden" name="doc_id" value="<?php echo $docID; ?>">
 
-            <button type="submit" class="btn">Save Changes</button>
-        </form>
+                    <label class="doc_title" for="doc_title">
+                        Document Title:
+                    </label>
+
+                    <input class="box"
+                        type="text"
+                        name="doc_title"
+                        required
+                        value="<?php echo htmlspecialchars($title); ?>">
+                </div>
+
+                <div class="tca">
+                    <label for="category">Category:</label>
+
+                    <select id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Activity Designs">Activity Design</option>
+                        <option value="Memorandum">Memorandum</option>
+                        <option value="Financial Statements">Financial Statement</option>
+                        <option value="Minutes of Meetings">Minutes of Meeting</option>
+                        <option value="Accomplishment Report">Accomplishment Report</option>
+                        <option value="Project Proposal">Project Proposal</option>
+                    </select>
+                </div>
+
+                <div class="tca">
+                    <label for="area">Area:</label>
+
+                    <input class="box"
+                        type="text"
+                        name="area"
+                        required
+                        value="<?php echo htmlspecialchars($area); ?>">
+                </div>
+
+                <div id="fileupload-accordion" class="accordion-container">
+                    <button type="button" class="accordion">
+                        Upload a New Version
+                    </button>
+
+                    <div class="panel">
+                        <input type="file"
+                            name="new_file"
+                            style="display: block; margin: auto;">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">
+                    Save Changes
+                </button>
+            </form>
+
+        <!-- Display this message if the requested document is not found/doesn't exist -->
+        <?php else: ?>
+            <div class="not-found">
+                <h1>Document Not Found</h1>
+
+                <p>
+                    Sorry, the document you are requesting was not found.
+                </p>
+
+                <a href="../" class="btn">
+                    Return to DMS Home
+                </a>
+            </div>
+        <?php endif; ?>
     </div>
 
-    <script>
-        document.getElementById("category").value = "<?php echo $category?>";
-    </script>
+    <?php if ($documentFound): ?>
+        <script>
+            document.getElementById("category").value = "<?php echo $category?>";
+        </script>
+    <?php endif; ?>
 </body>
 </html>

@@ -72,6 +72,10 @@ h6 {
     margin-bottom: 0.7rem;
 }
 
+label {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
 .nav-item-link h3 {
     margin-top: 0 !important;
     margin-bottom: 0 !important;

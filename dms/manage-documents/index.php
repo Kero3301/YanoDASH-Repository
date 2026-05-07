@@ -105,6 +105,7 @@
             <th>Document Title</th>
             <th>Category</th>
             <th>Date Uploaded</th>
+            <th>Version</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -130,10 +131,13 @@
                         : '';
                 ?>
             </td>
+            <td>
+                <?php echo (int)$doc->current_version_id; ?>
+            </td>
             <td><?php echo $doc->doc_status ?? ''; ?></td>
 
             <td>
-                <a href="editPage.php?doc_id=<?php echo $doc->tracking_code; ?>">
+                <a href="editPage.php?doc_id=<?php echo $doc->_id; ?>">
                     <button class="edit">Edit</button>
                 </a>
 
