@@ -110,7 +110,7 @@
                 => "$app_url/about/osc",
 
             "Meet the Executives" 
-                => "#",
+                => "$app_url/about/executives/executives.php",
         ]);
 
         $account_menu = menu("account-menu", [

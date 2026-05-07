@@ -1,0 +1,30 @@
+.filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.chip {
+    padding: 8px 16px;
+    border: 2px solid maroon;
+    background: white;
+    color: maroon;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chip:hover {
+    background: #fdf2f2;
+}
+
+.chip.active {
+    background: maroon;
+    color: white;
+}
+
+.chip.active:hover {
+    background: maroon !important;
+    color: white !important;
+}

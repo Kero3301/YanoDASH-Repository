@@ -8,6 +8,26 @@
         'sidebar'
     );
 
+    require_once '../../vendor/autoload.php';
+
+    $docID = $_GET['doc_id'];
+ 
+    $client = new MongoDB\Client(getenv('YANODASH_RW_DBU_URI'));
+
+    $collection_documents = $client->yano_dash->documents_schema;
+    $fetchedDocument = $collection_documents->findOne([
+        'tracking_code' => $docID
+    ]);
+
+    $title = "";
+    $area = "";
+    $category = "Select Category";
+
+    if ($fetchedDocument) {
+        $title = $fetchedDocument->doc_title;
+        $area = $fetchedDocument->area_of_origin;
+        $category = $fetchedDocument->main_category;
+    }
 
 ?>
 
@@ -22,23 +42,23 @@
     <!-- Edit Document Content -->
     <div> 
         <h1>Edit Document</h1>
-        <form id="editDocumentForm" method="POST" action="../utils/editLogic.php">
+        <form id="editDocumentForm" method="POST" action="../../utils/editLogic.php">
             
         <div class="tca">
             <input type="hidden" name="doc_id" value="<?php echo $_GET['doc_id']; ?>">
             <label  class="doc_title" for="doc_title">Document Title:</label>
-            <input class="box" type="text" name="doc_title" required> 
+            <input class="box" type="text" name="doc_title" required value="<?php echo $title ?>"> 
         </div>
 
             
         <div class="tca">
             <label for="category">Category:</label>
-            <select name="category" required>
+            <select id="category" name="category" required>
                 <option value="">Select Category</option>
-                <option value="Activity Designs">Activity Designs</option>
+                <option value="Activity Designs">Activity Design</option>
                 <option value="Memorandum">Memorandum</option>
-                <option value="Financial Statements">Financial Statements</option>
-                <option value="Minutes of Meetings">Minutes of Meetings</option>
+                <option value="Financial Statements">Financial Statement</option>
+                <option value="Minutes of Meetings">Minutes of Meeting</option>
                 <option value="Accomplishment Report">Accomplishment Report</option>
                 <option value="Project Proposal">Project Proposal</option>
             </select>
@@ -46,12 +66,15 @@
 
         <div class="tca">
             <label for="area">Area:</label>
-            <input class="box" type="text" name="area" required>
+            <input class="box" type="text" name="area" required value=<?php echo $area?>>
         </div>
 
             <button type="submit" class="btn">Save Changes</button>
         </form>
     </div>
 
+    <script>
+        document.getElementById("category").value = "<?php echo $category?>";
+    </script>
 </body>
 </html>

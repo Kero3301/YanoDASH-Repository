@@ -16,8 +16,8 @@
             isset($_SESSION['auth'])
             && 
             (
-                in_array(strtoupper($_SESSION['auth']['organization']), ['OBRERO STUDENT COUNCIL', 'OSC'], true)
-                && 
+                // in_array(strtoupper($_SESSION['auth']['organization']), ['OBRERO STUDENT COUNCIL', 'OSC'], true)
+                // && 
                 strtoupper($_SESSION['auth']['position']) === 'PRESIDENT'
             );
     }
