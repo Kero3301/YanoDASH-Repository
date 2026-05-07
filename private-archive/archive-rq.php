@@ -4,6 +4,7 @@
 <?php
     session_start();
 
+    require_once '../utils/routing.php';
     require_once dirname(__DIR__). '/utils/loader.php';
     load_components(
         'navbar',

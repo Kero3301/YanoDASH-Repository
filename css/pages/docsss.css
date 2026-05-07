@@ -1,3 +1,9 @@
+.page-contents {
+    height: auto;
+    max-height: max-content;
+}
+
+
 * {
             margin: 0;
             padding: 0;
@@ -17,6 +23,17 @@
     padding: 20px;
     font: bold 14px;
     justify-items: center;
+}
+
+#docs-list-container {
+    max-width: 1400px;
+    background-color: white;
+    border: 3px solid #e9e9e9;
+    max-height: max-content;
+    border-radius: 32px;
+    margin: auto;
+    margin-top: 210px;
+    /* margin-top: 8px; */
 }
 
 .archive-container {
@@ -74,32 +91,6 @@
             box-shadow: 0 0 0 3px rgba(80, 27, 27, 0.2);
         }
 
-
-    .docs-grid {
-            padding: 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1.6rem;
-        }
-
-    .doc-card {
-            background: #ffffff;
-            border-radius: 1.2rem;
-            border: 5px solid #eef2f8;
-            transition: all 0.25s ease;
-            box-shadow: 0 2px 3px #cfdee9;
-            cursor: pointer;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-    .doc-card:hover {
-            transform: translateY(-4px);
-            border-color: #5b2633;
-            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.1);
-        }
-
     .card-content {
             padding: 1.3rem 1.5rem 1.2rem;
             flex: 1;
@@ -148,49 +139,7 @@
             border-top: 1px dashed #edf2f7;
             padding-top: 0.7rem;
         }
-    .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(4px);
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            font-family: monospace;
-        }
-
-    .modal-content {
-            background: white;
-            max-width: 550px;
-            width: 90%;
-            border-radius: 1.8rem;
-            padding: 1.8rem 2rem 2rem;
-            text-align: center;
-            box-shadow: 0 25px 40px #63071e;
-            animation: fadeSlide 0.2s ease;
-        }
-
-    .modal-content h3 {
-            font-size: 1.6rem;
-            margin-bottom: 0.75rem;
-        }
-
-    .modal-content p {
-            margin: 1rem 0;
-            color: #2d3e50;
-            word-break: break-word;
-        }
-
-    .modal-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
+    
     
     .btn {
             padding: 0.6rem 1.5rem;
@@ -218,32 +167,6 @@
     color: maroon; 
     margin-top: 10px;
 } */
-
-.filter-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.chip {
-    padding: 8px 16px;
-    border: 1px solid maroon;
-    background: white;
-    color: maroon;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.chip.active {
-    background: maroon;
-    color: white;
-}
-
-.chip:hover {
-    background: #fdf2f2;
-}
 
 #b-back {
     color: rgb(233, 225, 225);

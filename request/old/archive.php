@@ -1,56 +1,33 @@
 <?php
-session_start();
+    session_start();
 
-// MANUALLY SET SESSION FOR TESTING - MUST BE BEFORE AUTHENTICATION CHECKS
-$_SESSION['user_id'] = 'test_user_id';
-$_SESSION['username'] = 'test_admin';
-$_SESSION['role'] = 'admin';
+    require_once dirname(__DIR__). '/utils/loader.php';
+    load_components(
+        'navbar',
+        'footer'
+    );
+    load_utils(
+        'authentication',
+        'authorization'
+    );
 
-require_once '../components/head.php';
-require_once '../components/navbar.php';
+    if (!is_logged_in()) {
+        header('location: '. $app_url. '/auth/login.php');
+        exit;
+    }
 
-// Load utilities FIRST before using any functions
-load_utils(
-    'authentication',
-    'authorization'
-);
-
-// Then load components
-load_components(
-    'navbar',
-    'footer'
-);
-
-// COMMENT OUT OR REMOVE THE AUTHENTICATION CHECKS FOR TESTING
-/*
-if (!is_logged_in()) {
-    header('location: '. $app_url. '/auth/login.php');
-    exit;
-}
-
-if (!can_use_dms()) {
-    die("You do not have permission to access this resource.");
-}
-*/
-
-// OPTIONAL: Add a debug message to confirm bypass is working
-// echo "<!-- Development Mode: Authentication Bypassed -->";
+    if (!can_use_dms()) {
+        die("You do not have permission to access this resource.");
+    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php 
-    // Make sure initializePage function exists
-    if (function_exists('initializePage')) {
-        initializePage("Request Document | YanoDASH");
-    } else {
-        echo "<title>Request Document | YanoDASH</title>";
-    }
-    ?>
+    <?php initialize_page("Request Document | YanoDASH")?>
 
 <style>
-/* Your existing styles remain the same */
+/* ✅ GLOBAL FONT SYSTEM */
 body {
     font-family: 'RobotoFlex', sans-serif;
 }
@@ -63,6 +40,7 @@ body {
     font-family: 'RobotoFlex', sans-serif;
 }
 
+/* FORM CONTAINER */
 .form-container.serif {
     font-family: 'Gupter', serif;
 }
@@ -77,6 +55,7 @@ body {
     border-top: 8px solid #2e7d32;
 }
 
+/* BACK BUTTON (UNCHANGED except font consistency fix optional) */
 .btn-back {
     display: inline-block;
     padding: 10px 25px;
@@ -100,6 +79,7 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
+/* FORM FIELDS */
 .form-group {
     margin-bottom: 25px;
 }
@@ -124,6 +104,7 @@ body {
     font-family: 'RobotoFlex', sans-serif;
 }
 
+/* FILE UPLOAD */
 .file-input-wrapper {
     padding: 15px;
     border-radius: 8px;
@@ -131,6 +112,7 @@ body {
     text-align: center;
 }
 
+/* FILE BUTTON (unchanged) */
 input[type="file"]::file-selector-button {
     background-color: #2e7d32;
     color: white;
@@ -142,6 +124,7 @@ input[type="file"]::file-selector-button {
     font-weight: bold;
 }
 
+/* SUBMIT BUTTON (UNCHANGED as requested) */
 .btn-submit {
     background-color: #2e7d32;
     color: white;
@@ -162,6 +145,7 @@ input[type="file"]::file-selector-button {
     box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
 }
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .form-container {
         width: 80%;
@@ -185,29 +169,9 @@ input[type="file"]::file-selector-button {
 <body>
 
 <?php echo navbar(0); ?>
-
-<!-- Add this message display section -->
-<?php if (isset($_SESSION['success_msg'])): ?>
-    <div style="max-width: 750px; margin: 20px auto; background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745; text-align: center;">
-        <?php 
-        echo htmlspecialchars($_SESSION['success_msg']);
-        unset($_SESSION['success_msg']);
-        ?>
-    </div>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['error_msg'])): ?>
-    <div style="max-width: 750px; margin: 20px auto; background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; border-left: 4px solid #dc3545; text-align: center;">
-        <?php 
-        echo htmlspecialchars($_SESSION['error_msg']);
-        unset($_SESSION['error_msg']);
-        ?>
-    </div>
-<?php endif; ?>
-
 <div class="form-container">
 
-    <a href="request.php" class="btn-back">Back to Menu</a>
+    <a href="index.php" class="btn-back">Back to Menu</a>
 
     <h2 class="serif" style="text-align: center; margin-bottom: 30px; color: #2e7d32;">
         Request a New Document
@@ -217,7 +181,8 @@ input[type="file"]::file-selector-button {
         
         <div class="form-group">
             <label for="doc_type">Document Type</label>
-            <select id="doc_type" name="doc_type">
+            <select id="doc_type" name="doc_type" required>
+                <option value="" disabled selected>-- Please choose a document type --</option>
                 <option value="Voting Registration">Voting Registration</option>
                 <option value="Required attendance">Required attendance</option>
                 <option value="Budget event">Budget event</option>
@@ -242,13 +207,13 @@ input[type="file"]::file-selector-button {
 
         <div class="form-group">
             <label for="notes">Document ID</label>
-            <textarea id="notes" name="notes" rows="1" placeholder="Please refer to the document ID"></textarea>
+            <textarea id="notes" name="notes" rows="1" placeholder="Please refer to the document ID" required></textarea>
         </div>
 
         <button type="submit" class="btn-submit">Submit Request</button>
     </form>
 
 </div>
-
+<?php echo footer(); ?>
 </body>
 </html>

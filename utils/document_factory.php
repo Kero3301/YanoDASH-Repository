@@ -9,12 +9,13 @@ function get_doc($docData): ?Document {
         categories: $docData -> doc_categories->getArrayCopy(),
         status: $docData -> doc_status,
         description: $docData -> description ?? "(no description)",
-        keywords: $docData -> keywords ?? [],
+        keywords: isset($docData->keywords)? $docData->keywords->getArrayCopy() : [],
         area_of_origin: $docData -> area_of_origin,
         author: $docData -> author,
         dates: $docData -> dates->getArrayCopy(),
         version: $docData -> current_version_id ?? 0,
         tracking_code: $docData -> tracking_code,
+        main_category: $docData -> main_category,
         is_publicized: $docData -> is_publicized
     );
 }

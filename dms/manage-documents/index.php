@@ -6,6 +6,7 @@
 
     require_once '../../utils/doc_query.php';
     require_once '../../utils/loader.php';
+    require_once '../../vendor/autoload.php';
    
     load_components('navbar');
     load_utils(
@@ -21,9 +22,6 @@
     if (!can_use_dms())
         die("You do not have permission to access this resource.");
 
-    require_once '../../vendor/autoload.php';
-
-    use MongoDB\Client;
 
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
 
@@ -136,7 +134,7 @@
             <td><?php echo $doc->doc_status ?? ''; ?></td>
 
             <td>
-                <a href="editPage.php?id=<?php echo $doc->_id; ?>">
+                <a href="editPage.php?doc_id=<?php echo $doc->tracking_code; ?>">
                     <button class="edit">Edit</button>
                 </a>
 
