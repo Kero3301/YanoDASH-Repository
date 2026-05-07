@@ -19,6 +19,34 @@
 
     if (!can_use_dms())
         die("You do not have permission to access this resource.");
+
+    require_once '../../vendor/autoload.php';
+
+    use MongoDB\Client;
+
+    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+
+    $db = $client->yano_dash;
+    $collection = $db->documents_schema;
+
+    $search = $_GET['search'] ?? '';
+    $category = $_GET['category'] ?? '';
+
+    $query = [];
+
+    if (!empty($search)) {
+        $query['title'] = [
+            '$regex' => $search,
+            '$options' => 'i'
+        ];
+    }
+
+    if (!empty($category) && $category !== 'All Categories') {
+        $query['category'] = $category;
+    }
+
+    // fetch documents
+    $documents = $collection->find($query);
 ?>
 
 <!DOCTYPE html>
@@ -33,82 +61,94 @@
 		<h1> Manage Documents </h1>
 	</header> <!-- end of header -->
 
-    <div class="controls"> <!-- start of controls -->
-        <input type="text" placeholder="Search documents...">
-        
-        <select> 
-            <option> All Categories </option>
-            <option> Reports </option>
-            <option> Proposals </option>
-            <option> Minutes </option>
-        </select>
-    </div> <!-- end of controls -->
+    <div class="controls">
+        <form method="GET" class="controls-bar">
 
-    <div class="table-container"> <!-- start of table -->
-        <br>
-        <table>
-            <thead>
-                <tr>
-                    <th> ID </th>
-                    <th> Document Title </th>
-                    <th> Category </th>
-                    <th> Date Uploaded </th>
-                    <th> Status </th>
-                    <th> Actions </th>
-                </tr>
-            </thead>
+            <!-- LEFT: SEARCH -->
+            <input 
+                type="text" 
+                name="search" 
+                placeholder="Search documents..."
+                value="<?php echo htmlspecialchars($search); ?>"
+                class="search-box"
+            >
 
-            <tbody>
-                <tr>
-                    <td> 1 </td>
-                    <td> Budget Report 2026 </td>
-                    <td> Reports </td>
-                    <td> 2026-04-01 </td>
-                    <td> Active </td>
-                    <td>
-                        <button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-                    </td>
-                </tr>
+            <!-- RIGHT: CATEGORY -->
+            <select name="category" class="category-box">
+                <?php
+                    $categories = [
+                        "All Categories",
+                        "Activity Designs",
+                        "Memorandum",
+                        "Financial Statements",
+                        "Minutes of Meetings",
+                        "Accomplishment Report",
+                        "Project Proposal"
+                    ];
 
-                <tr>
-                    <td> 2 </td>
-                    <td> Event Proposal </td>
-                    <td> Proposals </td>
-                    <td> 2026-03-28 </td>
-                    <td> Active </td>
-                    <td>
-                        <button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-                    </td>
-                </tr>
+                    foreach ($categories as $cat) {
+                        $selected = ($category === $cat) ? "selected" : "";
+                        echo "<option value=\"$cat\" $selected>$cat</option>";
+                    }
+                ?>
+            </select>
 
-                <tr>
-                    <td> 3 </td>
-                    <td> Meeting Minutes </td>
-                    <td> Minutes </td>
-                    <td> 2026-03-25 </td>
-                    <td> Archived </td>
-                    <td>
-                        <button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-                    </td>
-                </tr>
+        </form>
+    </div>
 
-                <tr>
-                    <td> 4 </td>
-                    <td> Project Documentation </td>
-                    <td> Reports </td>
-                    <td> 2026-03-20 </td>
-                    <td> Active </td>
-                    <td>
-                        <button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div> <!-- end of table -->
+    <!-- TABLE -->
+<div class="table-container">
+<br>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Document Title</th>
+            <th>Category</th>
+            <th>Date Uploaded</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+    <?php foreach ($documents as $doc): ?>
+        <tr>
+            <td><?php echo (string)$doc->_id; ?></td>
+            <td><?php echo $doc->doc_title ?? ''; ?></td>
+            <td>
+                <?php  
+                    echo isset($doc->doc_categories)
+                        ? implode(", ", (array)$doc->doc_categories)
+                        : ''; 
+                ?>
+            </td>
+            <td>
+                <?php 
+                    echo isset($doc->dates->date_added)
+                        ? $doc->dates->date_added->toDateTime()->format('Y-m-d')
+                        : '';
+                ?>
+            </td>
+            <td><?php echo $doc->doc_status ?? ''; ?></td>
+
+            <td>
+                <a href="editPage.php?id=<?php echo $doc->_id; ?>">
+                    <button class="edit">Edit</button>
+                </a>
+
+                <a href="deletePage.php?id=<?php echo $doc->_id; ?>"
+                   onclick="return confirm('Delete this document?')">
+                    <button class="delete">Delete</button>
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+
+    </tbody>
+</table>
 
 </body>
 </html>

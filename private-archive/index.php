@@ -1,9 +1,9 @@
 <!-- Private Archive Home Page -->
 <!-- Assigned Member: Shannon -->
-
 <?php
     session_start();
 
+    require_once '../utils/doc_query.php';
     ini_set('display_errors', 'Off');
 
     require_once '../vendor/autoload.php';
