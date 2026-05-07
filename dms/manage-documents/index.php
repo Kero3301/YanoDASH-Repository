@@ -4,6 +4,7 @@
 <?php
     session_start();
 
+    require_once '../../utils/doc_query.php';
     require_once '../../utils/loader.php';
    
     load_components('navbar');
@@ -103,7 +104,7 @@
 <table>
     <thead>
         <tr>
-            <th>ID</th>
+            <th>Tracking Code</th>
             <th>Document Title</th>
             <th>Category</th>
             <th>Date Uploaded</th>
@@ -116,7 +117,7 @@
 
     <?php foreach ($documents as $doc): ?>
         <tr>
-            <td><?php echo (string)$doc->_id; ?></td>
+            <td><?php echo (string)$doc->tracking_code; ?></td>
             <td><?php echo $doc->doc_title ?? ''; ?></td>
             <td>
                 <?php  
