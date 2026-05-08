@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once dirname(__DIR__). '/directory_config.php';
+require_once 'directory.php';
 require_once dirname(__DIR__). '/vendor/autoload.php';
 
 $client = new MongoDB\Client(getenv('YANODASH_RW_DBU_URI'));

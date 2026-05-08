@@ -60,7 +60,7 @@
 
             <form id="editDocumentForm"
                 method="POST"
-                action="../../utils/editLogic.php"
+                action="../../utils/edit_logic.php"
                 enctype="multipart/form-data">
 
                 <div class="tca">
