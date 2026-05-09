@@ -22,30 +22,38 @@
     if (!can_use_dms())
         die("You do not have permission to access this resource.");
 
-
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
-
     $db = $client->yano_dash;
     $collection = $db->documents_schema;
 
     $search = $_GET['search'] ?? '';
     $category = $_GET['category'] ?? '';
 
-    $query = [];
+    $securityQuery = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'dms');
 
+    $userFilters = [];
     if (!empty($search)) {
-        $query['title'] = [
+        $userFilters['doc_title'] = [
             '$regex' => $search,
             '$options' => 'i'
         ];
     }
-
     if (!empty($category) && $category !== 'All Categories') {
-        $query['category'] = $category;
+        $userFilters['doc_categories'] = ['$in' => [$category]];
     }
 
-    // fetch documents
-    $documents = $collection->find($query);
+    if (empty($userFilters)) {
+        $finalQuery = $securityQuery;
+    } else {
+        $finalQuery = [
+            '$and' => [
+                $securityQuery,
+                $userFilters
+            ]
+        ];
+    }
+
+    $documents = $collection->find($finalQuery);
 ?>
 
 <!DOCTYPE html>
@@ -56,14 +64,13 @@
 </head>
 <body>
 	<?php echo navbar(0) ?>
-	<header class="title"> <!-- start of header -->
+	<header class="title">
 		<h1> Manage Documents </h1>
-	</header> <!-- end of header -->
+	</header>
 
     <div class="controls">
         <form method="GET" class="controls-bar">
 
-            <!-- LEFT: SEARCH -->
             <input 
                 type="text" 
                 name="search" 
@@ -73,14 +80,14 @@
             >
 
             <!-- RIGHT: CATEGORY -->
-            <select name="category" class="category-box">
+            <select name="category" class="category-box" onchange="this.form.submit()">
                 <?php
                     $categories = [
                         "All Categories",
-                        "Activity Designs",
+                        "Activity Design",
                         "Memorandum",
-                        "Financial Statements",
-                        "Minutes of Meetings",
+                        "Financial Statement",
+                        "Meeting Minutes",
                         "Accomplishment Report",
                         "Project Proposal"
                     ];
@@ -91,7 +98,6 @@
                     }
                 ?>
             </select>
-
         </form>
     </div>
 

@@ -34,14 +34,12 @@
     }
 
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
-
     $collection_documents = $client->yano_dash->documents_schema;
-    $results = $collection_documents->find(
-        [
-            'doc_status' => 'ARCHIVED',
-            'is_publicized' => false
-        ]
-    );
+
+    $query = buildQuery($_SESSION['auth'], $_SESSION['access'], 'private');
+
+    $results = $collection_documents->find($query);
+
     $all_docs = get_all($results);
 ?>
 

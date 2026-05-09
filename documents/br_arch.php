@@ -1,6 +1,7 @@
 <?php
     session_start();
 
+    require_once '../utils/doc_query.php';
     ini_set('display_errors', 'Off');
 
     require_once '../vendor/autoload.php';
@@ -17,9 +18,11 @@
         'document_factory'
     );
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
-
     $collection_documents = $client->yano_dash->documents_schema;
-    $results = $collection_documents->find(['is_publicized' => true]);
+
+    $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
+    
+    $results = $collection_documents->find($query);
     $all_docs = get_all($results);
 ?>
 <!DOCTYPE html>
