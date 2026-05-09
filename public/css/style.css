@@ -1,0 +1,487 @@
+/* GLOBAL STYLES */
+
+.docs-grid {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.0rem;
+}
+
+
+/* ========== BODY ========== */
+html, body {
+    margin: 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(to bottom, #F4F7F9, rgb(159, 159, 159));
+    z-index: -1;
+}
+
+/* ========== ANCHORS ========== */
+a.inline-link {
+    text-decoration: none;
+    color: #a60000;
+    border-bottom: 2px solid transparent;
+    transition: border 0.3s ease, background 0.3s ease, transform 0.2s ease;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    transform-origin: center;
+}
+
+a.inline-link:hover {
+    background-color: rgba(189, 0, 60, 0.15);
+    border-color: #a60000;
+    transform: translateY(-2px);
+}
+
+a.inline-link:active {
+    transform: translateY(-2px) scale(0.97);
+}
+
+/* ========== LISTS ========== */
+ul li::marker {
+    color: #a60000;
+}
+
+/* ========== TEXT ========== */
+p {
+    font-family: 'RobotoFlex', sans-serif;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+b,
+i {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+    font-family: 'Gupter', serif;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+
+label {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.nav-item-link h3 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ========== BUTTONS ========== */
+button {
+    cursor: pointer;
+}
+
+.btn {
+    font-family: 'RobotoFlex', sans-serif !important;
+    display: inline-block;
+    color: #333;
+    text-decoration: none;
+    border-radius: 50px;
+    font-family: 'RobotoFlex', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    padding: 10px 25px;
+}
+
+.btn:hover {
+    background-color: #5f0000;
+    border-color: #5f0000;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn.active {
+    background-color: #b01717;
+    color: white;
+}
+
+.btn.green:hover {
+    background-color: #256E2E !important;
+    border-color: #256E2E !important;
+}
+
+.btn.green.active {
+    background-color: #2b8b30;
+}
+
+.locked,
+.locked:hover {
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+.btn.locked,
+.btn:disabled,
+.btn.locked:hover,
+.btn:disabled:hover {
+    background-color: #DDD;
+    color: gray;
+    transition: none;
+}
+
+/* INPUTS */
+input {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+input.locked {
+    background: #DDD;
+    color: gray;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    box-sizing: border-box;
+    display: inline-block;
+    padding: 10px 4px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.1s ease;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+input[type="text"].password-input-field,
+input[type="password"].password-input-field {
+    border: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 6px 0 0 6px;
+}
+
+input[type="text"].compact,
+input[type="password"].compact {
+    padding: 6px 4px;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover {
+    border-color: #cb7878;
+    outline: none !important;
+}
+
+input[type="text"]:focus-within,
+input[type="email"]:focus-within,
+input[type="password"]:focus-within {
+    border-color: maroon;
+    outline: none !important;
+}
+
+
+/* ========== FORMS ========== */
+form {
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+/* ========= CONTAINERS ========== */
+.page-contents {
+    width: 99%;
+    height: max-content;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    border: 3px solid #e9e9e9;
+    background-color: white;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.page-contents.no-padding {
+    padding: 0 !important;
+}
+/* GLOBAL STYLES END */
+
+
+
+/* ============================================================================================================ 
+                                            START OF MOBILE VIEW 
+============================================================================================================ */
+#footer a {
+    font-size: 1rem;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+#legal {
+    font-size: 1rem !important;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+#footer a:hover {
+    text-decoration: underline;
+}
+
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+.error {
+    border: 2px solid #ff4d4f !important;
+}
+
+.error-message {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%) scale(0.95);
+
+    background: #ff4d4f;
+    color: #fff;
+    font-family:'RobotoFlex', sans-serif;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    margin-top: 0;
+    z-index: 999;
+
+    opacity: 1;
+
+    pointer-events: none;
+    user-select: none;
+}
+
+.password-input.error {
+    border: 2px solid #ff4d4f !important;
+}
+
+.content-text {
+    font-size: 1rem !important;
+}
+
+.content-title {
+    color: #63071e !important;
+    border: 3px solid lightgray;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.content-section {
+    color: white;
+    padding: 30px;
+    height: auto;
+
+}
+
+#sec1-title {
+    width: 60%;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 1.30rem;
+    padding: 10px;
+    color: #71100F;
+    margin-top: 10px;
+}
+
+#sec1-text, 
+#stats-section-text,
+#dms-section-text {
+    font-size: 1rem;
+    margin: 20px;
+    text-align: justify;
+}
+
+#stats-section-title {
+    width: 42%;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 1.30rem;
+    padding: 10px;
+    color: #71100F;
+    margin-top: 10px;
+}
+
+#dms-section-title {
+    width: 69%;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 1.30rem;
+    padding: 10px;
+    color: #71100F;
+    margin-top: 10px;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MOBILE VIEW FOOTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#footer {
+    position: static !important;
+    flex-direction: column !important;
+    background-color: black;
+    color: white;
+    gap: 30px !important;
+    padding: 20px;
+    text-align: center;
+}
+
+#footer .footer-section:last-child { margin-left: 0 !important; }
+
+.footer-section-label {
+    font-size: 1.15rem;
+    font-weight: bolder;
+}
+
+#contacts {
+    justify-content: center !important;
+    margin-left: 0 !important;
+}
+/* ============================================================================================================ 
+                                            END OF MOBILE VIEW 
+============================================================================================================ */
+
+
+
+/* ============================================================================================================ 
+                                            START OF TABLET VIEW 
+============================================================================================================ */
+@media (min-width: 481px) {
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    .content-section { padding: 50px; }
+
+    #sec1-title {
+        width: 41%;
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+
+    #sec1-text, 
+    #stats-section-text, 
+    #dms-section-text { font-size: 1.5rem; }
+
+    #stats-section-title {
+        width: 29%;
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+
+    #dms-section-title {
+        width: 47%;
+        font-size: 1.8rem;
+        padding: 15px;
+    }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TABLET VIEW FOOTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    #footer {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+        gap: 40px;
+        line-height: 1.7em;
+    }
+
+    .footer-section {
+        width: 45%;
+        margin-bottom: 15px;
+    }
+
+    #footer .footer-section:last-child { margin-left: 0 !important; }
+
+    .footer-section-label {
+        font-size: 1.5rem !important;
+        font-weight: bolder;
+    }
+
+    .footer-section li, 
+    .footer-section p, 
+    #legal { font-size: 1.2rem; }
+
+    #contacts {
+        display: flex;
+        justify-content: flex-start !important;
+        gap: 12px;
+        margin-left: 0 !important;
+    }
+} /* ============================================================================================================ 
+                                            END OF TABLET VIEW 
+============================================================================================================ */
+
+
+
+/* ============================================================================================================ 
+                                            START OF DESKTOP VIEW 
+============================================================================================================ */
+@media (min-width: 1024px) {
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DESKTOP VIEW MAIN CONTENTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    .content-section { padding: 70px; }
+
+    #sec1-title {
+        width: 27%;
+        font-size: 2rem;
+        padding: 15px;
+    }
+
+    #sec1-text, 
+    #stats-section-text, 
+    #dms-section-text { font-size: 1.3rem; }
+
+    #stats-section-title {
+        width: 19%;
+        font-size: 2rem;
+        padding: 15px;
+    }
+
+    #dms-section-title {
+        width: 31%;
+        font-size: 2rem;
+        padding: 15px;
+    }
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ DESKTOP VIEW FOOTER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    #footer {
+        display: flex;
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+        gap: 15px;
+        line-height: 1.7em;
+    }
+
+    .footer-section { width: 25%; }
+
+    #footer .footer-section:last-child { margin-left: 0 !important; }
+
+    .footer-section-label {
+        font-size: 1.7rem !important;
+        font-weight: bolder;
+    }
+
+    .footer-section li, 
+    .footer-section p, 
+    #legal { font-size: 1.2rem; }
+
+    #contacts {
+        display: flex;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+} /* ============================================================================================================ 
+                                            END OF DESKTOP VIEW 
+============================================================================================================ */
