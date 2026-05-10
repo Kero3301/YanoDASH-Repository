@@ -19,10 +19,11 @@
         global $app_url;
         global $identity;
         global $profile;
+        global $permissions;
 
         $isLoggedIn = is_logged_in();
-        $isAdmin = isset($identity) && $identity['access_level'] === 'admin';
-        $isEditor = isset($identity) && $identity['access_level'] === 'editor';
+        $isAdmin = is_admin($permissions);
+        $isEditor = is_editor($permissions);
         $shouldShowPrivate = 
             $isLoggedIn && ($isAdmin || $isEditor);
 
@@ -71,7 +72,7 @@
             ? ""
             : ($isAdmin
                 ? (
-                    is_president($identity)
+                    is_president($identity, $permissions)
                     ? menu("private-archive-menu", [
                         "Home" 
                             => "$app_url/private-archive/",

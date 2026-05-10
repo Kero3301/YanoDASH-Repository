@@ -1,16 +1,15 @@
 <?php
-# Definitions
-define('SOURCES_PATH', __DIR__);
-define('COMPONENT_BASE_PATH', SOURCES_PATH. '/views/components/');
-define('VENDOR_BASE_PATH', dirname(__DIR__). '/vendor/');
+# Path definitions
+const SOURCES_PATH = __DIR__;
+const COMPONENT_BASE_PATH = SOURCES_PATH. '/views/components/';
 
-# Bootstrap inclusion of basic configurational files
+# Bootstrap inclusion of common basic utilities and configurational files
+require_once COMPONENT_BASE_PATH. 'head.php';
 require_once SOURCES_PATH. '/../config/directory.php';
 require_once SOURCES_PATH. '/services/auth_bootstrap.php';
-require_once SOURCES_PATH. '/views/components/head.php';
 
 # Safe whitelist of allowed sources to prevent arbitrary file inclusion
-define('ALLOWED_SOURCES', [
+const SOURCES = [
     # Non-components
     'vendor_autoload' => '../vendor/autoload',        
     'mongodb_client' => 'database/mongodb_client',
@@ -42,16 +41,16 @@ define('ALLOWED_SOURCES', [
     'password_input' => 'views/components/password_input',
     'sliding_switch' => 'views/components/sliding_switch',
     'user_form' => 'views/components/user_form'
-]);
+];
 
 # Function to load a list of sources by name
 function load(string ...$sources) {
     foreach (array_unique($sources) as $source) {
         # Ignore non-whitelisted sources
-        if (!array_key_exists($source, ALLOWED_SOURCES)) continue;
+        if (!array_key_exists($source, SOURCES)) continue;
         
         # Build absolute path
-        $path = SOURCES_PATH . '/'. ALLOWED_SOURCES[$source]. '.php';
+        $path = SOURCES_PATH . '/'. SOURCES[$source]. '.php';
 
         # Load only if file exists
         if (file_exists($path)) require_once $path;

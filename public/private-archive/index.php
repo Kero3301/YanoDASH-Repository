@@ -22,7 +22,7 @@
         exit;
     }
 
-    if (!can_use_dms($identity)) {
+    if (!can_use_dms($permissions)) {
         die("You do not have permission to access this resource.");
     }
 

@@ -207,7 +207,7 @@ button:hover {
                     'CICLC', 'CTLC' => "LC Officer",
                     'Obrero Student Council', 'OSC' => "OSC Officer"
                 };
-                $albadge = match ($identity['access_level']) {
+                $albadge = match ($permissions['access_level']) {
                     'admin' => "Administrator",
                     'editor' => "Editor",
                     'viewer' => "Viewer"

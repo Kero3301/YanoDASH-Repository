@@ -17,7 +17,7 @@
         exit;
     }
 
-    if (!is_president($identity)) {
+    if (!is_president($identity, $permissions)) {
         die("You do not have permission to access this resource.");
     }
 ?>

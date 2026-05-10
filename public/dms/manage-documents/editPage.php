@@ -1,14 +1,14 @@
 <?php
     session_start();
 
-    // require_once '../utils/routing.php';
     require_once '../../../src/loader.php';
     load (
         'authentication',
         'authorization',
         'vendor_autoload',
+        'mongodb_client',
         'navbar',
-        'accordion'
+        'accordion',
     );
 
     if (!is_logged_in()) {
@@ -16,12 +16,12 @@
         exit;
     }
 
-    if (!can_use_dms($identity)) 
+    if (!can_use_dms($permissions)) 
         die("You do not have permission to access this resource.");
 
     $docID = $_GET['doc_id'];
  
-    $client = new MongoDB\Client(getenv('YANODASH_RW_DBU_URI'));
+    $client = mongodb_client();
 
     $collection_documents = $client->yano_dash->documents_schema;
 
@@ -32,9 +32,7 @@
         $fetchedDocument = $collection_documents->findOne([
             '_id' => new MongoDB\BSON\ObjectId($docID)
         ]);
-
         $documentFound = (bool) $fetchedDocument;
-
     } catch (Exception $e) {
         $documentFound = false;
     }

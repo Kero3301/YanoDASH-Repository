@@ -48,7 +48,7 @@ function resolve_permissions(?string $userID): ?array {
         'user_id' => (string) $identity->_id,
         'access_level' => $access_level,
         'access_scope' => $scope,
-        'access_domains' => $access_domains,
+        'access_domains' => $access_domains->getArrayCopy(),
     ];
 
     # Result caching and return

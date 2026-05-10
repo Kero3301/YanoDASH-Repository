@@ -52,13 +52,18 @@
             }
 
             table.acclist tr:not(.headingrow):hover {
-                background: rgba(255,0,0,0.1);
+                background: rgba(255,0,0,0.12);
+            }
+
+            table.acclist tr:not(.headingrow) td {
+                transition: transform 0.2s ease;
             }
 
             table.acclist tr:not(.headingrow) td:hover {
-                background: rgba(255,0,0,0.15);
-                outline: 3px solid lightgray;
+                background: rgba(255,0,0,0.17);
+                outline: 3px solid #800000;
                 outline-offset: -3px;
+                transform: translateY(-3px);
             }
         </style>
     </head>

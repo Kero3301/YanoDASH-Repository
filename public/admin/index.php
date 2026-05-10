@@ -14,7 +14,7 @@
         exit;
     }
 
-    if (!can_access_admin_pages($identity)) {
+    if (!can_access_admin_pages($permissions)) {
         die("You do not have permission to access this resource.");
     }
 ?>
@@ -32,6 +32,8 @@
                 $email = $identity['email'];
             ?>
             <p>Welcome, <b><?= "$fullname</b> ($email)" ?>!</p>
+            <a class="btn" href="manage-accounts.php">Manage Accounts</a>
+            <a class="btn" href="manage-security.php">Manage Security</a>
         </div>
     </body>
 </html>

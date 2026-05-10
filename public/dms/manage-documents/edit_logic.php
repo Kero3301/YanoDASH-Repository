@@ -8,7 +8,7 @@ load (
     'mongodb_client'
 );
 
-if (!is_logged_in() || !can_use_dms($identity))
+if (!is_logged_in() || !can_use_dms($permissions))
     die("You do not have permission to access this resource.");
 
 $client = mongodb_client(readOnly: false);

@@ -1,26 +1,30 @@
 <?php
 # Evaluate if a user, given their permissions, is an admin
-function is_admin(array $permissions): bool {
+function is_admin(?array $permissions): bool {
+    if (!is_array($permissions)) return false;
     return ($permissions['access_level'] ?? null) === 'admin';
 }
 
 # Evaluate if a user, given their permissions, is an editor
-function is_editor(array $permissions): bool {
+function is_editor(?array $permissions): bool {
+    if (!is_array($permissions)) return false;
     return ($permissions['access_level'] ?? null) === 'editor';
 }
 
 # Evaluate if a user, given their permissions, can use the common DMS functions
-function can_use_dms(array $permissions): bool {
+function can_use_dms(?array $permissions): bool {
+    if (!is_array($permissions)) return false;
     return is_admin($permissions) || is_editor($permissions);
 }
 
 # Evaluate if a user, given their permissions, can access the common admin pages
-function can_access_admin_pages($permissions): bool {
+function can_access_admin_pages(?array $permissions): bool {
+    if (!is_array($permissions)) return false;
     return is_admin($permissions);
 }
 
 # Evaluate if a user, given their identity and permissions, meets the override specification for president
-function is_president(array $identity, array $permissions): bool {
+function is_president(?array $identity, ?array $permissions): bool {
     if (!is_array($identity) || !is_array($permissions)) return false;
 
     $position = $identity['position'] ?? null;
@@ -34,7 +38,9 @@ function is_president(array $identity, array $permissions): bool {
 }
 
 # Evaluate if a user, given their identity and permissions, can access a specific page or action given its requirements
-function can_access(array $identity, array $permissions, array $req): bool {
+function can_access(?array $identity, ?array $permissions, array $req): bool {
+    if (!is_array($identity) || !is_array($permissions)) return false;
+
     $accessLevel = $permissions['access_level'] ?? 'viewer';
     $accessScope = $permissions['access_scope'] ?? [];
     $accessDomains  = $permissions['access_domains'] ?? ['public'];
