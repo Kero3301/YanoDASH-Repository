@@ -5,52 +5,50 @@ require_once dirname(__DIR__). '/utils/schema_validator.php';
 
 # Resolve the associated identity from the database given a userID
 function resolve_identity(?string $userID): ?array {
-    # Ignore if user ID is null
-    if (!$userID) return null;
+    # Ignore if user ID is empty
+    if (empty($userID)) return null;
 
     # Caching
     static $cache = [];
-
-    # User ID storage
-    $_id = new MongoDB\BSON\ObjectId($userID);
-    
-    # Cached return
-    $cacheKey = (string) $_id;
-    if (isset($cache[$cacheKey])) return $cache[$cacheKey];
+    try { 
+        $objectID = new MongoDB\BSON\ObjectId($userID); 
+    } 
+    catch (Exception $e) { 
+        return null; 
+    }
+    $key = (string) $objectID;
+    if (isset($cache[$key])) return $cache[$key];
 
     # Client and collections
     $client = mongodb_client();
     $collection_accounts = $client->yano_dash->account_schema;
     $collection_organizations = $client->yano_dash->organizations_schema;
-    $collection_accessLevels = $client->yano_dash->access_levels_schema;
 
     # Query
-    $condition_identity = ["_id" => $_id];
-    $identity = $collection_accounts->findOne($condition_identity);
+    $identity = $collection_accounts->findOne(['_id' => $objectID]);
     if (!$identity || !baseline_schema_validate($identity, 'ACCOUNTS')) return null;
 
-    # Access level and organization resolution
-    $access_level = null;
-    if (!empty($identity->access_level_id)) {
-        $al = $collection_accessLevels->findOne(["_id" => $identity->access_level_id]);
-        if ($al) $access_level = $al->level;
-    }
+    # Organization resolution
     $organization_name = null;
     if (!empty($identity->organization)) {
         $org = $collection_organizations->findOne(["_id" => $identity->organization]);
-        if ($org) $organization_name = $org->organization_name ?? "None";
+        if ($org) $organization_name = $org->organization_name;
     }
+
+    # Data normalization
+    $position = isset($identity->position)
+        ? strtoupper(trim((string)$identity->position))
+        : null;
     
     # Construction
     $result = [
+        'user_id' => (string) $identity->_id,
         'email' => $identity->email_address ?? null,
-        'organization' => $organization_name ?? null,
-        'position' => $identity->position ?? null,
-        'access_level' => $access_level ?? null,
-        'access_domains' => $identity->access_domains ?? null
+        'organization' => $organization_name,
+        'position' => $position
     ];
 
     # Result caching and return
-    return $cache[$cacheKey] = $result;
+    return $cache[$key] = $result;
 }
 ?>
