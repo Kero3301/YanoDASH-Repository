@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// MANUALLY SET SESSION FOR TESTING - MUST BE BEFORE AUTHENTICATION CHECKS
-// $_SESSION['userID'] = 'test_user_id';
-// $_SESSION['username'] = 'test_admin';
-// $_SESSION['role'] = 'admin';
-
 require_once dirname(dirname(__DIR__)). '/src/loader.php';
 
 // Load utilities FIRST before using any functions
@@ -21,7 +16,7 @@ if (!is_logged_in()) {
     exit;
 }
 
-if (!can_use_dms($identity))
+if (!can_use_dms($permissions))
     die("You do not have permission to access this resource.");
 
 // OPTIONAL: Add a debug message to confirm bypass is working
