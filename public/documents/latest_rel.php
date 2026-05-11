@@ -1,34 +1,54 @@
 <?php
-    session_start();
+session_start();
 
-    // ini_set('display_errors', 'Off');
+require_once '../../src/loader.php';
+load (
+    'vendor_autoload',
+    'mongodb_client',
+    'doc_ed',
+    'document_factory',
+    'navbar',
+    'document_list',
+    'document_modal',
+    'page_header',
+    'pagination_controls'
+);
 
-    require_once '../../src/loader.php';
-    load (
-        'vendor_autoload',
-        'mongodb_client',
-        'doc_ed',
-        'document_factory',
-        'navbar',
-        'document_list',
-        'document_modal',
-        'page_header'
-    );
+$client = mongodb_client();
+$collection_documents = $client->yano_dash->documents_schema;
 
-    $client = mongodb_client();
+$baseQuery = [
+    'doc_status' => 'ARCHIVED',
+    'is_publicized' => true
+];
 
-    $collection_documents = $client->yano_dash->documents_schema;
-    $results = $collection_documents->find(
-        [
-            'doc_status' => 'ARCHIVED',
-            'is_publicized' => true
-        ],
-        [
-            'sort' => ['date_added' => -1], // newest first
-            'limit' => 3
-        ]
-    );
-    $all_docs = get_all($results);
+$documentsPerPage = 16;
+
+$totalDocuments = $collection_documents->countDocuments($baseQuery);
+
+$totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
+
+$currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
+    'options' => [
+        'default' => 1,
+        'min_range' => 1
+    ]
+]);
+
+$currentPage = min($currentPage, $totalPages);
+
+$skip = (int)(($currentPage - 1) * $documentsPerPage);
+
+$results = $collection_documents->find(
+    $baseQuery,
+    [
+        'sort' => ['dates.date_added' => -1],
+        'skip' => $skip,
+        'limit' => $documentsPerPage
+    ]
+);
+
+$all_docs = get_all($results);
 ?>
 
 <!DOCTYPE html>

@@ -127,3 +127,23 @@ document.addEventListener("keydown", (event) => {
     }
 });
 renderDocs();
+
+// Pagination
+const goButton = document.querySelector('.go-page-button');
+const pageInput = document.querySelector('.page-number');
+
+goButton.addEventListener('click', () => {
+
+    const page = parseInt(pageInput.value);
+
+    if (!page || page < 1) return;
+
+    window.location.href = `?page=${page}`;
+});
+
+pageInput.addEventListener('keydown', (event) => {
+
+    if (event.key === 'Enter') {
+        goButton.click();
+    }
+});
