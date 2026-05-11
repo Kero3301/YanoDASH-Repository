@@ -1,14 +1,17 @@
 <?php
-require_once dirname(dirname(__DIR__)). '/vendor/autoload.php'; 
-require_once dirname(__DIR__). '/utils/schema_validator.php';
-require_once dirname(__DIR__). '/database/mongodb_client.php';
 require_once 'identity_resolver.php';
+require_once dirname(__DIR__, 2). '/vendor/autoload.php'; 
+require_once dirname(__DIR__). '/database/mongodb_client.php';
+require_once dirname(__DIR__). '/utils/schema_validator.php';
 
+# Check and verify if the user is logged in
 function is_logged_in(): bool {
     $userID = $_SESSION['user_id'] ?? null;
-    return isset($userID) && resolve_identity($userID) !== null;
+    if (!$userID) return false;
+    return resolve_identity($userID) !== null;
 }
 
+# Login user based on a provided email and password, and return a login result for status messaging
 function login_user(string $email, string $password): LoginResult {
     # Initial validation
     if (trim($email) === '' || trim($password) === '')

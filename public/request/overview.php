@@ -14,7 +14,7 @@
       exit;
     }
 
-    if (!can_access_admin_pages($identity)) {
+    if (!can_access_admin_pages($permissions)) {
         die("You do not have permission to access this resource.");
     }
 ?>

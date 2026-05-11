@@ -6,6 +6,7 @@
     require_once '../../src/loader.php';
     load (
         'vendor_autoload',
+        'mongodb_client',
         'authentication',
         'authorization',
         'doc_ed',
@@ -22,17 +23,17 @@
         exit;
     }
 
-    if (!can_use_dms($identity)) {
+    if (!can_use_dms($permissions)) {
         die("You do not have permission to access this resource.");
     }
 
-    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+    $client = mongodb_client();
+
     $collection_documents = $client->yano_dash->documents_schema;
 
     $query = buildQuery($_SESSION['auth'], $_SESSION['access'], 'private');
 
     $results = $collection_documents->find($query);
-
     $all_docs = get_all($results);
 ?>
 
