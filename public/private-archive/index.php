@@ -6,6 +6,7 @@
     require_once '../../src/loader.php';
     load (
         'vendor_autoload',
+        'mongodb_client',
         'authentication',
         'authorization',
         'doc_ed',
@@ -26,7 +27,7 @@
         die("You do not have permission to access this resource.");
     }
 
-    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+    $client = mongodb_client();
 
     $collection_documents = $client->yano_dash->documents_schema;
     $results = $collection_documents->find(

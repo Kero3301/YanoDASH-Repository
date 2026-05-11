@@ -82,12 +82,16 @@
                         <th>Date</th>
                         <th>Requester</th>
                         <th>Requester's Email</th>
+                        <th>Organization</th>
+                        <th>Position</th>
                         <th>Actions</th>
                     </tr>
                     <tr>
                         <td>2026-05-08</td>
                         <td>Finn</td>
                         <td>finn@usep.edu.ph</td>
+                        <td>-</td>
+                        <td>Hero</td>
                         <td>
                             <button>Approve</button>
                             <button>Reject</button>
@@ -97,6 +101,8 @@
                         <td>2026-05-08</td>
                         <td>Jake</td>
                         <td>jake@usep.edu.ph</td>
+                        <td>-</td>
+                        <td>Sidekick</td>
                         <td>
                             <button>Approve</button>
                             <button>Reject</button>
@@ -106,15 +112,30 @@
                         <td>2026-05-04</td>
                         <td>Princess Bubblegum</td>
                         <td>pb@usep.edu.ph</td>
+                        <td>Candy Kingdom</td>
+                        <td>Princess</td>
                         <td>
                             <button>Approve</button>
                             <button>Reject</button>
                         </td>
                     </tr>
                     <tr>
-                        <td>2026-05-03</td>
+                        <td>2026-05-04</td>
+                        <td>Marceline</td>
+                        <td>marcy@usep.edu.ph</td>
+                        <td>Nightosphere</td>
+                        <td>Vampire Queen</td>
+                        <td>
+                            <button>Approve</button>
+                            <button>Reject</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2026-05-01</td>
                         <td>Simon Petrikov</td>
                         <td>iceking@usep.edu.ph</td>
+                        <td>Ice Kingdom </td>
+                        <td>King</td>
                         <td>
                             <button>Approve</button>
                             <button>Reject</button>

@@ -2,7 +2,7 @@
 require_once dirname(__DIR__, 2). '/vendor/autoload.php';
 
 # Gets the MongoDB database client for initiating connection, or creates one if there isn't
-function mongodb_client(bool $readOnly = true): MongoDB\Client {
+function mongodb_client(bool $readOnly = false): MongoDB\Client {
     # Caching for performance
     static $cache = [];
     $key = $readOnly ? 'v' : 'rw';
