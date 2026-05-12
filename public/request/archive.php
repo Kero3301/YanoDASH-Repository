@@ -34,10 +34,18 @@ if (!can_use_dms($permissions))
         echo "<title>Request Document | YanoDASH</title>";
     }
     ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* Your existing styles remain the same */
+* {
+    box-sizing: border-box;
+}
+
 body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #f3f5f8;
     font-family: 'RobotoFlex', sans-serif;
 }
 
@@ -49,45 +57,43 @@ body {
     font-family: 'RobotoFlex', sans-serif;
 }
 
-.form-container.serif {
-    font-family: 'Gupter', serif;
-}
-
 .form-container {
-    max-width: 750px;
-    margin: 50px auto;
+    width: min(100%, 760px);
+    margin: 24px auto;
+    padding: 24px;
     background: #ffffff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 18px;
+    box-shadow: 0 14px 35px rgba(0,0,0,0.08);
     border-top: 8px solid #2e7d32;
 }
 
 .btn-back {
-    display: inline-block;
-    padding: 10px 25px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
     background-color: #ffffff;
     color: #333;
     text-decoration: none;
-    border-radius: 50px;
+    border-radius: 999px;
     font-family: 'RobotoFlex', sans-serif;
     font-weight: bold;
     font-size: 14px;
     border: 1px solid #ddd;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    margin-bottom: 25px;
+    transition: all 0.25s ease;
+    margin-bottom: 24px;
 }
 
 .btn-back:hover {
     background-color: #5f0000;
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.12);
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 22px;
 }
 
 .form-group label {
@@ -96,23 +102,33 @@ body {
     margin-bottom: 8px;
     color: #333;
     font-family: 'RobotoFlex', sans-serif;
+    font-size: 14px;
 }
 
-.form-group input, 
-.form-group select, 
+.form-group input,
+.form-group select,
 .form-group textarea {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 10px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 15px;
     font-family: 'RobotoFlex', sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 4px rgba(46,125,50,0.08);
 }
 
 .file-input-wrapper {
-    padding: 15px;
-    border-radius: 8px;
+    padding: 16px;
+    border-radius: 12px;
     background-color: #f9fff9;
     text-align: center;
 }
@@ -121,8 +137,8 @@ input[type="file"]::file-selector-button {
     background-color: #2e7d32;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 10px 16px;
+    border-radius: 8px;
     cursor: pointer;
     margin-right: 10px;
     font-weight: bold;
@@ -132,37 +148,64 @@ input[type="file"]::file-selector-button {
     background-color: #2e7d32;
     color: white;
     border: none;
-    padding: 16px 30px;
+    padding: 16px 20px;
     border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
     width: 100%;
-    transition: background 0.3s;
+    transition: background 0.3s ease, transform 0.2s ease;
     font-size: 16px;
-    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);
+    box-shadow: 0 6px 15px rgba(46, 125, 50, 0.18);
 }
 
 .btn-submit:hover {
     background-color: #1b5e20;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3);
+    transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
     .form-container {
-        width: 80%;
-        max-width: 650px;
-        padding: 30px;
-        margin: 50px auto;
+        width: calc(100% - 32px);
+        margin: 18px auto;
+        padding: 20px;
+    }
+
+    .btn-back {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 18px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .btn-submit {
+        padding: 14px 18px;
+        font-size: 15px;
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 480px) {
     .form-container {
-        width: 80%;
-        max-width: 650px;
-        padding: 30px;
-        margin: 50px auto;
+        width: calc(100% - 24px);
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .btn-back {
+        padding: 12px 16px;
+    }
+
+    .form-group label {
+        margin-bottom: 6px;
     }
 }
 </style>
