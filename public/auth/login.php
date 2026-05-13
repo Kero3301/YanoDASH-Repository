@@ -213,7 +213,7 @@
                                 }
                             ?>
                         </div>
-                        <p style="text-align: center"><a href="#" class="inline-link" style="text-align: center;">I forgot my password</a></p>
+                        <p style="text-align: center"><a href="mfa/forgot_password.php" class="inline-link" style="text-align: center;">I forgot my password</a></p>
                         <hr style="border: 1px solid rgba(0,0,0,0.1)">
 
                         <p style="text-align: center; margin-top: 16px; font-family: 'RobotoFlex'">Don't have an account?</p>
