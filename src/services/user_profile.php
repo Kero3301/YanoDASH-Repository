@@ -41,7 +41,8 @@ function get_profile(?string $userID): ?array {
         'student_id_number' => $profile->student_id_number ?? "(unknown)",
         'position' => $profile->position,
         'doc_bookmarks' => $profile->doc_bookmarks ?? null,
-        'avatar_url' => $profile->avatar_url ?? ""
+        'avatar_url' => $profile->avatar_url ?? "",
+        'date_joined' => (string) $profile->date_joined->toDateTime()->format('M j Y') ?? "(unknown)"
     ];
 
     # Result caching and return

@@ -4,18 +4,15 @@ class Document {
     public function __construct(
         public string $_id,
         public string $doc_title,
-        public ?string $doc_type,
-        public array $categories,
-        public string $status,
-        public ?string $description,
-        public ?array $keywords,
-        public string $area_of_origin,
+        public string $doc_category,
+        public array $doc_tags,
         public string $author,
+        public string $area_of_origin,
+        public string $doc_status,
+        public string $tracking_code,
         public array $dates,
         public int $version,
-        public string $tracking_code,
-        public string $main_category,
-        public bool $is_publicized
+        public array $category_data
     ) {}
 }
 

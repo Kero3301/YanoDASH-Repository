@@ -10,9 +10,9 @@
         'footer'
     );
 
-    var_dump($identity);
-    var_dump($permissions);
-    var_dump($profile);
+    // var_dump($identity);
+    // var_dump($permissions);
+    // var_dump($profile);
     // exit();
 ?>
 

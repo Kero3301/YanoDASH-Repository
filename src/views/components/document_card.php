@@ -1,6 +1,9 @@
 <?php
     require_once dirname(dirname(__DIR__)). '/loader.php';
-    load('doc_ed');
+    load (
+        'doc_ed',
+        'authorization'
+    );
 
     global $app_url;
 
@@ -13,38 +16,54 @@
 
     function document_card(Document $document, string $tagclass = "") {
         global $app_url;
-        $isAdmin = $_SESSION['auth']['access_level'] === 'admin';
+        global $identity;
+        global $permissions;
 
+        # Auth-related data
+        $isAdmin = $permissions['access_level'] === "admin";
+
+        # Primary data
         $_id = $document->_id;
-        $title = $document->doc_title;
-        $tag = $document->categories[0];
-        $date = (string) $document->dates['date_added']->toDateTime()->format('Y-m-d g:i A');
-        $author = $document->author;
-        $dept = $document->area_of_origin;
-        $tc = $document->tracking_code;
-        $description = $document->description;
-        $maincateg = $document->main_category;
+        $title = $document->doc_title ?? "(Unknown)";
+        $category = $document->doc_category ?? "";
+        $tags = $document->doc_tags ?? [];
+        $author = $document->author ?? "(Unknown)";
+        $area_of_origin = $document->area_of_origin ?? "(Unknown)";
+        $status = $document->doc_status ?? "(Unknown)";
+        $tc = $document->tracking_code ?? "(Unknown)";
+        $dates = $document->dates ?? [];
+        $version = $document->version ?? 0;
+        $category_data = $document->category_data ?? [];
 
-        $docStatus = strtoupper($document->status);
-        $isDocPublic = $document->is_publicized;
+        # Secondary data
+        $isInternal = in_array($status, ["EDITING", "ARCHIVED"]);
+        $isPublic = $status === "PUBLICIZED";
+        $readOnly = in_array($status, ["ARCHIVED", "PUBLICIZED"]);
+        $tags = implode(',', $tags);
+        $add_date = (string) $dates['date_added']?->toDateTime()->format('Y-m-d g:i A');
+        $finalize_date = (string) $dates['date_finalized']?->toDateTime()->format('Y-m-d g:i A');
+        $archive_date = (string) $dates['date_archived']?->toDateTime()->format('Y-m-d g:i A');
 
-        $sanitizedMaincateg = htmlspecialchars($maincateg);
-        $sanitizedDocumentID = htmlspecialchars($_id); 
-        $sanitizedAuthor = htmlspecialchars($author);
+        # Decorative data
+        $tagClass = match (strtoupper($category)) {
+            default => "gsp",
+            "MEETING MINUTES", "ACTIVITY DESIGN" => "technical",
+            "ACCOMPLISHMENT_REPORT" => "essay",
+            "PROJECT PROPOSAL" => "research"
+        };
+
+        # Sanitized data
+        $sanitizedID = htmlspecialchars($_id);
         $sanitizedTitle = htmlspecialchars($title);
-        $sanitizedTag = htmlspecialchars($tag);
-        $sanitizedDate = htmlspecialchars($date);
-        $sanitizedTrackingCode = htmlspecialchars($tc);
-        $sanitizedDescription = htmlspecialchars($description);
-        $sanitizedDepartment = htmlspecialchars($dept);
-        $sanitizedTagclass = htmlspecialchars($tagclass);
-
-        $sanitizedDocStatus = htmlspecialchars($docStatus);
-        $sanitizedIsDocPublic = htmlspecialchars($isDocPublic);
-
-        $normalizedDocStatus = strtoupper($sanitizedDocStatus);
-
-        $readOnly = $normalizedDocStatus === "ARCHIVED";
+        $sanitizedCategory = htmlspecialchars($category);
+        $sanitizedTags = htmlspecialchars($tags);
+        $sanitizedAuthor = htmlspecialchars($author);
+        $sanitizedAreaOfOrigin = htmlspecialchars($area_of_origin);
+        $sanitizedStatus = htmlspecialchars($status);
+        $sanitizedTC = htmlspecialchars($tc);
+        $sanitizedAddDate = htmlspecialchars($add_date);
+        $sanitizedFinalizeDate = htmlspecialchars($finalize_date);
+        $sanitizedArchiveDate = htmlspecialchars($archive_date);
 
         $view_button = <<< HTML
             <button class="document-action" title="View Document" data-action="view" data-linked-document="$sanitizedDocumentID">
@@ -80,19 +99,19 @@
             <div class="doc-card-wrapper">
                 <div class="doc-card-b2">
                     <div class="doc-card-b1">
-                        <div class="doc-card" data-category="$sanitizedMaincateg" data-document-id="$sanitizedDocumentID" data-status="$docStatus" data-publicity="$isDocPublic">
+                        <div class="doc-card" data-category="$sanitizedCategory" data-document-id="$sanitizedDocumentID" data-status="$sanitizedStatus" data-publicity="$isPublic">
                             <div class="doc-preview">
                                 <div class="doc-thumbnail" style="background-image:url('$thumbnailPath')"></div>
-                                <span class="tag $sanitizedTagclass">$sanitizedMaincateg</span>
+                                <span class="tag $tagClass">$sanitizedCategory</span>
                             </div>
                             <div class="doc-info">
                                 <h2 class="doc-title">$sanitizedTitle</h2>
-                                <p>📆 $sanitizedDate</p>
+                                <p>📆 $sanitizedAddDate</p>
                                 <p style="display: inline;">👤 $sanitizedAuthor</p> 
-                                <p style="display: inline;">🏢 $sanitizedDepartment</p>
+                                <p style="display: inline;">🏢 $sanitizedAreaOfOrigin</p>
                                 <br>
-                                <p>🔎 <span class="doc-tc">$sanitizedTrackingCode</span></p>
-                                <p class="doc-desc">$sanitizedDescription</p>
+                                <p>🔎 <span class="doc-tc">$sanitizedTC</span></p>
+                                <p class="doc-desc">Lorem ipsum</p>
 
                             </div>
                             <div class="doc-actions">

@@ -30,7 +30,7 @@ function resolve_permissions(?string $userID): ?array {
     if (!$identity) return null;
 
     # Access level and scope-of-access resolution
-    $access_level_id = $identity->access_level_id ?? null;
+    $access_level_id = $identity->access_level ?? null;
     $access_level = 'viewer';
     $scope = ['public'];
     if (!empty($access_level_id)) {
