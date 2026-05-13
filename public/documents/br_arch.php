@@ -4,9 +4,11 @@
     load (
         'vendor_autoload',
         'mongodb_client',
+        'mongodb_collections',
         'doc_ed',
         'document_factory',
         'navbar',
+        'footer',
         'document_list',
         'document_modal',
         'page_header',
@@ -14,12 +16,11 @@
     );
 
     $client = mongodb_client();
+    $collection_documents = coll('documents', $client);
 
-    $collection_documents = $client->yano_dash->documents_schema;
-
-    $documentsPerPage = 16;
+    $documentsPerPage = 8;
     $totalDocuments = $collection_documents->countDocuments([
-        'is_publicized' => true
+        'doc_status' => 'PUBLICIZED'
     ]);
     $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
     $currentPage = isset($_GET['page'])
@@ -31,7 +32,7 @@
     $skip = ($currentPage - 1) * $documentsPerPage;
 
     $results = $collection_documents->find(
-        ['is_publicized' => true],
+        ['doc_status' => 'PUBLICIZED'],
         [
             'skip' => $skip,
             'limit' => $documentsPerPage
@@ -56,6 +57,7 @@
         </div>
         <?php echo pagination_controls($currentPage, $totalPages)?>
     </div>
+    <?php echo footer()?>
     <?php echo document_modal()?>
 
     <script src="../script/documents-display.js"></script>

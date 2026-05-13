@@ -5,24 +5,25 @@ require_once '../../src/loader.php';
 load (
     'vendor_autoload',
     'mongodb_client',
+    'mongodb_collections',
     'doc_ed',
     'document_factory',
     'navbar',
     'document_list',
     'document_modal',
     'page_header',
+    'footer',
     'pagination_controls'
 );
 
 $client = mongodb_client();
-$collection_documents = $client->yano_dash->documents_schema;
+$collection_documents = coll('documents', $client);
 
 $baseQuery = [
-    'doc_status' => 'ARCHIVED',
-    'is_publicized' => true
+    'doc_status' => 'PUBLICIZED',
 ];
 
-$documentsPerPage = 16;
+$documentsPerPage = 8;
 
 $totalDocuments = $collection_documents->countDocuments($baseQuery);
 
@@ -68,7 +69,9 @@ $all_docs = get_all($results);
         <h2 style="text-align: center">< Page x of y ></h2>
     </div>
 
+    <?php echo footer()?>
     <?php echo document_modal()?>
+   
 
     <script src="../script/documents-display.js"></script>
 

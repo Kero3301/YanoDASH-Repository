@@ -7,6 +7,7 @@
     load (
         'vendor_autoload',
         'mongodb_client',
+        'mongodb_collections',
         'authentication',
         'authorization',
         'doc_ed',
@@ -28,8 +29,7 @@
     }
 
     $client = mongodb_client();
-
-    $collection_documents = $client->yano_dash->documents_schema;
+    $collection_documents = coll('documents', $client);
     $results = $collection_documents->find(
         [
             'doc_status' => 'ARCHIVED',

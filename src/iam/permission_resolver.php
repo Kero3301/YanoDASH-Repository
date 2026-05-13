@@ -1,6 +1,7 @@
 <?php
 require_once dirname(dirname(__DIR__)). '/vendor/autoload.php';
 require_once dirname(__DIR__). '/database/mongodb_client.php';
+require_once dirname(__DIR__). '/database/mongodb_collections.php';
 require_once dirname(__DIR__). '/utils/schema_validator.php';
 
 # Resolve the associated user permissions from the database given a userID
@@ -21,12 +22,12 @@ function resolve_permissions(?string $userID): ?array {
 
     # Client and collections
     $client = mongodb_client();
-    $collection_accounts = $client->yano_dash->account_schema;
-    $collection_accessLevels = $client->yano_dash->access_levels_schema;
+    $collection_accounts = coll('accounts', $client);
+    $collection_accessLevels = coll('access_levels', $client);
 
     # Query
     $identity = $collection_accounts->findOne(['_id' => $objectID]);
-    if (!$identity || !baseline_schema_validate($identity, 'ACCOUNTS')) return null;
+    if (!$identity) return null;
 
     # Access level and scope-of-access resolution
     $access_level_id = $identity->access_level_id ?? null;

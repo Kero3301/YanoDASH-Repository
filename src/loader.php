@@ -13,6 +13,7 @@ const SOURCES = [
     # Non-components
     'vendor_autoload' => '../vendor/autoload',        
     'mongodb_client' => 'database/mongodb_client',
+    'mongodb_collections' => 'database/mongodb_collections',
     'authentication' => 'iam/authentication',
     'authorization' => 'iam/authorization',
     'doc_ed' => 'models/DocEd',
