@@ -30,12 +30,10 @@
 
     $client = mongodb_client();
     $collection_documents = coll('documents', $client);
-    $results = $collection_documents->find(
-        [
-            'doc_status' => 'ARCHIVED',
-            'is_publicized' => false
-        ]
-    );
+
+    $query = buildQuery($_SESSION['auth'], $_SESSION['access'], 'private');
+
+    $results = $collection_documents->find($query);
     $all_docs = get_all($results);
 ?>
 

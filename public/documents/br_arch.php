@@ -1,9 +1,12 @@
 <?php
     session_start();
+
+    require_once '../utils/doc_query.php'; 
     require_once '../../src/loader.php';
+
     load (
         'vendor_autoload',
-        'mongodb_client',
+        'mongodb_client', 
         'mongodb_collections',
         'doc_ed',
         'document_factory',
@@ -39,6 +42,12 @@
         ]
     );
 
+    
+    $collection_documents = $client->yano_dash->documents_schema;
+
+    $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
+    
+    $results = $collection_documents->find($query);
     $all_docs = get_all($results);
 ?>
 <!DOCTYPE html>
