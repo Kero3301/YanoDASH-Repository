@@ -42,7 +42,7 @@ function get_profile(?string $userID): ?array {
         'position' => $profile->position,
         'doc_bookmarks' => $profile->doc_bookmarks ?? null,
         'avatar_url' => $profile->avatar_url ?? "",
-        'date_joined' => (string) $profile->date_joined->toDateTime()->format('M j Y') ?? "(unknown)"
+        'date_joined' => (string) $profile->date_joined?->toDateTime()->format('M j Y') ?? "(unknown)"
     ];
 
     # Result caching and return

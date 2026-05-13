@@ -1,19 +1,23 @@
 <?php
 require_once dirname(__DIR__). '/models/DocEd.php';
 
+function load_db_doc($_id) {
+
+}
+
 function get_doc($docData): ?Document {
     return new Document(
-        _id: $docData -> _id,
-        doc_title: $docData -> doc_title,
-        doc_category: $docData -> doc_category,
-        doc_tags: $docData -> doc_tags->getArrayCopy(),
-        author: $docData -> author,
-        area_of_origin: $docData -> area_of_origin,
-        doc_status: $docData -> doc_status,
-        tracking_code: $docData -> tracking_code,
-        dates: $docData -> dates->getArrayCopy(),
-        version: $docData -> current_version,
-        category_data: $docData -> category_data->getArrayCopy()
+        _id:            $docData-> _id,
+        doc_title:      $docData-> doc_title,
+        doc_category:   $docData-> doc_category,
+        doc_tags:       $docData-> doc_tags-> getArrayCopy(),
+        author:         $docData-> author,
+        area_of_origin: $docData-> area_of_origin,
+        doc_status:     $docData-> doc_status,
+        tracking_code:  $docData-> tracking_code,
+        dates:          $docData-> dates-> getArrayCopy(),
+        version:        $docData-> current_version,
+        category_data:  $docData-> category_data-> getArrayCopy()
     );
 }
 

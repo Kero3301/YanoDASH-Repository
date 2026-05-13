@@ -242,6 +242,7 @@ button:hover {
                 ?>
                 <p>📧 <?= $email ?></p>
                 <p>Organization: <?= $identity['organization'] ?></p>
+                <p>Department: <?= $identity['department'] ?></p>
                 <p>Role: <?= $profile['position'] ?></p>
                 <p>Joined: <?= $profile['date_joined'] ?></p>
             </div>

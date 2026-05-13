@@ -37,7 +37,7 @@ function resolve_permissions(?string $userID): ?array {
         $level_result = $collection_accessLevels->findOne(['_id' => $access_level_id]);
         if ($level_result) {
             $access_level = $level_result->level;
-            $scope = $level_result->scope_of_access ?? [];
+            $scope = $level_result->scope_of_access->getArrayCopy() ?? [];
         }
     }
 

@@ -66,7 +66,7 @@
         $sanitizedArchiveDate = htmlspecialchars($archive_date);
 
         $view_button = <<< HTML
-            <button class="document-action" title="View Document" data-action="view" data-linked-document="$sanitizedDocumentID">
+            <button class="document-action" title="View Document" data-action="view" data-linked-document="$sanitizedID">
                 <img src="$app_url/images/doc-actions/preview-doc.png" draggable="false">
             </button>
         HTML;
@@ -74,7 +74,7 @@
         $edit_button = $readOnly
             ? ""
             : <<< HTML
-                <button class="document-action" title="Edit Document" data-action="edit" data-linked-document="$sanitizedDocumentID">
+                <button class="document-action" title="Edit Document" data-action="edit" data-linked-document="$sanitizedID">
                     <img src="$app_url/images/doc-actions/edit-doc.png" draggable="false">
                 </button>
             HTML;
@@ -82,7 +82,7 @@
         $protect_button = !$isAdmin
             ? ""
             : <<< HTML
-                <button class="document-action" title="Protect Document" data-action="protect" data-linked-document="$sanitizedDocumentID">
+                <button class="document-action" title="Protect Document" data-action="protect" data-linked-document="$sanitizedID">
                     <img src="$app_url/images/doc-actions/set-view-password.png" draggable="false">
                 </button>
             HTML;
@@ -90,7 +90,7 @@
         $delete_button = !$isAdmin
             ? ""
             : <<< HTML
-                <button class="delete-btn" title="Delete Document" data-action="delete" data-linked-document="$sanitizedDocumentID">Delete</button>
+                <button class="delete-btn" title="Delete Document" data-action="delete" data-linked-document="$sanitizedID">Delete</button>
             HTML;
 
         $thumbnailPath = "";
@@ -99,7 +99,7 @@
             <div class="doc-card-wrapper">
                 <div class="doc-card-b2">
                     <div class="doc-card-b1">
-                        <div class="doc-card" data-category="$sanitizedCategory" data-document-id="$sanitizedDocumentID" data-status="$sanitizedStatus" data-publicity="$isPublic">
+                        <div class="doc-card" data-category="$sanitizedCategory" data-document-id="$sanitizedID" data-status="$sanitizedStatus" data-publicity="$isPublic">
                             <div class="doc-preview">
                                 <div class="doc-thumbnail" style="background-image:url('$thumbnailPath')"></div>
                                 <span class="tag $tagClass">$sanitizedCategory</span>
@@ -112,7 +112,6 @@
                                 <br>
                                 <p>🔎 <span class="doc-tc">$sanitizedTC</span></p>
                                 <p class="doc-desc">Lorem ipsum</p>
-
                             </div>
                             <div class="doc-actions">
                                 $view_button

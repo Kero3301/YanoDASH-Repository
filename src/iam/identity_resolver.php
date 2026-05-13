@@ -46,6 +46,7 @@ function resolve_identity(?string $userID): ?array {
         'user_id' => (string) $identity->_id,
         'email' => $identity->email_address ?? null,
         'organization' => $organization_name,
+        'department' => $identity->department ?? "(unknown)",
         'position' => $position
     ];
 
