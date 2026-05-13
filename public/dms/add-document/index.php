@@ -15,9 +15,6 @@
 
     if (!can_use_dms($permissions))
         die("You do not have permission to access this resource.");
-
-    
-
 ?>
 
 <!DOCTYPE html>
