@@ -88,10 +88,34 @@ body {
     padding: 10px;
 }
 
+/* Request Box Container */
+.request-box {
+    background-color: #f4f4f4;
+    border-top: 6px solid #63071e;
+    border-radius: 16px;
+    padding: 60px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.request-box h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 40px;
+    font-family: 'Gupter', serif;
+    font-size: 28px;
+}
+
 /* Tablet */
 @media (min-width: 481px) {
     .button {
         width: 280px;
+    }
+    
+    .request-box {
+        padding: 60px 50px;
+        max-width: 450px;
     }
 }
 
@@ -104,6 +128,11 @@ body {
     .button {
         width: 260px;
     }
+    
+    .request-box {
+        padding: 60px 60px;
+        max-width: 500px;
+    }
 }
 </style>
 
@@ -115,13 +144,12 @@ body {
 
 <div class="page-contents no-padding">
     <div class="container">
-        <h1 style="text-align:center; margin-bottom: 30px;">
-        Hey there! choose what you want to do
-    </h1>
+        <div class="request-box">
+            <h1>Hey there! Choose what you want to do</h1>
 
-    <a href="archive.php" class="button">Request to Archive</a>
-    <a href="track.php" class="button">Track your Request</a>
-    <a href="overview.php" class="button">Request Overview</a>
+            <a href="archive.php" class="button">Request to Archive</a>
+            <a href="track.php" class="button">Track your Request</a>
+        </div>
     </div>
 </div>
 
