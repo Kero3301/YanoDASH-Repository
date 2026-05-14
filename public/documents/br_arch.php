@@ -1,12 +1,9 @@
 <?php
     session_start();
-
-    require_once '../utils/doc_query.php'; 
     require_once '../../src/loader.php';
-
     load (
         'vendor_autoload',
-        'mongodb_client', 
+        'mongodb_client',
         'doc_ed',
         'document_factory',
         'navbar',
@@ -16,12 +13,9 @@
     );
 
     $client = mongodb_client();
-    
-    $collection_documents = $client->yano_dash->documents_schema;
 
-    $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
-    
-    $results = $collection_documents->find($query);
+    $collection_documents = $client->yano_dash->documents_schema;
+    $results = $collection_documents->find(['is_publicized' => true]);
     $all_docs = get_all($results);
 ?>
 <!DOCTYPE html>

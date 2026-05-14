@@ -1,9 +1,9 @@
 <?php
     session_start();
 
-    require_once '../utils/doc_query.php'; 
-    require_once '../../src/loader.php';
+    // ini_set('display_errors', 'Off');
 
+    require_once '../../src/loader.php';
     load (
         'vendor_autoload',
         'mongodb_client',
@@ -16,12 +16,18 @@
     );
 
     $client = mongodb_client();
-    
-    $collection_documents = $client->yano_dash->documents_schema;
 
-    $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
-    
-    $results = $collection_documents->find($query);
+    $collection_documents = $client->yano_dash->documents_schema;
+    $results = $collection_documents->find(
+        [
+            'doc_status' => 'ARCHIVED',
+            'is_publicized' => true
+        ],
+        [
+            'sort' => ['date_added' => -1],
+            'limit' => 3
+        ]
+    );
     $all_docs = get_all($results);
 ?>
 

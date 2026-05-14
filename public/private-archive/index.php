@@ -30,10 +30,12 @@
     $client = mongodb_client();
 
     $collection_documents = $client->yano_dash->documents_schema;
-
-    $query = buildQuery($_SESSION['auth'], $_SESSION['access'], 'private');
-
-    $results = $collection_documents->find($query);
+    $results = $collection_documents->find(
+        [
+            'doc_status' => 'ARCHIVED',
+            'is_publicized' => false
+        ]
+    );
     $all_docs = get_all($results);
 ?>
 
