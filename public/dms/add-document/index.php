@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once '../../../src/loader.php';
-    load('authentication', 'authorization', 'navbar', 'mongodb_client', 'mongodb_collections');
+    load('vendor_autoload', 'authentication', 'authorization', 'navbar', 'mongodb_client', 'mongodb_collections');
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
@@ -16,9 +16,25 @@
         $pass = urlencode($_SESSION['user_password'] ?? ''); 
         $dbName = "yano_dash";
         
+        $doc_title = $_POST['docname'];
+        $doc_category = $_POST['categories'];
+        $author = new MongoDB\BSON\ObjectId($identity['user_id']);
+        $area_of_origin = $identity['department'];
+        $yr = date('Y');
+
         try {
             $client = mongodb_client();
             $collection = coll('documents', $client);
+
+            // $result = $collection->insertOne([
+            //     "doc_title" => $doc_title,
+            //     "doc_category" => $doc_category,
+            //     "doc_tags" => [],
+            //     "author" => $author,
+            //     "area_of_origin" => $area_of_origin,
+            //     "doc_status" => "EDITING",
+            //     "tracking_code" => "YD-"
+            // ]);
 
             // Target the 'Uploads' folder in the Repository root
             $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
@@ -67,9 +83,9 @@
                 
                 <p style="color: white;">Category </p>
                 <select name="categories" id="categories">
-                    <option value="Financial">Financial</option>
+                    <option value="Financial Statement">Financial</option>
                     <option value="Activity Design">Activity Design</option>
-                    <option value="Minutes">Minutes</option>
+                    <option value="Minutes of Meeting">Minutes</option>
                     <option value="Other">Other</option>
                 </select>
                 <br><br>

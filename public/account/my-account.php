@@ -7,7 +7,8 @@
         'identity_resolver',
         'user_profile_service',
         'navbar',
-        'footer'
+        'footer',
+        'password_input'
     );
 
     if (!is_logged_in()) {
@@ -243,7 +244,7 @@ button:hover {
                 <p>📧 <?= $email ?></p>
                 <p>Organization: <?= $identity['organization'] ?></p>
                 <p>Department: <?= $identity['department'] ?></p>
-                <p>Role: <?= $profile['position'] ?></p>
+                <p>Position: <?= $profile['position'] ?></p>
                 <p>Joined: <?= $profile['date_joined'] ?></p>
             </div>
         </div>
@@ -252,10 +253,12 @@ button:hover {
     <!-- SECURITY -->
     <div class="card div2">
         <div class="title">Security</div>
-        <input type="password" placeholder="Current">
-        <input type="password" placeholder="New">
-        <input type="password" placeholder="Confirm">
+        <p><b>Change Password</b></p>
+        <input type="password" placeholder="Current password">
+        <input type="password" placeholder="New password">
+        <input type="password" placeholder="Confirm password">
         <button>Update</button>
+        <p style="text-align: center"><a href="../auth/setup-mfa.php" class="inline-link" style="text-align: center; font-size: 13px">Set up two-factor authentication</a></p>
     </div>
 
     <!-- DOCUMENTS -->
