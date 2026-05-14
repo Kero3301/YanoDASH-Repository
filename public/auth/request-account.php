@@ -1,12 +1,75 @@
 <?php
+    error_reporting(0);
+
     session_start();
     require_once '../../src/loader.php';
     load (
         'navbar',
+        'vendor_autoload',
         'accordion',
         'footer',
+        'mongodb_client',
+        'mongodb_collections',
         'user_form'
     );
+
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email_address = $_POST['email_address'];
+    $student_id_number = $_POST['student_id_number'];
+    $college = $_POST['college'];
+    $organization = $_POST['organization'];
+    $department = $_POST['department'];
+    $position = $_POST['position'];
+
+    $success = false;
+
+    if (all_set(
+        $first_name,
+        $last_name,
+        $email_address,
+        $student_id_number,
+        $college,
+        $organization,
+        $department,
+        $position
+    )) {
+        $client = mongodb_client();
+        $accountRequests = coll('account_requests', $client);
+        $result = $accountRequests->insertOne([
+            "requester_name" => [
+                "first_name" => $first_name,
+                "last_name" => $last_name,
+            ],
+            "requester_email" => $email_address,
+            "student_id_number" => $student_id_number,
+            "college" => $college,
+            "organization" => $organization,
+            "department" => $department,
+            "position" => $position,
+            "date_requested" => new MongoDB\BSON\UTCDateTime()
+        ]);
+
+        if ($result) {
+            $success = true;
+
+            $first_name = '';
+            $last_name = '';
+            $email_address = '';
+            $student_id_number = '';
+            $college = '';
+            $organization = '';
+            $department = '';
+            $position = '';
+        }
+    }
+
+    function all_set(...$vars) {
+        foreach ($vars as $var) if (!isset($var)) {
+            return false;
+        }
+        return true;
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -220,6 +283,13 @@
                     </div>
                 </div>
 
+                <?php if ($success) :?>
+                    <div style="display: block; width: 65%; margin: 2px auto; background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #28a745; border-left: 4px solid #28a745; text-align: center;">
+                        Request successfully sent! Please wait 1 to 7 business days for your request to be confirmed.
+                    </div>
+                    <?php unset($_POST['subject']); unset($_POST['content']);?>
+                <?php endif; ?>
+
                 <div id="abc">
                 <h1 id="title" style="text-align: center;">Account Requesting</h1>
                 <p style="text-align: center; display: block; margin: auto; width: 80%">
@@ -243,17 +313,31 @@
                 </button>
 
                 <div id="request-form" class="form-panel">
-                    <form action="process_request_account.php">
+                    <form method="POST">
                         <p>First Name</p> 
-                        <input class="form-input" type="text" name="first_name" placeholder="e.g. Juan">
+                        <input class="form-input" type="text" name="first_name" placeholder="e.g. Juan" required>
                         <p>Last Name</p> 
-                        <input class="form-input" type="text" name="last_name" placeholder="e.g. dela Cruz">
+                        <input class="form-input" type="text" name="last_name" placeholder="e.g. dela Cruz" required>
                         <p>Email Address</p> 
-                        <input class="form-input" type="email" placeholder="e.g. jdcruz01202600000@usep.edu.ph"><br>
-                        <p>Student ID Number</p> 
-                        <input class="form-input" type="text" placeholder="e.g. 2026-00000"><br>
-                        <p>Email Address</p> 
-                        <input class="form-input" type="email" placeholder="e.g. jdcruz01202600000@usep.edu.ph"><br>
+                        <input class="form-input" type="email" name="email_address" placeholder="e.g. jdcruz01202600000@usep.edu.ph" required>
+                        <p>Student ID Number</p>
+                        <input class="form-input" type="text" name="student_id_number" placeholder="e.g. 2026-00000" required>
+                        <p>College</p>
+                        <select class="sct" name="college">
+                            <option value="caec">College of Applied Economics</option>
+                            <option value="cas">College of Arts and Sciences</option>
+                            <option value="cba">College of Business Administration</option>
+                            <option value="ced">College of Education</option>
+                            <option value="cic">College of Information and Computing</option>
+                            <option value="coe">College of Engineering</option>
+                            <option value="ct">College of Technology</option>
+                        </select>
+                        <p>Organization</p>
+                        <input class="form-input" type="text" name="organization" placeholder="e.g. DOST-ALAS" required>
+                        <p>Department</p>
+                        <input class="form-input" type="text" name="department" placeholder="e.g. Creatives Committee" required>
+                        <p>Position</p>
+                        <input class="form-input" type="text" name="position" placeholder="e.g. Creative Lead" required>
                         <button class="btn" type="submit" style="display: block; margin: auto">Request my Account</button>
                     </form>
                 </div>

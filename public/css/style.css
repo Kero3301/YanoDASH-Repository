@@ -25,6 +25,13 @@
     color: white;
 }
 
+.sct {
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #DDD;
+    width: 100%
+}
+
 .no-document-found-wrapper {
     grid-column: 1 / -1;
     display: flex;
