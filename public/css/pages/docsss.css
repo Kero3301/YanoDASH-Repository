@@ -32,10 +32,10 @@
     max-height: max-content;
     border-radius: 32px;
     margin: auto;
-    margin-top: 210px;
+    margin-top: 10px;
     margin-bottom: 16px;
 }
-
+/* 
 .archive-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -44,7 +44,7 @@
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.08);
             overflow: hidden;
             transition: all 0.2s ease;
-        }
+        } */
 
     .search-panel {
             padding-top: 5px;
@@ -189,6 +189,10 @@
 }
     #b-back {
         padding: 10px 15px;
+    }
+
+    #docs-list-container {
+        margin-top: 210px;
     }
 
 }
