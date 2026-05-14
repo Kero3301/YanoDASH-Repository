@@ -5,11 +5,11 @@
     session_start();
 
     require_once '../../../src/loader.php';
-    require_once '../../utils/doc_query.php'; 
 
     load (
         'vendor_autoload',
         'mongodb_client',
+        'mongodb_collections',
         'authentication',
         'authorization',
         'navbar'
@@ -25,8 +25,7 @@
 
     $client = mongodb_client();
 
-    $db = $client->yano_dash;
-    $collection = $db->documents_schema;
+    $collection = coll('documents', $client);
 
     $search = $_GET['search'] ?? '';
     $category = $_GET['category'] ?? '';

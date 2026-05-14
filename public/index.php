@@ -9,11 +9,6 @@
         'main_section', 
         'footer'
     );
-
-    // var_dump($identity);
-    // var_dump($permissions);
-    // var_dump($profile);
-    // exit();
 ?>
 
 <!DOCTYPE html>

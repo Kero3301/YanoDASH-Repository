@@ -4,10 +4,11 @@
     load (
         'vendor_autoload',
         'mongodb_client',
-        'mongodb_collections'
+        'mongodb_collections',
+        'mailing'
     );
 
-    $TEST_MODE = true;
+    $TEST_MODE = false;
 
     $client = mongodb_client();
     $collection = coll('accounts', $client);
@@ -48,17 +49,6 @@
         echo "TEST MODE: Your OTP is $otp <br>";
         echo "<a href='verify.php'>Go to Verify Page</a>";
     } else {
-        // Send email
-        $to = $email;
-        $subject = "Your OTP for Password Reset";
-        $message = "Your OTP is: $otp\n\nThis OTP will expire in 5 minutes.";
-        $headers = "From: noreply@yanodash.com";
-
-        if (mail($to, $subject, $message, $headers)) {
-            echo "OTP sent to your email.";
-            echo "<a href='verify.php'>Go to Verify Page</a>";
-        } else {
-            echo "Failed to send email.";
-        }
+        send_simple_email($email, "[YanoDASH] Your 6-Digit OTP Code", "Hi, enter this code to verify your request: $otp");
     }
 ?>
