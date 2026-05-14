@@ -1,12 +1,13 @@
 <?php
     session_start();
     require_once '../../../src/loader.php';
-    load('authentication', 'authorization', 'navbar');
+    load('authentication', 'authorization', 'navbar', 'mongodb_client', 'mongodb_collections');
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
         exit;
     }
+
 
     $message = "";
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file'])) {
@@ -16,12 +17,11 @@
         $dbName = "yano_dash";
         
         try {
-            $uri = "mongodb://{$user}:{$pass}@localhost:27017/{$dbName}?authSource=admin";
-            $client = new MongoDB\Client($uri);
-            $collection = $client->$dbName->documents;
+            $client = mongodb_client();
+            $collection = coll('documents', $client);
 
             // Target the 'Uploads' folder in the Repository root
-            $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'Uploads' . DIRECTORY_SEPARATOR;
+            $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
             $fileName = time() . "_" . basename($_FILES["document_file"]["name"]);
