@@ -43,7 +43,16 @@ function renderDocs() {
     });
 
     docsGrid.innerHTML = "";
-    if (filteredDocs.length === 0) docsGrid.innerHTML = '<h1 style="text-align: center; margin: auto">No documents</h1>';
+    if (filteredDocs.length === 0) 
+        docsGrid.innerHTML = 
+        `
+        <div class="no-document-found-wrapper">
+            <div class="no-document-found-indicator">
+                <div class="no-document-found-logo"></div>
+                <h2 class="subtitle" style="user-select: none">No documents found</h2>
+            </div>
+        </div>
+        `;
 
     filteredDocs.forEach(doc => {
         const clonedDoc = doc.cloneNode(true);
@@ -127,3 +136,23 @@ document.addEventListener("keydown", (event) => {
     }
 });
 renderDocs();
+
+// Pagination
+const goButton = document.querySelector('.go-page-button');
+const pageInput = document.querySelector('.page-number');
+
+goButton.addEventListener('click', () => {
+
+    const page = parseInt(pageInput.value);
+
+    if (!page || page < 1) return;
+
+    window.location.href = `?page=${page}`;
+});
+
+pageInput.addEventListener('keydown', (event) => {
+
+    if (event.key === 'Enter') {
+        goButton.click();
+    }
+});

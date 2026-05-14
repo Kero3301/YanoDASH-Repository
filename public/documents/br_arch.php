@@ -1,21 +1,43 @@
 <?php
     session_start();
+
     require_once '../../src/loader.php';
     load (
         'vendor_autoload',
-        'mongodb_client',
+        'mongodb_client', 
+        'mongodb_collections',
         'doc_ed',
+        'doc_query',
         'document_factory',
         'navbar',
+        'footer',
         'document_list',
         'document_modal',
-        'page_header'
+        'page_header',
+        'pagination_controls'
     );
 
     $client = mongodb_client();
+    $collection_documents = coll('documents', $client);
 
-    $collection_documents = $client->yano_dash->documents_schema;
-    $results = $collection_documents->find(['is_publicized' => true]);
+    $documentsPerPage = 8;
+    $totalDocuments = $collection_documents->countDocuments([
+        'doc_status' => 'PUBLICIZED'
+    ]);
+    
+    $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
+    $currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    $currentPage = max(1, min($currentPage, $totalPages));
+    $skip = ($currentPage - 1) * $documentsPerPage;
+
+    $results = $collection_documents->find(
+        ['doc_status' => 'PUBLICIZED'],
+        [
+            'skip' => $skip,
+            'limit' => $documentsPerPage
+        ]
+    );
+
     $all_docs = get_all($results);
 ?>
 <!DOCTYPE html>
@@ -32,8 +54,9 @@
         <div class="docs-grid" id="docsGrid">
             <?php list_all_documents($all_docs)?>
         </div>
-        <h2 style="text-align: center">< Page x of y ></h2>
+        <?php echo pagination_controls($currentPage, $totalPages)?>
     </div>
+    <?php echo footer()?>
     <?php echo document_modal()?>
 
     <script src="../script/documents-display.js"></script>

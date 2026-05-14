@@ -1,4 +1,20 @@
 <?php
+session_start();
+
+require_once '../../src/loader.php';
+load (
+    'vendor_autoload',
+    'mongodb_client',
+    'mongodb_collections',
+    'doc_ed',
+    'document_factory',
+    'navbar',
+    'document_list',
+    'document_modal',
+    'page_header',
+    'footer',
+    'pagination_controls'
+);
     session_start();
 
     // ini_set('display_errors', 'Off');
@@ -29,6 +45,40 @@
         ]
     );
     $all_docs = get_all($results);
+$client = mongodb_client();
+$collection_documents = coll('documents', $client);
+
+$baseQuery = [
+    'doc_status' => 'PUBLICIZED',
+];
+
+$documentsPerPage = 8;
+
+$totalDocuments = $collection_documents->countDocuments($baseQuery);
+
+$totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
+
+$currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
+    'options' => [
+        'default' => 1,
+        'min_range' => 1
+    ]
+]);
+
+$currentPage = min($currentPage, $totalPages);
+
+$skip = (int)(($currentPage - 1) * $documentsPerPage);
+
+$results = $collection_documents->find(
+    $baseQuery,
+    [
+        'sort' => ['dates.date_added' => -1],
+        'skip' => $skip,
+        'limit' => $documentsPerPage
+    ]
+);
+
+$all_docs = get_all($results);
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +98,9 @@
         <h2 style="text-align: center">< Page x of y ></h2>
     </div>
 
+    <?php echo footer()?>
     <?php echo document_modal()?>
+   
 
     <script src="../script/documents-display.js"></script>
 
