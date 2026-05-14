@@ -27,6 +27,7 @@ const SOURCES = [
     'routing' => 'utils/routing',
     'schema_validator' => 'utils/schema_validator',
     'text_utils' => 'utils/text_utils',
+    'mailing' => 'utils/mailing',
     
     # Components
     'accordion' => 'views/components/accordion',
