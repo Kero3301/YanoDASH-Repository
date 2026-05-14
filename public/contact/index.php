@@ -57,7 +57,7 @@
     <body>
         <?php echo navbar()?>
             <?php if ($success) :?>
-                <div style="display: block; width: 65%; margin: 20px auto; background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745; text-align: center;">
+                <div style="display: block; width: 65%; margin: 2px auto; background-color: #d4edda; color: #155724; padding: 15px; border-radius: 8px; border: 1px solid #28a745; border-left: 4px solid #28a745; text-align: center;">
                     Message received! You will hear from us shortly.
                 </div>
                 <?php unset($_POST['subject']); unset($_POST['content']);?>

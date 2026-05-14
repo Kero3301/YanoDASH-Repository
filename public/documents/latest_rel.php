@@ -81,7 +81,6 @@ $all_docs = get_all($results);
         <div class="docs-grid" id="docsGrid">
             <?php list_all_documents($all_docs)?>
         </div>
-        <h2 style="text-align: center">< Page x of y ></h2>
     </div>
 
     <?php echo footer()?>
