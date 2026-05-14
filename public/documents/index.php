@@ -16,7 +16,9 @@
         <link rel="stylesheet" href="../css/pages/index_docs.css"/>
     </head>
     <body>
+         <div class ="header">
         <?php echo navbar(1)?>
+       
         <div class="container">
             
             <h1 class="title"> What documents do you want to check? </h1>
@@ -25,6 +27,8 @@
                 <a href="br_arch.php" class="button"> Browse Archive </a>
             </div>
         </div>
+        
         <?php echo footer()?>
+        </div>
     </body>
 </html>

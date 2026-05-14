@@ -96,6 +96,7 @@
     padding: 15px;
     border-radius: 12px;
     border-bottom: 3px solid var(--burgundy);
+    border-right: 3px solid var(--burgundy);
     font-weight: 600;
     color: var(--burgundy);
     transition: 0.3s;
