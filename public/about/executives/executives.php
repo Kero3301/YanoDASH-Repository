@@ -45,8 +45,8 @@
                 </div>
                 <div class="exec-info">
                     <div class="line-divider"></div>
-                    <h2>JUVWEL R. ARIATE</h2>
-                    <p class="role">Founder & Lead Developer</p>
+                    <h2>Alex Cruz</h2>
+                    <p class="role">OSC PRESIDENT</p>
                     <p class="bio">Visionary behind YanoDASH, focusing on streamlining document management systems for student councils.</p>
                 </div>
             </div>
@@ -57,8 +57,8 @@
                 </div>
                 <div class="exec-info">
                     <div class="line-divider"></div>
-                    <h2>ANDREA ENSINALES</h2>
-                    <p class="role">Executive Secretary</p>
+                    <h2>John Elias</h2>
+                    <p class="role">General Secretary</p>
                     <p class="bio">Responsible for the systematic organization of all council documents and meeting minutes.</p>
                 </div>
             </div>
@@ -69,8 +69,8 @@
                 </div>
                 <div class="exec-info">
                     <div class="line-divider"></div>
-                    <h2>KAZUMA KIRYU</h2>
-                    <p class="role">Operations Manager</p>
+                    <h2>Marcus Adler</h2>
+                    <p class="role">Internal Vice President</p>
                     <p class="bio">Overseeing the logistical flow and ensuring project milestones are met with absolute resolve.</p>
                 </div>
             </div>
@@ -81,9 +81,9 @@
                 </div>
                 <div class="exec-info">
                     <div class="line-divider"></div>
-                    <h2>GORO MAJIMA</h2>
-                    <p class="role">Lead Creative Designer</p>
-                    <p class="bio">Responsible for the unique visual identity and ensuring the user interface is dynamic and engaging.</p>
+                    <h2>Elena Santos</h2>
+                    <p class="role">External Vice President</p>
+                    <p class="bio">Handles external communications and community outreach with strength and clarity.</p>
                 </div>
             </div>
 
@@ -93,9 +93,9 @@
                 </div>
                 <div class="exec-info">
                     <div class="line-divider"></div>
-                    <h2>DAIGO DOJIMA</h2>
-                    <p class="role">Head of Creatives</p>
-                    <p class="bio">Bridges the gap between technical requirements and artistic vision for the entire team.</p>
+                    <h2>Dominic Santos</h2>
+                    <p class="role">General Auditor</p>
+                    <p class="bio">Ensuring transparency and fairness in all council dealings with a hero's passion.</p>
                 </div>
             </div>
 
@@ -105,35 +105,13 @@
                 </div>
                 <div class="exec-info">
                     <div class="line-divider"></div>
-                    <h2>TAIGA SAEJIMA</h2>
-                    <p class="role">Public Relations Officer</p>
-                    <p class="bio">Handles external communications and community outreach with strength and clarity.</p>
-                </div>
-            </div>
-
-            <div class="exec-card">
-                <div class="exec-image">
-                    <img src="placeholder.png" alt="Finance">
-                </div>
-                <div class="exec-info">
-                    <div class="line-divider"></div>
-                    <h2>SHUN AKIYAMA</h2>
-                    <p class="role">Treasurer</p>
+                    <h2>Sofia Reyes</h2>
+                    <p class="role">General Treasurer</p>
                     <p class="bio">Expert in financial management and resource allocation for various council projects.</p>
                 </div>
             </div>
 
-            <div class="exec-card">
-                <div class="exec-image">
-                    <img src="placeholder.png" alt="Audit">
-                </div>
-                <div class="exec-info">
-                    <div class="line-divider"></div>
-                    <h2>ICHIBAN KASUGA</h2>
-                    <p class="role">Internal Auditor</p>
-                    <p class="bio">Ensuring transparency and fairness in all council dealings with a hero's passion.</p>
-                </div>
-            </div>
+           
         </div>
     </div>
 </body>
