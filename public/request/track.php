@@ -334,7 +334,7 @@
     <div class="search-group">
         <label for="track_id">Enter Tracking Code</label>
         <div class="search-input-wrapper">
-            <input type="text" id="track_id" placeholder="e.g. YD-2024-001">
+            <input type="text" id="track_id" placeholder="e.g. YD-2024-00001" required>
             <button class="btn-track">Track Now</button>
         </div>
     </div>
