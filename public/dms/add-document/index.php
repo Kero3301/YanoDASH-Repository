@@ -21,7 +21,7 @@
         $author = new MongoDB\BSON\ObjectId($identity['user_id']);
         $area_of_origin = $identity['department'];
         $yr = date('Y');
-        $tcn = 'YD-'. date("Ymd");
+        $tcn = 'YD-'. date("Ymd"). date("His");
 
         try {
             $client = mongodb_client();

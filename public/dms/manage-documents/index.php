@@ -23,28 +23,72 @@
     if (!can_use_dms($permissions))
         die("You do not have permission to access this resource.");
 
-
     $client = mongodb_client();
+    $collection_documents = coll('documents', $client);
 
-    $collection = coll('documents', $client);
+    $baseQuery = [
+        'doc_status' => 'EDITING',
+        'area_of_origin' => [
+            '$in' => $permissions['access_domains']
+        ]
+    ];
 
-    $search = $_GET['search'] ?? '';
-    $category = $_GET['category'] ?? '';
-
-    $query = [];
-
-    if (!empty($search)) {
-        $query['doc_title'] = [
-            '$regex' => $search,
-            '$options' => 'i'
+    if (is_president($identity, $permissions)) {
+        $baseQuery = [
+            'doc_status' => 'EDITING'
         ];
     }
 
-    if (!empty($category) && $category !== 'All Categories') {
-        $query['doc_categories'] = $category;
-    }
+    $documentsPerPage = 15;
 
-    $documents = $collection->find($query);
+    $totalDocuments = $collection_documents->countDocuments($baseQuery);
+
+    $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
+
+    $currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
+        'options' => [
+            'default' => 1,
+            'min_range' => 1
+        ]
+    ]);
+
+    $currentPage = min($currentPage, $totalPages);
+
+    $skip = (int)(($currentPage - 1) * $documentsPerPage);
+
+    $results = $collection_documents->find(
+        $baseQuery,
+        [
+            'sort' => ['dates.date_added' => -1],
+            'skip' => $skip,
+            'limit' => $documentsPerPage
+        ]
+    );
+
+    $documents = $results;
+
+
+    // $client = mongodb_client();
+
+    // $collection = coll('documents', $client);
+
+    // $search = $_GET['search'] ?? '';
+    // $category = $_GET['category'] ?? '';
+
+    // $query = [];
+
+    // if (!empty($search)) {
+    //     $query['doc_title'] = [
+    //         '$regex' => $search,
+    //         '$options' => 'i'
+    //     ];
+    // }
+
+    // if (!empty($category) && $category !== 'All Categories') {
+    //     $query['doc_categories'] = $category;
+    // }
+
+    // $documents = $collection->find($query);
 ?>
 
 <!DOCTYPE html>
@@ -66,7 +110,6 @@
                 type="text" 
                 name="search" 
                 placeholder="Search documents..."
-                value="<?php echo htmlspecialchars($search); ?>"
                 class="search-box"
             >
 
@@ -132,7 +175,7 @@
                 ?>
             </td>
             <td>
-                <?php echo (int)$doc->current_version_id; ?>
+                <?php echo (int)$doc->current_version; ?>
             </td>
             <td><?php echo $doc->doc_status ?? ''; ?></td>
 

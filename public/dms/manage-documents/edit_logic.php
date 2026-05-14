@@ -5,15 +5,16 @@ load (
     'authentication',
     'authorization',
     'vendor_autoload',
-    'mongodb_client'
+    'mongodb_client',
+    'mongodb_collections'
 );
 
 if (!is_logged_in() || !can_use_dms($permissions))
     die("You do not have permission to access this resource.");
 
-$client = mongodb_client(readOnly: false);
-$collection_documents = $client->yano_dash->documents_schema;
-$collection_documentVersions = $client->yano_dash->document_versions;
+$client = mongodb_client();
+$collection_documents = coll('documents', $client);
+$collection_documentVersions = coll('document_versions', $client);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     # Get the posted doc_id

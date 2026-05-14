@@ -7,6 +7,7 @@
         'authorization',
         'vendor_autoload',
         'mongodb_client',
+        'mongodb_collections',
         'navbar',
         'accordion',
     );
@@ -23,7 +24,7 @@
  
     $client = mongodb_client();
 
-    $collection_documents = $client->yano_dash->documents_schema;
+    $collection_documents = coll('documents', $client);
 
     $documentFound = false;
     $fetchedDocument = null;
@@ -45,8 +46,8 @@
     if ($documentFound) {
         $title = $fetchedDocument->doc_title;
         $area = $fetchedDocument->area_of_origin;
-        $category = $fetchedDocument->main_category;
-        $currentVersion = $fetchedDocument->current_version_id;
+        $category = $fetchedDocument->doc_category;
+        $currentVersion = $fetchedDocument->current_version;
     }
 ?>
 
@@ -104,7 +105,7 @@
                         type="text"
                         name="area"
                         required
-                        value="<?php echo htmlspecialchars($area); ?>">
+                        value="<?php echo htmlspecialchars($area); ?>" disabled>
                 </div>
 
                 <div id="fileupload-accordion" class="accordion-container">
