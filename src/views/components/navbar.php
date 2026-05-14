@@ -239,7 +239,7 @@
                         $about_menu
                     </div>
 
-                    $colorModeSwitch
+                    <!-- $colorModeSwitch -->
 
                     <div id="myaccount" class="dropdown" style="margin-left: auto; margin-right: 24px;">
                         <a style="cursor: pointer;">
