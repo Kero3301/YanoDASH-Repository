@@ -145,11 +145,45 @@ input[type="file"] { display: none; }
 .about-card {
     background: rgba(0, 0, 0, 0.95); /* Bright white with slight transparency */
     display: flex;
+    flex-direction: row;
     max-width: 900px;
     width: 95%;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+}
+
+@media screen and (max-width: 768px) {
+    .about-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .about-left,
+    .about-right {
+        width: 100%;
+    }
+
+    .large-about-logo {
+        width: 220px;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .about-right h1 {
+        font-size: 28px;
+    }
+
+    .about-right p {
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .contact-btn {
+        margin-top: 15px;
+    }
 }
 
 /* Left side with the logo */
