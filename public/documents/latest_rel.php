@@ -15,32 +15,18 @@ load (
     'footer',
     'pagination_controls'
 );
-    session_start();
 
-    require_once '../utils/doc_query.php'; 
-    require_once '../../src/loader.php';
-
-    load (
-        'vendor_autoload',
-        'mongodb_client',
-        'doc_ed',
-        'document_factory',
-        'navbar',
-        'document_list',
-        'document_modal',
-        'page_header'
-    );
 
     $client = mongodb_client();
     
     $collection_documents = $client->yano_dash->documents_schema;
 
-    $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
+//     $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
     
-    $results = $collection_documents->find($query);
-    $all_docs = get_all($results);
-$client = mongodb_client();
-$collection_documents = coll('documents', $client);
+//     $results = $collection_documents->find($query);
+//     $all_docs = get_all($results);
+// $client = mongodb_client();
+// $collection_documents = coll('documents', $client);
 
 $baseQuery = [
     'doc_status' => 'PUBLICIZED',
