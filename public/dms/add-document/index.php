@@ -1,20 +1,46 @@
 <?php
     session_start();
-
     require_once '../../../src/loader.php';
-    load (
-        'authentication',
-        'authorization',
-        'navbar'
-    );
+    load('authentication', 'authorization', 'navbar');
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
         exit;
     }
 
-    if (!can_use_dms($permissions))
-        die("You do not have permission to access this resource.");
+    $message = "";
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file'])) {
+        // Dynamic credentials from the active session
+        $user = urlencode($_SESSION['user_email'] ?? ''); 
+        $pass = urlencode($_SESSION['user_password'] ?? ''); 
+        $dbName = "yano_dash";
+        
+        try {
+            $uri = "mongodb://{$user}:{$pass}@localhost:27017/{$dbName}?authSource=admin";
+            $client = new MongoDB\Client($uri);
+            $collection = $client->$dbName->documents;
+
+            // Target the 'Uploads' folder in the Repository root
+            $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'Uploads' . DIRECTORY_SEPARATOR;
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+
+            $fileName = time() . "_" . basename($_FILES["document_file"]["name"]);
+            $targetPath = $uploadDir . $fileName;
+
+            if (move_uploaded_file($_FILES["document_file"]["tmp_name"], $targetPath)) {
+                $collection->insertOne([
+                    'document_name' => $_POST['docname'],
+                    'category'      => $_POST['categories'],
+                    'file_name'     => $fileName,
+                    'uploaded_by'   => $_SESSION['user_email'],
+                    'upload_date'   => new MongoDB\BSON\UTCDateTime()
+                ]);
+                $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
+            }
+        } catch (Exception $e) {
+            $message = "<span style='color: #e74c3c;'>Error: " . $e->getMessage() . "</span>";
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -22,68 +48,58 @@
 <head>
     <?php initialize_page("Upload Document")?>
     <link rel="stylesheet" href="../../css/pages/adddocstyles.css">
+    <style>
+        .status-msg { margin-top: 15px; font-weight: bold; padding: 10px; border-radius: 5px; }
+        .success { color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+        .error { color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
+    </style>
 </head>
 <body>
     <?php echo navbar()?>
 
     <div class="container">
-        <h2 style="font-family: 'Gupter'; font-weight: nomral">New Document</h2>
+        <h2 style="font-family: 'Gupter'; font-weight: normal">New Document</h2>
 
-        <div class="section">
-            <p style="color: white; font-family: 'RobotoFlex'">Document Name </p>
-            <input type="text" name="docname" placeholder="Document Name" required><br><br>
-            <p style="color: white;">Categories </p>
-            <select name="categories" id="categories">
-            <option value="Financial">Financial</option>
-            <option value="Activity Design">Activity Design</option>
-            <option value="Minutes">Minutes</option>
-            <option value="Other">Other</option>
-            </select>
-            <br><br>
+        <form method="POST" enctype="multipart/form-data">
+            <div class="section">
+                <p style="color: white; font-family: 'RobotoFlex'">Document Name </p>
+                <input type="text" name="docname" placeholder="Enter document title" required><br><br>
+                
+                <p style="color: white;">Category </p>
+                <select name="categories" id="categories">
+                    <option value="Financial">Financial</option>
+                    <option value="Activity Design">Activity Design</option>
+                    <option value="Minutes">Minutes</option>
+                    <option value="Other">Other</option>
+                </select>
+                <br><br>
 
-            <p style="color: white;">Initial File </p>
-            <label for="fileUpload" class="custom-file-upload">
-                Choose Document
-            </label>
-            <p class="subtitle">Select a file from your device to upload. <br>Max: 20 MB</p>
-            <input type="file" id="fileUpload" accept=".pdf,.doc,.docx,.txt">
-            
-            <div id="fileInfo" class="file-info">No file chosen</div>
+                <p style="color: white;">File Selection </p>
+                <label for="fileUpload" class="custom-file-upload">Select PDF/DOCX</label>
+                <input type="file" name="document_file" id="fileUpload" accept=".pdf,.doc,.docx,.txt" required>
+                
+                <div id="fileInfo" class="file-info">No file chosen</div>
 
-            <button class="upload-btn" onclick="startUpload()">Upload Document</button>
-            <div id="statusMessage" class="status"></div>
-        </div>
+                <button type="submit" class="upload-btn">Start Upload</button>
+                
+                <?php if ($message): ?>
+                    <div class="status-msg"><?php echo $message; ?></div>
+                <?php endif; ?>
+            </div>
+        </form>
     </div>
 
     <script>
         const fileInput = document.getElementById('fileUpload');
         const fileInfo = document.getElementById('fileInfo');
-        const statusMessage = document.getElementById('statusMessage');
 
-        // Update the text when a file is selected
         fileInput.addEventListener('change', function() {
             if (this.files && this.files.length > 0) {
                 fileInfo.textContent = "Selected: " + this.files[0].name;
-                statusMessage.innerHTML = ""; 
             } else {
                 fileInfo.textContent = "No file chosen";
             }
         });
-
-        function startUpload() {
-            if (fileInput.files.length === 0) {
-                statusMessage.innerHTML = `<span class="error">Please select a file first.</span>`;
-                return;
-            }
-
-            // Simulating an upload process
-            statusMessage.innerHTML = `<span class="success">Uploading ${fileInput.files[0].name}...</span>`;
-            
-            setTimeout(() => {
-                statusMessage.innerHTML = `<span class="success">✔ Upload Complete!</span>`;
-            }, 1500);
-        }
     </script>
-
 </body>
 </html>
