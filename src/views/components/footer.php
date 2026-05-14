@@ -20,26 +20,26 @@
                 <div class="footer-section">
                     <h3 class="footer-section-label">Documents</h3>
                     <ul>
-                        <li><a>Latest Releases</a></li>
-                        <li><a>Browse Public Archive</a></li>
-                        <li><a>Departmental Documents</a></li>
-                        <li><a>Council Documents</a></li>
+                        <li><a style="color: white; text-decoration: none;" href="latest_rel.php">Latest Releases</a></li>
+                        <li><a style="color: white; text-decoration: none;" href="br_arch.php">Browse Public Archive</a></li>
+                        <!-- <li><a>Departmental Documents</a></li>
+                        <li><a>Council Documents</a></li> -->
                     </ul>
                 </div>
-                <div class="footer-section">
+                <!-- <div class="footer-section">
                     <h3 class="footer-section-label">Statistics</h3>
                     <ul>
                         <li><a>General Statistics</a></li>
                         <li><a>For Admins</a></li>
                         <li><a>For Editors</a></li>
                     </ul>
-                </div>
+                </div> -->
                 <div class="footer-section">
                     <h3 class="footer-section-label">About</h3>
                     <ul>
-                        <li><a>What is the OSC?</a></li>
-                        <li><a>Meet the OSC Executives</a></li>
-                        <li><a>YanoDASH's Story</a></li>
+                        <li><a style="color: white; text-decoration: none;" href="../../public/about/osc/index.php">What is the OSC?</a></li>
+                        <li><a style="color: white; text-decoration: none;" href="../../public/about/executives/executives.php">Meet the OSC Executives</a></li>
+                        <!-- <li><a style="color: white; text-decoration: none;" href="../../public/about/osc/story.php">YanoDASH's Story</a></li> -->
                     </ul>
                 </div>
                 <div class="footer-section" style="margin-left: auto;">
