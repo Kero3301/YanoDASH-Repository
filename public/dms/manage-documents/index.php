@@ -162,9 +162,7 @@
             <td><?php echo $doc->doc_title ?? ''; ?></td>
             <td>
                 <?php  
-                    echo isset($doc->doc_categories)
-                        ? implode(", ", (array)$doc->doc_categories)
-                        : ''; 
+                    echo $doc->doc_category; 
                 ?>
             </td>
             <td>

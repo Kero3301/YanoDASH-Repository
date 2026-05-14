@@ -26,6 +26,7 @@
         try {
             $client = mongodb_client();
             $collection = coll('documents', $client);
+            $docver = coll('document_versions', $client);
 
             // Target the 'Uploads' folder in the Repository root
             $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
@@ -51,7 +52,17 @@
                     "current_version" => 1
                 ]);
                 if ($result) echo $result->getInsertedId();
-                if ($result) $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
+
+                $did = $result->getInsertedId();
+                $result2 = $docver->insertOne(
+                    [
+                        "doc_id" => $did,
+                        "version_number" => 1,
+                        "file_path" => $targetPath,
+                        "date_added" => new MongoDB\BSON\UTCDateTime()
+                    ]
+                );
+                if ($result2) $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
             }
         } catch (Exception $e) {
             $message = "<span style='color: #e74c3c;'>Error: " . $e->getMessage() . "</span>";

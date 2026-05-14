@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../../../src/loader.php';
-load('mongodb_client', 'authentication', 'authorization');
+load('mongodb_client', 'mongodb_collections', 'authentication', 'authorization');
 
 // 1. Security Check
 if (!is_logged_in() || !can_use_dms($permissions)) {
@@ -16,8 +16,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 
 try {
     $client = mongodb_client();
-    $db = $client->yano_dash;
-    $collection = $db->documents_schema;
+    $collection = coll('documents', $client);
 
     // 3. Convert string ID to MongoDB ObjectId
     $targetId = new MongoDB\BSON\ObjectId($_GET['id']);
