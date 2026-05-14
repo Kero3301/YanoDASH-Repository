@@ -1,6 +1,7 @@
 <?php
 require_once dirname(dirname(__DIR__)). '/vendor/autoload.php';
 require_once dirname(__DIR__). '/database/mongodb_client.php';
+require_once dirname(__DIR__). '/database/mongodb_collections.php';
 require_once dirname(__DIR__). '/utils/schema_validator.php';
 
 function get_profile(?string $userID): ?array {
@@ -19,13 +20,13 @@ function get_profile(?string $userID): ?array {
 
     # Client and collections
     $client = mongodb_client();
-    $collection_accounts = $client->yano_dash->account_schema;
-    $collection_organizations = $client->yano_dash->organizations_schema;
+    $collection_accounts = coll('accounts', $client);
+    $collection_organizations = coll('organizations', $client);
 
     # Query
     $condition_profile = ["_id" => $_id];
     $profile = $collection_accounts->findOne($condition_profile);
-    if (!$profile || !baseline_schema_validate($profile, 'ACCOUNTS')) return null;
+    if (!$profile) return null;
 
     # Organization resolution
     $organization_name = null;
@@ -40,7 +41,8 @@ function get_profile(?string $userID): ?array {
         'student_id_number' => $profile->student_id_number ?? "(unknown)",
         'position' => $profile->position,
         'doc_bookmarks' => $profile->doc_bookmarks ?? null,
-        'avatar_url' => $profile->avatar_url ?? ""
+        'avatar_url' => $profile->avatar_url ?? "",
+        'date_joined' => (string) $profile->date_joined?->toDateTime()->format('M j Y') ?? "(unknown)"
     ];
 
     # Result caching and return

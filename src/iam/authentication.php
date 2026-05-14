@@ -2,6 +2,7 @@
 require_once 'identity_resolver.php';
 require_once dirname(__DIR__, 2). '/vendor/autoload.php'; 
 require_once dirname(__DIR__). '/database/mongodb_client.php';
+require_once dirname(__DIR__). '/database/mongodb_collections.php';
 require_once dirname(__DIR__). '/utils/schema_validator.php';
 
 # Check and verify if the user is logged in
@@ -19,20 +20,19 @@ function login_user(string $email, string $password): LoginResult {
     
     # Client and collections
     $client = mongodb_client();
-    $collection_accounts = $client->yano_dash->account_schema;
-    $collection_loginCredentials = $client->yano_dash->login_credentials_schema;
+    $collection_accounts = coll('accounts', $client);
+    $collection_loginCredentials = coll('login_credentials', $client);
 
     # Query
     $condition_account = ['email_address' => $email];
     $account = $collection_accounts->findOne($condition_account);
     if (!$account) return new LoginResult(false, "Incorrect credentials.");
-    if (!baseline_schema_validate($account, 'ACCOUNTS'))
-        return new LoginResult(false, "Account corrupted, please contact an admin.");
+    // if (!baseline_schema_validate($account, 'ACCOUNTS'))
+    //     return new LoginResult(false, "Account corrupted, please contact an admin.");
     $userID = $account->_id;
     $condition_login_creds = ['user' => $userID];
     $credentials = $collection_loginCredentials->findOne($condition_login_creds);
-    if (!$credentials || !baseline_schema_validate($credentials, 'LOGIN_CREDENTIALS'))
-        return new LoginResult(false, "Account corrupted, please contact an admin.");
+    if (!$credentials) return new LoginResult(false, "Account corrupted, please contact an admin.");
 
     # Password verification
     $storedPassword = $credentials->password_hash;

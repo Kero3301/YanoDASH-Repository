@@ -22,7 +22,6 @@ body {
     padding: 0 7% 20px;
 }
 
-/* shared input styles */
 .controls input,
 .controls select {
     padding: 8px 12px;
@@ -33,7 +32,6 @@ body {
     width: 100%;
 }
 
-/* focus */
 .controls input:focus,
 .controls select:focus {
     border-color: #7bb661;
@@ -86,7 +84,8 @@ button.edit {
 
 button.edit:active {
     background-color: #0e633a;
-    transform: scale(1.05);
+    color: white;
+    transition: 0.2s ease;
 }
 
 button.delete {
@@ -98,7 +97,26 @@ button.delete {
 button.delete:active {
     background-color: #63071e;
     color: white;
-    transform: scale(1.05);
+    transition: 0.2s ease;
+}
+
+button.edit:active,
+button.delete:active {
+    transform: scale(0.95);
+}
+
+td a, 
+td a:link, 
+td a:visited, 
+td a:hover, 
+td a:active {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.edit, .delete {
+    text-decoration: none !important;
+    border-style: solid;
 }
 
 /* ======================================== TABLET VIEW ======================================== */
@@ -115,14 +133,12 @@ button.delete:active {
         gap: 15px;
     }
 
-    /* SEARCH left (flex grow) */
     .controls input {
         flex: 1;
         width: auto;
         font-size: 1rem;
     }
 
-    /* CATEGORY right fixed */
     .controls select {
         width: 220px;
         font-size: 1rem;
@@ -146,7 +162,6 @@ button.delete:active {
         font-size: 1.5rem;
     }
 
-    /* Target the form, which is the actual parent of the inputs */
     .controls-bar {
         display: flex !important;
         flex-direction: row !important;
@@ -156,12 +171,12 @@ button.delete:active {
     }
 
     .search-box {
-        flex: 0 1 400px; /* Search stays on the left */
+        flex: 0 1 400px;
         margin-bottom: 0 !important;
     }
 
     .category-box {
-        flex: 0 0 220px; /* Category stays on the right */
+        flex: 0 0 220px;
         margin-top: 0 !important;
     }
 
@@ -194,12 +209,17 @@ button.delete:active {
     button.edit:hover {
         background-color: #0e633a;
         color: white;
-        transform: scale(1.05);
+        transition: 0.2s ease;
     }
 
     button.delete:hover {
         background-color: #63071e;
         color: white;
-        transform: scale(1.05);
+        transition: 0.2s ease;
+    }
+
+    button.edit:active,
+    button.delete:active {
+        transform: scale(0.95);
     }
 }

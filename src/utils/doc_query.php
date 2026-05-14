@@ -1,5 +1,4 @@
 <?php
-// doc_query.php - Shannon: This file provides TOOLS only.
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -9,47 +8,44 @@ require __DIR__ . '/../../vendor/autoload.php';
 use MongoDB\Client;
 use MongoDB\BSON\ObjectId;
 
-if (file_exists(__DIR__ . '/../.env')) {
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-    $dotenv->load();
-}
-
-$mongoUri = getenv('YANODASH_V_DBU_URI');
-
-if (!$mongoUri) {
-    die("Missing environment variable: YANODASH_V_DBU_URI");
-}
-
-try {
-    $client = new Client($mongoUri);
-    $db = $client->yano_dash;
-} catch (Exception $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
-
 function buildQuery($user, $access, $pageType = 'dms') {
-    $scopes = isset($access['scope_of_access']) ? (array)$access['scope_of_access'] : [];
-    
-    $userOrg = $user['organization'] ?? null;
-    $orgString = ($userOrg instanceof ObjectId) ? (string)$userOrg : $userOrg;
+    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+    $db = $client->yano_dash;
 
+    $sessionOrgName = $user['organization'] ?? 'none';
+    $orgDoc = $db->organizations_schema->findOne(['organization_name' => $sessionOrgName]);
+    $userOffice = $orgDoc ? (string)$orgDoc->_id : 'none';
+
+    $scopes = $user['scope_of_access'] ?? [];
     if (!in_array('read_docs', $scopes)) {
-        return ['_id' => 'DENIED']; 
+        return ['_id' => 'DENIED'];
     }
 
-    switch ($pageType) {
-        case 'private':
-            return [
-                'is_publicized' => false,
-                'doc_status' => ['$regex' => '^archived$', '$options' => 'i'],
-                'area_of_origin' => $orgString
-            ];
+    $role = $user['access_level'] ?? 'viewer';
+    $fullName = trim(($user['name']['first_name'] ?? '') . ' ' . ($user['name']['last_name'] ?? ''));
 
-        case 'public':
-            return ['is_publicized' => true];
-
-        case 'dms':
-        default:
-            return ['area_of_origin' => $orgString];
+    if ($role === 'viewer' && $pageType !== 'public') {
+        return ['_id' => 'DENIED'];
     }
+
+    $finalQuery = [];
+
+    if ($pageType === 'dms') {
+        $finalQuery['doc_status'] = ['$nin' => ['APPROVED', 'ARCHIVED']];
+    } elseif ($pageType === 'private') {
+        $finalQuery['is_publicized'] = false;
+        $finalQuery['doc_status'] = ['$in' => ['APPROVED', 'ARCHIVED']];
+    } elseif ($pageType === 'public') {
+        $finalQuery['is_publicized'] = true;
+    }
+
+    if ($role !== 'admin') {
+        $finalQuery['$or'] = [
+            ['area_of_origin' => $userOffice],
+            ['author' => $fullName]
+        ];
+    }
+
+    return $finalQuery;
 }
+?>

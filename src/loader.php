@@ -13,6 +13,7 @@ const SOURCES = [
     # Non-components
     'vendor_autoload' => '../vendor/autoload',        
     'mongodb_client' => 'database/mongodb_client',
+    'mongodb_collections' => 'database/mongodb_collections',
     'authentication' => 'iam/authentication',
     'authorization' => 'iam/authorization',
     'doc_ed' => 'models/DocEd',
@@ -38,6 +39,7 @@ const SOURCES = [
     'menu' => 'views/components/menu',
     'navbar' => 'views/components/navbar',
     'page_header' => 'views/components/page_header',
+    'pagination_controls' => 'views/components/pagination_controls', 
     'password_input' => 'views/components/password_input',
     'sliding_switch' => 'views/components/sliding_switch',
     'user_form' => 'views/components/user_form'

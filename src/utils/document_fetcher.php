@@ -1,16 +1,17 @@
 <?php
     require __DIR__. '/../vendor/autoload.php';
-    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+    require dirname(__DIR__). '/database/mongodb_collections.php';
 
-    $collection_accounts = $client->yano_dash->account_schema;
-    $collection_documents = $client->yano_dash->documents_schema;
+    $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
+    $collection_accounts = coll('accounts', $client);
+    $collection_documents = coll('documents', $client);
 
     function fetch_public_archive_documents(): array {
         $documentList = [];
 
         global $collection_documents;
         $results = $collection_documents->find([
-            'is_publicized' => true
+            'doc_status' => 'PUBLICIZED'
         ]);
 
         foreach ($results as $result) {

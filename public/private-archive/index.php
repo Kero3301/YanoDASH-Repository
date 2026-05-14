@@ -7,6 +7,7 @@
     load (
         'vendor_autoload',
         'mongodb_client',
+        'mongodb_collections',
         'authentication',
         'authorization',
         'doc_ed',
@@ -28,14 +29,11 @@
     }
 
     $client = mongodb_client();
+    $collection_documents = coll('documents', $client);
 
-    $collection_documents = $client->yano_dash->documents_schema;
-    $results = $collection_documents->find(
-        [
-            'doc_status' => 'ARCHIVED',
-            'is_publicized' => false
-        ]
-    );
+    $query = buildQuery($_SESSION['auth'], $_SESSION['access'], 'private');
+
+    $results = $collection_documents->find($query);
     $all_docs = get_all($results);
 ?>
 
