@@ -1,20 +1,19 @@
 /* --- UNIVERSAL NAVBAR STYLES --- */
-#navbar { background: #ffffff; padding: 10px 0; border-bottom: 2px solid #e0e0e0; position: sticky; top: 0; z-index: 1000; }
+
 .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; }
 .nav-brand { display: flex; align-items: center; }
 .brand-logo { height: 90px; width: auto; }
 .nav-divider { width: 2px; height: 35px; background-color: #71100F; margin: 0 15px; }
 .brand-text { font-size: 26px; font-weight: bold; color: #4B0082; font-family: 'Times New Roman', serif; }
-.nav-links { list-style: none; display: flex; align-items: center; gap: 30px; }
-.nav-links a { text-decoration: none; color: #0000CD; font-weight: 600; font-size: 18px; }
 .user-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ccc; object-fit: cover; }
 
 /* --- EXECUTIVE PAGE STYLES --- */
 .exec-body { background-color: #ffffff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; padding-bottom: 80px; }
 .exec-container { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
 .exec-header { margin-bottom: 60px; text-align: left; }
-.exec-header h1 { font-size: 32px; font-weight: 300; margin-bottom: 10px; color: #222; }
-.exec-header .quote { font-style: italic; color: #888; font-size: 18px; border-left: 3px solid #00bcd4; padding-left: 15px; }
+.exec-header h1 { color: #63071e; }
+/* .exec-header h1 { font-size: 32px; font-weight: 300; margin-bottom: 10px; color: #222; } */
+.exec-header .quote { font-style: italic; color: #888; background: rgba(0,0,0,0.05); padding: 8px; border-radius: 8px; font-size: 18px; border-left: 3px solid #ff7575; padding-left: 15px; }
 
 /* --- GRID FIX --- */
 .exec-grid {
@@ -34,7 +33,7 @@
 
 .exec-info { flex-grow: 1; }
 .line-divider { width: 40px; height: 2px; background-color: #eee; margin-bottom: 15px; }
-.exec-info h2 { font-size: 18px; letter-spacing: 1px; color: #999; margin-bottom: 5px; text-transform: uppercase; }
+.exec-info h2 { font-size: 18px; font-weight: bold; letter-spacing: 1px; color: #999; margin-bottom: 5px; text-transform: uppercase; }
 .exec-info .role { font-style: italic; color: #444; margin-bottom: 15px; font-size: 16px; font-weight: 500; }
 .exec-info .bio { font-size: 14px; line-height: 1.6; color: #666; text-align: justify; }
 
