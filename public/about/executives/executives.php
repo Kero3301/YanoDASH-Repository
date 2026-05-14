@@ -9,29 +9,12 @@
 </head>
 <body class="exec-body">
 
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <a href="https://www.facebook.com/obrerosc" target="_blank">
-                    <img src="YanoDASH Logo Semifinal Draft.png" alt="YanoDASH Logo" class="brand-logo">
-                </a>
-                <div class="nav-divider"></div>
-                <span class="brand-text">YanoDASH</span>
-            </div>
-
-            <ul class="nav-links">
-                <li><a href="documents.html">Documents</a></li>
-                <li><a href="#">Statistics</a></li>
-                <li><a href="#">Request</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="about.html">About</a></li>
-                <li class="profile-icon">
-                    <img src="placeholder.png" alt="Profile" class="user-circle">
-                </li>
-            </ul>
-        </div>
-    </nav>
-
+    <?php
+    session_start();
+    
+    require_once '../../src/loader.php';
+    load('navbar');
+?>
     <div class="exec-container">
         <header class="exec-header">
             <h1>Meet The Executives</h1>
