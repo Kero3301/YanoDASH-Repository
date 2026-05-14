@@ -5,20 +5,24 @@
 }
 
 /* ======================================== MOBILE VIEW ======================================== */
+.page-header {
+    width: 90%;
+    margin: 10px auto;
+    /* Default: Items will stack vertically */
+}
+
 .title {
-    padding: 20px 7%;
-    font-size: 1rem;
+    padding-top: 10px;
+    font-size: 0.9rem;
     font-weight: bold;
     font-family: 'Gupter', serif;
 }
 
 .top-actions {
-    width: 90%;
-    margin: 10px auto;
+    width: 100%;
+    margin: 15px 0; /* Added spacing for stacked mobile view */
     display: flex;
-    justify-content: flex-end;
-    font-size: 0.8rem;
-    font-family: 'RobotoFlex', sans-serif;
+    justify-content: flex-start;
 }
 
 .important-btn {
@@ -120,31 +124,40 @@ button.reject:active {
     transform: scale(0.95);
 }
 
-.pending {
-    color: #6480db;
-    font-weight: bold;
+td:first-child {
+    white-space: nowrap;
+    min-width: 140px;
+    letter-spacing: 0.5px;
 }
 
-.approved {
-    color: #0e633a;
-    font-weight: bold;
-}
-
-.rejected {
-    color: #63071e;
-    font-weight: bold;
+td:nth-child(2) {
+    width: auto;
 }
 
 /* ======================================== TABLET VIEW ======================================== */
 
 @media (min-width: 481px) {
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1100px;
+        margin: 20px auto; /* Same margin for both pages */
+        padding: 0 10px;    /* Slight side padding for consistency */
+    }
+
     .title {
-        font-size: 1.3rem;
-        padding-top: 15px;
+        padding: 0;         /* Reset padding to prevent pushing the title */
+        margin: 0;          /* Reset margin to keep it far left */
+        font-size: 1.1rem;
+        white-space: nowrap;
     }
 
     .top-actions {
-        font-size: 1.1rem;
+        margin: 0;
+        width: auto;
+        display: flex;
+        justify-content: flex-end;
     }
 
     main {
@@ -159,68 +172,30 @@ button.reject:active {
     }
 
     table {
-        width: 100%;
-        border-collapse: collapse;
         font-size: 1.1rem;
     }
 
-    th {
-        padding: 22px 15px;
-    }
-
-    td {
-        padding: 20px 15px;
-    }
-
-    td button {
-        padding: 8px 15px;
-        font-size: 0.9rem;
-    }
-
-    .important-page .top-actions {
-        width: 90%;
-        max-width: 1100px;
-        margin: 20px auto;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .important-page .important-btn {
-        display: inline-block; /* prevents stretching */
-    }
-
-    .important-page main {
-        display: block; /* 🔥 stop side-by-side layout */
-    }
+    th { padding: 22px 15px; }
+    td { padding: 20px 15px; }
+    td button { padding: 8px 15px; font-size: 0.9rem; }
 }
 
 /* ======================================== DESKTOP VIEW ======================================== */
 
 @media (min-width: 1024px) {
-    .title {
-        font-size: 1.5rem;
-        padding-left: 10%;
+    .page-header {
+        margin: 30px auto; /* Keeps top spacing identical on both pages */
+        max-width: 1100px;
     }
 
-    .top-actions {
-        width: 90%;
-        max-width: 1100px;
-        margin: 20px auto;
-        display: flex;
-        justify-content: flex-end;
-        font-size: 1rem;
+    .title {
+        font-size: 1.3rem;
     }
 
     .table-container {
         width: 90%;
         max-width: 1100px;
         margin: 0 auto 30px;
-    }
-
-    .important-btn:hover {
-        background-color: #63071e;
-        color: white;
-        transition: 0.3s ease;
     }
 
     th, td {
@@ -232,48 +207,19 @@ button.reject:active {
         background-color: #f5f5f5;
     }
 
-    button.approve:hover {
-        background-color: #0e633a;
-        color: white;
-        transition: 0.2s ease;
-    }
-
+    .important-btn:hover,
+    button.approve:hover,
     button.reject:hover {
         background-color: #63071e;
         color: white;
-        transition: 0.2s ease;
+        transition: 0.3s ease;
     }
 
-    button.approve:active,
-    button.reject:active {
-        transform: scale(0.95);
-    }
+    button.approve:hover { background-color: #0e633a; }
 
     td button {
         display: block;
         width: 100%;
         margin-bottom: 8px;
-        font-size: 0.9rem;
-    }
-
-    .important-page .title {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 20px 10%;
-    }
-
-    .important-page .top-actions {
-        margin-top: 0;
-    }
-
-    .important-page .important-btn {
-        font-size: 0.95rem;
-        padding: 10px 18px;
-    }
-
-    .important-page td span {
-        display: inline-block;
-        min-width: 80px;
     }
 }

@@ -18,15 +18,21 @@ load (
 
 
     $client = mongodb_client();
-    
-    $collection_documents = $client->yano_dash->documents_schema;
 
-//     $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
-    
-//     $results = $collection_documents->find($query);
-//     $all_docs = get_all($results);
-// $client = mongodb_client();
-// $collection_documents = coll('documents', $client);
+    $collection_documents = $client->yano_dash->documents_schema;
+    $results = $collection_documents->find(
+        [
+            'doc_status' => 'ARCHIVED',
+            'is_publicized' => true
+        ],
+        [
+            'sort' => ['date_added' => -1],
+            'limit' => 3
+        ]
+    );
+    $all_docs = get_all($results);
+$client = mongodb_client();
+$collection_documents = coll('documents', $client);
 
 $baseQuery = [
     'doc_status' => 'PUBLICIZED',

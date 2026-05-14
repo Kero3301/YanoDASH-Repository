@@ -13,7 +13,7 @@
         'authentication',
         'authorization',
         'navbar'
-    );
+    );   
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
@@ -23,6 +23,7 @@
     if (!can_use_dms($permissions))
         die("You do not have permission to access this resource.");
 
+
     $client = mongodb_client();
 
     $collection = coll('documents', $client);
@@ -30,31 +31,20 @@
     $search = $_GET['search'] ?? '';
     $category = $_GET['category'] ?? '';
 
-    $securityQuery = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'dms');
+    $query = [];
 
-    $userFilters = [];
     if (!empty($search)) {
-        $userFilters['doc_title'] = [
+        $query['doc_title'] = [
             '$regex' => $search,
             '$options' => 'i'
         ];
     }
+
     if (!empty($category) && $category !== 'All Categories') {
-        $userFilters['doc_categories'] = ['$in' => [$category]];
+        $query['doc_categories'] = $category;
     }
 
-    if (empty($userFilters)) {
-        $finalQuery = $securityQuery;
-    } else {
-        $finalQuery = [
-            '$and' => [
-                $securityQuery,
-                $userFilters
-            ]
-        ];
-    }
-
-    $documents = $collection->find($finalQuery);
+    $documents = $collection->find($query);
 ?>
 
 <!DOCTYPE html>
@@ -70,8 +60,8 @@
 	</header>
 
     <div class="controls">
-        <form method="GET" class="controls-bar">
-
+        <form method="GET" class="controls-bar" id="filterForm">
+            
             <input 
                 type="text" 
                 name="search" 
@@ -80,15 +70,18 @@
                 class="search-box"
             >
 
-            <!-- RIGHT: CATEGORY -->
-            <select name="category" class="category-box" onchange="this.form.submit()">
+            <select 
+                name="category" 
+                class="category-box" 
+                onchange="document.getElementById('filterForm').submit()"
+            >
                 <?php
                     $categories = [
                         "All Categories",
-                        "Activity Design",
+                        "Activity Designs",
                         "Memorandum",
-                        "Financial Statement",
-                        "Meeting Minutes",
+                        "Financial Statements",
+                        "Minutes of Meetings",
                         "Accomplishment Report",
                         "Project Proposal"
                     ];
@@ -102,7 +95,6 @@
         </form>
     </div>
 
-    <!-- TABLE -->
 <div class="table-container">
 <br>
 

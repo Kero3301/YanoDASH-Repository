@@ -2,7 +2,6 @@
     session_start();
 
     require_once '../../src/loader.php';
-
     load (
         'vendor_autoload',
         'mongodb_client', 
@@ -25,13 +24,10 @@
     $totalDocuments = $collection_documents->countDocuments([
         'doc_status' => 'PUBLICIZED'
     ]);
+    
     $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
-    $currentPage = isset($_GET['page'])
-        ? (int) $_GET['page']
-        : 1;
-
+    $currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $currentPage = max(1, min($currentPage, $totalPages));
-
     $skip = ($currentPage - 1) * $documentsPerPage;
 
     $results = $collection_documents->find(
@@ -42,12 +38,6 @@
         ]
     );
 
-    
-    $collection_documents = $client->yano_dash->documents_schema;
-
-    // $query = buildQuery($_SESSION['auth'], $_SESSION['auth'], 'public');
-    
-    // $results = $collection_documents->find($query);
     $all_docs = get_all($results);
 ?>
 <!DOCTYPE html>

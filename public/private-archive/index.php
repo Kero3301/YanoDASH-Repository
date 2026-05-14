@@ -29,6 +29,7 @@
     }
 
     $client = mongodb_client();
+    
     $collection_documents = coll('documents', $client);
 
     $query = buildQuery($_SESSION['auth'], $_SESSION['access'], 'private');

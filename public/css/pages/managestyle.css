@@ -105,18 +105,11 @@ button.delete:active {
     transform: scale(0.95);
 }
 
-td a, 
-td a:link, 
-td a:visited, 
-td a:hover, 
-td a:active {
-    text-decoration: none !important;
-    color: inherit !important;
-}
-
-.edit, .delete {
-    text-decoration: none !important;
-    border-style: solid;
+td a:link,
+a:hover, 
+a:visited,
+a:active {
+    text-decoration: none;
 }
 
 /* ======================================== TABLET VIEW ======================================== */
