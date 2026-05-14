@@ -21,20 +21,11 @@
         $author = new MongoDB\BSON\ObjectId($identity['user_id']);
         $area_of_origin = $identity['department'];
         $yr = date('Y');
+        $tcn = 'YD-'. date("Ymd");
 
         try {
             $client = mongodb_client();
             $collection = coll('documents', $client);
-
-            // $result = $collection->insertOne([
-            //     "doc_title" => $doc_title,
-            //     "doc_category" => $doc_category,
-            //     "doc_tags" => [],
-            //     "author" => $author,
-            //     "area_of_origin" => $area_of_origin,
-            //     "doc_status" => "EDITING",
-            //     "tracking_code" => "YD-"
-            // ]);
 
             // Target the 'Uploads' folder in the Repository root
             $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
@@ -44,14 +35,23 @@
             $targetPath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES["document_file"]["tmp_name"], $targetPath)) {
-                $collection->insertOne([
-                    'document_name' => $_POST['docname'],
-                    'category'      => $_POST['categories'],
-                    'file_name'     => $fileName,
-                    'uploaded_by'   => $_SESSION['user_email'],
-                    'upload_date'   => new MongoDB\BSON\UTCDateTime()
+                $result = $collection->insertOne([
+                    "doc_title" => $doc_title,
+                    "doc_category" => $doc_category,
+                    "doc_tags" => [],
+                    "author" => $author,
+                    "area_of_origin" => $area_of_origin,
+                    "doc_status" => "EDITING",
+                    "tracking_code" => "$tcn",
+                    "dates" => [
+                        "date_added" => new MongoDB\BSON\UTCDateTime(),
+                        "date_finalized" => null,
+                        "date_archived" => null
+                    ],
+                    "current_version" => 1
                 ]);
-                $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
+                if ($result) echo $result->getInsertedId();
+                if ($result) $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
             }
         } catch (Exception $e) {
             $message = "<span style='color: #e74c3c;'>Error: " . $e->getMessage() . "</span>";
@@ -82,11 +82,14 @@
                 <input type="text" name="docname" placeholder="Enter document title" required><br><br>
                 
                 <p style="color: white;">Category </p>
-                <select name="categories" id="categories">
-                    <option value="Financial Statement">Financial</option>
+                <select class="sct" name="categories" id="categories">
                     <option value="Activity Design">Activity Design</option>
-                    <option value="Minutes of Meeting">Minutes</option>
-                    <option value="Other">Other</option>
+                    <option value="Memorandum">Memorandum</option>
+                    <option value="Minutes of Meeting">Minutes of Meeting</option> 
+                    <option value="Notice of Meeting">Notice of Meeting</option> 
+                    <option value="Project Proposal">Project Proposal </option>
+                    <option value="Financial Statement">Financial Statement </option>
+                    <option value="Accomplishment Report">Accomplishment Report </option>
                 </select>
                 <br><br>
 

@@ -9,6 +9,7 @@ require_once '../../src/loader.php';
 load(
     'vendor_autoload',
     'mongodb_client',
+    'mongodb_collections',
     'mailing'
 );
 
@@ -59,7 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
     if ($isValid) {
         // Clean up session after success
         unset($_SESSION['otp_email'], $_SESSION['otp_code'], $_SESSION['otp_expiry']);
-        $success = true;
+
+        $client = mongodb_client();
+        $accs = coll('accounts', $client);
+        $creds = coll('login_credentials', $client);
+        $uid = new MongoDB\BSON\ObjecId($identity['user_id']);
+
+        $result = $creds->updateOne(
+            ['user' => $uid],              
+            ['$set' => [
+                'otp' => [
+                    'code' => null, 
+                    'expiry' => null
+                ]
+            ]]
+        );
+        if ($result) $success = true;
     } else {
         $error = "Invalid or expired OTP code.";
     }
@@ -110,7 +126,7 @@ $hasEmailInSession = isset($_SESSION['otp_email']);
         <div class="success-message">
             <h2>✅ 2FA Setup Successful!</h2>
             <p>Your email has been verified and two-factor authentication is active.</p>
-            <a href="$app_url/account/my-account.php" class="btn">Return to Dashboard</a>
+            <a href="/yanodash-repository/public/account/my-account.php" class="btn">Return to Dashboard</a>
         </div>
     <?php else: ?>
 

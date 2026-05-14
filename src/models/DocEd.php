@@ -12,7 +12,7 @@ class Document {
         public string $tracking_code,
         public array $dates,
         public int $version,
-        public array $category_data
+        public ?array $category_data
     ) {}
 }
 

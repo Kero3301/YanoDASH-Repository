@@ -17,7 +17,7 @@ function get_doc($docData): ?Document {
         tracking_code:  $docData-> tracking_code,
         dates:          $docData-> dates-> getArrayCopy(),
         version:        $docData-> current_version,
-        category_data:  $docData-> category_data-> getArrayCopy()
+        category_data:  $docData-> category_data?-> getArrayCopy()
     );
 }
 
