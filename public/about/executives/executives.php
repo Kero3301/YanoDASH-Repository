@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php initialize_page("Executives | YanoDASH");?>
+        <?php initialize_page("Executives | About | YanoDASH");?>
         <link rel="stylesheet" href="../../css/pages/execs-style.css">
     </head>
     <body class="exec-body">

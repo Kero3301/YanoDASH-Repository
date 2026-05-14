@@ -7,6 +7,14 @@
     gap: 1.0rem;
 }
 
+.osc-logo {
+    width: 180px;
+    height: 180px;
+    display: inline-block;
+    background: white;
+    border-radius: 90px;
+}
+
 .pch {
     padding: 40px 0;
     max-height: 512px;

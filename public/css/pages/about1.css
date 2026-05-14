@@ -52,7 +52,7 @@
     background: white;
     padding: 30px;
     border-radius: 20px;
-    border: 1px solid rgba(99, 7, 30, 0.1);
+    border: 3px solid rgba(99, 7, 30, 0.1);
     box-shadow: 0 5px 15px rgba(0,0,0,0.02);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
@@ -92,6 +92,8 @@
 }
 
 .val-item {
+    font-family: 'RobotoFlex', serif;
+    text-align: center;
     background: white;
     padding: 15px;
     border-radius: 12px;
