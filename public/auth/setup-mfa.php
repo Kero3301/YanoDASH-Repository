@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['otp'])) {
         $client = mongodb_client();
         $accs = coll('accounts', $client);
         $creds = coll('login_credentials', $client);
-        $uid = new MongoDB\BSON\ObjecId($identity['user_id']);
+        $uid = new MongoDB\BSON\ObjectId($identity['user_id']);
 
         $result = $creds->updateOne(
             ['user' => $uid],              

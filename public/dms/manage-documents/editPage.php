@@ -63,8 +63,10 @@
     <div id="contents"> 
         <!-- Display this if the document is found -->
         <?php if ($documentFound): ?>
-            <h1>Edit Document</h1>
-
+            <div class="page-contents no-padding">
+            <div class="pch">
+                <h1>Edit Document</h1>
+            </div>
             <form id="editDocumentForm"
                 method="POST"
                 action="edit_logic.php"
@@ -124,7 +126,7 @@
                     Save Changes
                 </button>
             </form>
-
+        </div>
         <!-- Display this message if the requested document is not found/doesn't exist -->
         <?php else: ?>
             <div class="not-found">

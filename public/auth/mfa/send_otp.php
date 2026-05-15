@@ -35,7 +35,6 @@
     //Generate OTP
     $otp = rand(100000, 999999);
     $expiry = time() + 300; // singko minutes
-
     // Save the OTP to DB
     $credentialsColl->updateOne(
         ['user' => $userID],
@@ -50,5 +49,6 @@
         echo "<a href='verify.php'>Go to Verify Page</a>";
     } else {
         send_simple_email($email, "[YanoDASH] Your 6-Digit OTP Code", "Hi, enter this code to verify your request: $otp");
+        echo "<a href='verify.php'>Go to Verify Page</a>";
     }
 ?>
