@@ -51,8 +51,6 @@
                     ],
                     "current_version" => 1
                 ]);
-                if ($result) echo $result->getInsertedId();
-
                 $did = $result->getInsertedId();
                 $result2 = $docver->insertOne(
                     [

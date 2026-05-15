@@ -329,12 +329,12 @@
 <div class="form-container">
     <a href="index.php" class="btn-back">← Back to Menu</a>
 
-    <h2 class="serif">Track Your Document</h2>
+    <h2 class="serif">Track Your Archiving Request</h2>
     
     <div class="search-group">
         <label for="track_id">Enter Tracking Code</label>
         <div class="search-input-wrapper">
-            <input type="text" id="track_id" placeholder="e.g. YD-2024-00001" required>
+            <input type="text" id="track_id" placeholder="e.g. AR-2024-00001" required>
             <button class="btn-track">Track Now</button>
         </div>
     </div>

@@ -8,6 +8,8 @@
     load (
         'authentication',
         'authorization',
+        'mongodb_client',
+        'mongodb_collections',
         'navbar',
         'footer'
     );
@@ -22,7 +24,54 @@
     }
 
     $client = mongodb_client();
-    $collection_archive = $client->yano_dash->archive_requests;
+    $collection_archive = coll('archive_requests', $client);
+    $collection_documents = coll('documents', $client);
+
+//     $pipeline = [
+//     [
+//         '$lookup' => [
+//             'from' => 'documents',
+//             'let' => [
+//                 'request_note' => '$notes'
+//             ],
+//             'pipeline' => [
+//                 [
+//                     '$match' => [
+//                         '$expr' => [
+//                             '$and' => [
+//                                 [
+//                                     '$eq' => [
+//                                         '$tracking_code',
+//                                         '$$request_note'
+//                                     ]
+//                                 ],
+//                                 [
+//                                     '$eq' => [
+//                                         '$doc_status',
+//                                         'PENDING'
+//                                     ]
+//                                 ]
+//                             ]
+//                         ]
+//                     ]
+//                 ]
+//             ],
+//             'as' => 'doc_details'
+//         ]
+//     ],
+//     [
+//         '$unwind' => '$doc_details'
+//     ],
+//     [
+//         '$sort' => [
+//             'doc_details.dates.date_added' => -1
+//         ]
+//     ]
+// ];
+
+// $pending_requests = $collection_archive
+//     ->aggregate($pipeline)
+//     ->toArray();
 
     $pipeline = [
         [

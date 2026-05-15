@@ -77,12 +77,26 @@
     <?php echo navbar();?>
 
     <div class="page-contents no-padding">
-        <div class="main-wrapper">
-        <h1 style="color: maroon; margin-bottom: 32px; text-align: center">Document Management System</h1>
+        <div class="pch">
+        <h1 style="margin-bottom: 32px; text-align: center">Document Management System</h1>
+        </div>
 
-        <h1>Recent Documents</h1><br>
+        <div class="main-wrapper">
+        <h2 style="text-decoration: underline red; text-align: center">Recent Documents</h2><br>
+        <a href="add-document/" class="btn" style="width: 200px; margin: auto; display: block; background: black; color: white">Add a New Document</a>
+        <br><br>
         <div class="document-grid">
-            <?php list_all_documents($all_docs)?>
+            <?php if (count($all_docs) === 0):?>
+                <div class="no-document-found-wrapper">
+                    <div class="no-document-found-indicator">
+                        <div class="no-document-found-logo"></div>
+                        <h2 class="subtitle" style="user-select: none">No documents found</h2>
+                    </div>
+                </div>
+            
+            <?php else: ?>
+                <?php list_all_documents($all_docs)?>
+            <?php endif?>
         </div>
     </div>
     </div>

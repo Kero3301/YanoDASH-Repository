@@ -56,6 +56,9 @@
                     "Request Document Archiving" 
                         => "$app_url/request/archive.php",
 
+                    "Track Request" 
+                        => "$app_url/request/track.php",
+
                     "Requests Overview" 
                         => "$app_url/request/overview.php"
                 ])
@@ -65,6 +68,9 @@
 
                     "Request Document Archiving" 
                         => "$app_url/request/archive.php",
+
+                    "Track Request" 
+                        => "$app_url/request/track.php",
                 ])
             );
 

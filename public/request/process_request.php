@@ -6,6 +6,7 @@ load (
     'authentication',
     'authorization',
     'vendor_autoload',
+    'mailing',
     'mongodb_client',
     'mongodb_collections'
 );
@@ -109,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Generate a public tracking code for this request
     $year = date('Y');
     $count = $collection->countDocuments();
-    $tracking_code = sprintf('YD-%s-%03d', $year, $count + 1);
+    $tracking_code = sprintf('AR-%s-%03d', $year, $count + 1);
 
     // Insert into MongoDB
     try {
@@ -125,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($result->getInsertedCount() > 0) {
             $_SESSION['success_msg'] = "Request processed successfully! Your tracking code is {$tracking_code}. Use this code to check status in Track Request.";
+            send_simple_email("ddpyu01202401015@usep.edu.ph", "[YanoDASH] Your archive request's tracking code", "Your archive request's tracking code is {$tracking_code}. Use it in the Track Request page to track the status of your request. Thank you!");
         } else {
             $_SESSION['error_msg'] = "Failed to save to database.";
         }
