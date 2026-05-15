@@ -93,10 +93,23 @@
             font-size: 14px;
         }
 
+        /* .search-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        } */
+
+        .siw {
+            margin: auto;
+            display: block;
+        }
+
         .search-input-wrapper {
             display: flex;
             flex-direction: column;
             gap: 10px;
+
+            align-items: center;
         }
 
         .search-input-wrapper input {
@@ -333,9 +346,11 @@
     
     <div class="search-group">
         <label for="track_id">Enter Tracking Code</label>
+        <div class="siw">
         <div class="search-input-wrapper">
             <input type="text" id="track_id" placeholder="e.g. AR-2024-00001" required>
             <button class="btn-track">Track Now</button>
+        </div>
         </div>
     </div>
 
