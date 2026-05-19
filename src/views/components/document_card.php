@@ -105,20 +105,19 @@
                                 <span class="tag $tagClass">$sanitizedCategory</span>
                             </div>
                             <div class="doc-info">
-                                <h2 class="doc-title">$sanitizedTitle</h2>
+                                <h3 class="doc-title" title="$sanitizedTitle">$sanitizedTitle</h3>
                                 <p>📆 $sanitizedAddDate</p>
-                                <p style="display: inline;">👤 $sanitizedAuthor</p> 
-                                <p style="display: inline;">🏢 $sanitizedAreaOfOrigin</p>
-                                <br>
+                                <p>👤 $sanitizedAuthor</p> 
+                                <p>🏢 $sanitizedAreaOfOrigin</p>
                                 <p>🔎 <span class="doc-tc">$sanitizedTC</span></p>
                                 <p class="doc-desc">Lorem ipsum</p>
                             </div>
-                            <div class="doc-actions">
+                            <!-- <div class="doc-actions">
                                 $view_button
                                 $edit_button
                                 $protect_button
                                 $delete_button
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

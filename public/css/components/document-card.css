@@ -1,8 +1,8 @@
 .doc-card-wrapper {
     display: inline-block;
     margin: 12px;
-    min-width: 300px;
-    max-width: 500px;
+    min-width: 200px;
+    max-width: 250px;
 }
 
 .doc-card-wrapper:hover .doc-card,
@@ -15,9 +15,9 @@
 }
 
 .doc-card-b1, .doc-card-b2 {
-    min-width: 300px;
-    max-width: 500px;
-    border-radius: 1.2rem;
+    min-width: 200px;
+    max-width: 250px;
+    border-radius: 1rem;
     transition: transform 0.25s ease;
 }
 
@@ -33,19 +33,19 @@
 
 .doc-card {
     display: grid;
-    grid-template-rows: 180px 160px auto;
+    grid-template-rows: 130px 160px auto;
     
     cursor: pointer;
 
     background: white;
 
     border: 5px solid #E5E5E5;
-    border-radius: 1.2rem;
+    border-radius: 1rem;
 
     box-shadow: 0 4px 16px #cfdee9;
     overflow: hidden;
-    min-width: 300px;
-    max-width: 500px;
+    min-width: 200px;
+    max-width: 250px;
 
     transition: all 0.3s ease;
 }
@@ -58,6 +58,18 @@
     color: #6E192E;
     margin: 0;
     font-weight: bold;
+    font-size: 1.1rem !important;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.3s ease;
+    border-radius: 6px;
+    padding: 0 4px;
+}
+
+.doc-title:hover {
+    background: rgba(255,0,0,0.15)
 }
 
 .doc-preview {
@@ -100,10 +112,10 @@
 
 .doc-preview .tag {
     position: absolute;
-    top: 15px;
-    left: 10px;
+    top: 8px;
+    left: 8px;
     padding: 4px 10px;
-    font-size: 10px;
+    font-size: 0.6rem;
     font-weight: bold;
     border-radius: 16px;
     color: white;

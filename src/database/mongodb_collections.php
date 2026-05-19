@@ -9,8 +9,9 @@ const COLLECTIONS = [
     'archive_requests',
     'document_versions',
     'documents',
+    'folders',
     'login_credentials',
-    'organizations'
+    'organizations',
 ];
 
 function coll(string $collectionName, object $client): mixed
