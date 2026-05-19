@@ -39,6 +39,10 @@
     );
 
     $all_docs = get_all($results);
+
+    $sidebarWidth = isset($_COOKIE['sidebar_width']) ? $_COOKIE['sidebar_width'] : '260px';
+    $sidebarState = isset($_COOKIE['sidebar_state']) ? $_COOKIE['sidebar_state'] : 'open';
+    $isCollapsedClass = ($sidebarState === 'collapsed') ? ' sidebar-collapsed' : '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,7 +51,10 @@
     <link rel="stylesheet" href="../css/pages/docsss.css"/>
     
     <style>
-        /* Modern Scrollbar for page contents */
+        :root {
+            --sidebar-width: <?php echo htmlspecialchars($sidebarWidth); ?>;
+        }
+
         #mainContentScroll::-webkit-scrollbar {
             width: 8px;
         }
@@ -67,7 +74,6 @@
             scrollbar-color: #B26568 rgba(0, 0, 0, 0.03);
         }
 
-        /* Tooltip Styling */
         #sidebarToggle {
             position: relative; 
         }
@@ -93,7 +99,6 @@
             opacity: 1;
         }
 
-        /* Hover Action Buttons */
         .scroll-action-btn {
             opacity: 0.7;
             transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
@@ -109,10 +114,11 @@
             width: 100%;
             box-sizing: border-box;
             transition: background 0.3s ease;
-            border-radius: 16px;
-            padding: 6px 10px;
+            border-radius: 10px;
+            padding: 4px 10px;
             cursor: pointer;
             background: rgba(0,0,0,0.02);
+            overflow: hidden;
         }
         .clickable:hover {
             background: rgba(255,0,0,0.15);
@@ -121,36 +127,69 @@
             color: #9a082d
         }
         .page-header {
-            width: 100%;
+            width: 94%;
+            border-color: #eee
         }
         .page-contents {
             border: none;
             overflow: hidden;
         }
 
-        /* Responsive Layout Grid & Architecture */
-        /* Update the layout width configuration here */
-.mw {
-    display: flex;
-    gap: 16px;
-    width: 99%; /* Change from 95% to 99% to match your system defaults */
-    margin: auto;
-    height: calc(100vh - 90px);
-    position: relative;
-}
+        .mw {
+            display: flex;
+            gap: 0px; 
+            width: 99%; 
+            margin: auto;
+            height: calc(100vh - 90px);
+            position: relative;
+        }
 
         #sidebarWrap {
             position: relative;
-            flex-basis: 260px;
+            flex-basis: var(--sidebar-width);
             flex-shrink: 0;
-            overflow: hidden;
-            transition: flex-basis 0.25s ease, opacity 0.15s ease, margin 0.25s ease;
+        }
+
+        #sidebarWrap.transition-active {
+            transition: flex-basis 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        #sidebar {
+            position: absolute;
+            inset: 0 0 8% 0; 
+            width: 100%;
+            overflow-y: auto;
+            border-radius: 8px;
+            border-top: 5px solid #7f0000;
+            padding: 12px;
+            background: white;
+            box-sizing: border-box;
+            white-space: nowrap;
+            opacity: 1;
+        }
+        
+        #sidebarWrap.transition-active #sidebar {
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.2s ease;
+        }
+
+        .sidebar-resizer {
+            width: 6px;
+            cursor: col-resize;
+            background-color: transparent;
+            z-index: 10;
+            flex-shrink: 0;
+            align-self: stretch;
+            margin-bottom: 8%; 
+            transition: background-color 0.2s;
+        }
+        .sidebar-resizer:hover, .sidebar-resizer.is-dragging {
+            background-color: rgba(178, 101, 104, 0.4);
         }
 
         #sidebarToggle {
             position: absolute;
             top: 50%;
-            left: 260px; /* Aligns with sidebar flex basis */
+            left: var(--sidebar-width); 
             transform: translate(-50%, -50%);
             width: 36px;
             height: 36px;
@@ -160,21 +199,64 @@
             border: none;
             cursor: pointer;
             z-index: 999;
-            transition: left 0.25s ease; 
+        }
+        
+        #sidebarToggle.transition-active {
+            transition: left 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
         }
 
-        /* State Class Modification via CSS instead of hardcoded JS styles */
         .mw.sidebar-collapsed #sidebarWrap {
-            flex-basis: 0px;
+            flex-basis: 0px !important;
+        }
+
+        .mw.sidebar-collapsed #sidebar {
+            transform: translateX(-100%);
             opacity: 0;
-            margin-right: -16px; /* Negates flexbox gap styling when hidden */
             pointer-events: none;
         }
+
         .mw.sidebar-collapsed #sidebarToggle {
-            left: 0px;
+            left: 18px !important;
+        }
+        
+        .mw.sidebar-collapsed .sidebar-resizer {
+            pointer-events: none;
+            opacity: 0;
         }
 
-        /* Responsive Design Breakpoint for Tablets and Mobiles */
+        .mw.sidebar-collapsed {
+            margin-left: 0;
+        }
+
+        body.is-resizing {
+            cursor: col-resize;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .sidebar-header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+        .reset-width-btn {
+            background: #ddd;
+            border: none;
+            color: black;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 16px;
+            transition: color 0.2s, background-color 0.2s;
+            text-decoration: none;
+        }
+        .reset-width-btn:hover {
+            color: #9a082d;
+            background-color: rgba(178, 101, 104, 0.1);
+        }
+
         @media (max-width: 768px) {
             .mw {
                 flex-direction: column;
@@ -182,15 +264,23 @@
                 gap: 20px;
             }
             #sidebarWrap {
-                flex-basis: auto;
+                flex-basis: auto !important;
                 width: 100%;
             }
             #sidebar {
+                position: static;
                 height: auto;
                 max-height: 300px;
+                width: 100%;
+            }
+            .sidebar-resizer {
+                display: none;
             }
             #sidebarToggle {
-                display: none; /* Hide toggle on mobile layouts */
+                display: none; 
+            }
+            .reset-width-btn {
+                display: none;
             }
             #mainContentScroll {
                 padding-right: 0px;
@@ -206,20 +296,13 @@
 <body>
     <?php echo navbar()?>
 
-    <div class="mw" id="mainWrapper">
+    <div class="mw<?php echo $isCollapsedClass; ?>" id="mainWrapper">
         <div id="sidebarWrap">
-            <aside id="sidebar" style="
-                height: 92%;
-                overflow-y: auto;
-                border-radius: 8px;
-                border-top: 5px solid #7f0000;
-                padding: 12px;
-                background: white;
-                width: 100%;
-                min-width: 240px; 
-                white-space: nowrap;
-            ">
-                <h2 style="text-decoration: underline 2px red; text-align: center; margin-bottom: 12px;">Sidebar</h2>
+            <aside id="sidebar">
+                <div class="sidebar-header-container">
+                    <h2 style="text-decoration: underline 2px red; margin: 0; font-size: 1.5rem;">Sidebar</h2>
+                    <button id="resetWidthBtn" class="reset-width-btn" title="Reset Sidebar Width">Reset width</button>
+                </div>
                 
                 <p style="margin: 4px 0;"><span class="clickable">▼ Folder 1</span></p>
                 <p style="margin: 4px 0;"><span class="clickable">▲ Folder 2</span></p>
@@ -234,7 +317,9 @@
             </aside>
         </div>
 
-        <button id="sidebarToggle" data-tooltip="Hide Sidebar">◀</button>
+        <div class="sidebar-resizer" id="sidebarResizer"></div>
+
+        <button id="sidebarToggle" data-tooltip="<?php echo ($sidebarState === 'collapsed') ? 'Show Sidebar' : 'Hide Sidebar'; ?>"><?php echo ($sidebarState === 'collapsed') ? '▶' : '◀'; ?></button>
 
         <div id="mainContentScroll" class="page-contents no-padding" style="
             flex: 1;
@@ -253,7 +338,6 @@
             </main>
         </div>
 
-        <!-- Scroll Actions -->
         <button id="scrollToTopBtn" class="scroll-action-btn" title="Scroll to top" style="
             position: absolute;
             bottom: 112px; 
@@ -294,24 +378,89 @@
 
 <script>
     const mainWrapper = document.getElementById("mainWrapper");
+    const sidebarWrap = document.getElementById("sidebarWrap");
     const toggle = document.getElementById("sidebarToggle");
+    const resizer = document.getElementById("sidebarResizer");
+    const resetWidthBtn = document.getElementById("resetWidthBtn");
     
     const mainContentScroll = document.getElementById("mainContentScroll");
     const scrollToTopBtn = document.getElementById("scrollToTopBtn");
     const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
 
-    let open = true;
+    let open = !mainWrapper.classList.contains("sidebar-collapsed");
+
+    function setPersistenceCookie(name, value, days = 30) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "; expires=" + date.toUTCString();
+        document.cookie = name + "=" + encodeURIComponent(value) + expires + "; path=/; SameSite=Lax";
+    }
+
+    resizer.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        
+        sidebarWrap.classList.remove("transition-active");
+        toggle.classList.remove("transition-active");
+        
+        resizer.classList.add("is-dragging");
+        document.body.classList.add("is-resizing");
+
+        document.addEventListener("mousemove", handleMouseMove);
+        document.addEventListener("mouseup", handleMouseUp);
+    });
+
+    function handleMouseMove(e) {
+        const wrapperRect = mainWrapper.getBoundingClientRect();
+        let newWidth = e.clientX - wrapperRect.left;
+
+        if (newWidth < 180) newWidth = 180;
+        if (newWidth > 500) newWidth = 500;
+
+        document.documentElement.style.setProperty("--sidebar-width", `${newWidth}px`);
+    }
+
+    function handleMouseUp() {
+        resizer.classList.remove("is-dragging");
+        document.body.classList.remove("is-resizing");
+        
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+
+        const finalWidth = getComputedStyle(document.documentElement).getPropertyValue('--sidebar-width').trim();
+        setPersistenceCookie('sidebar_width', finalWidth);
+    }
+
+    resetWidthBtn.addEventListener("click", () => {
+        sidebarWrap.classList.add("transition-active");
+        toggle.classList.add("transition-active");
+
+        document.documentElement.style.setProperty("--sidebar-width", "260px");
+        setPersistenceCookie('sidebar_width', '260px');
+
+        setTimeout(() => {
+            if (resizer.classList.contains("is-dragging") === false) {
+                sidebarWrap.classList.remove("transition-active");
+                toggle.classList.remove("transition-active");
+            }
+        }, 300);
+    });
 
     toggle.addEventListener("click", () => {
         open = !open;
+        
+        sidebarWrap.classList.add("transition-active");
+        toggle.classList.add("transition-active");
+
         if (!open) {
             mainWrapper.classList.add("sidebar-collapsed");
             toggle.innerHTML = "▶";
             toggle.setAttribute("data-tooltip", "Show Sidebar"); 
+            setPersistenceCookie('sidebar_state', 'collapsed');
         } else {
             mainWrapper.classList.remove("sidebar-collapsed");
             toggle.innerHTML = "◀";
             toggle.setAttribute("data-tooltip", "Hide Sidebar"); 
+            setPersistenceCookie('sidebar_state', 'open');
         }
     });
 
