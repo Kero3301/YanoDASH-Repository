@@ -119,6 +119,7 @@
             cursor: pointer;
             background: rgba(0,0,0,0.02);
             overflow: hidden;
+            font-size: 0.95rem
         }
         .clickable:hover {
             background: rgba(255,0,0,0.15);
@@ -207,6 +208,10 @@
 
         .mw.sidebar-collapsed #sidebarWrap {
             flex-basis: 0px !important;
+        }
+
+        #mainContentScroll {
+            border-top: 5px solid #7f0000;
         }
 
         .mw.sidebar-collapsed #sidebar {
