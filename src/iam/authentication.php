@@ -1,9 +1,7 @@
 <?php
 require_once 'identity_resolver.php';
 require_once dirname(__DIR__, 2). '/vendor/autoload.php'; 
-require_once dirname(__DIR__). '/database/mongodb_client.php';
 require_once dirname(__DIR__). '/database/mongodb_collections.php';
-require_once dirname(__DIR__). '/utils/schema_validator.php';
 
 # Check and verify if the user is logged in
 function is_logged_in(): bool {
@@ -18,24 +16,19 @@ function login_user(string $email, string $password): LoginResult {
     if (trim($email) === '' || trim($password) === '')
         return new LoginResult(false, "Credentials cannot be blank.");
     
-    # Client and collections
-    $client = mongodb_client();
-    $collection_accounts = coll('accounts', $client);
-    $collection_loginCredentials = coll('login_credentials', $client);
+    $account = coll('accounts')
+        ->findOne(['email_address' => $email])
+        ->execute();
+    if (empty($account)) return new LoginResult(false, "Incorrect credentials.");
 
-    # Query
-    $condition_account = ['email_address' => $email];
-    $account = $collection_accounts->findOne($condition_account);
-    if (!$account) return new LoginResult(false, "Incorrect credentials.");
-    // if (!baseline_schema_validate($account, 'ACCOUNTS'))
-    //     return new LoginResult(false, "Account corrupted, please contact an admin.");
-    $userID = $account->_id;
-    $condition_login_creds = ['user' => $userID];
-    $credentials = $collection_loginCredentials->findOne($condition_login_creds);
-    if (!$credentials) return new LoginResult(false, "Account corrupted, please contact an admin.");
+    $userID = $account['_id'];
+    $credentials = coll('login_credentials')
+        ->findOne(['user' => $userID])
+        ->execute();
+    if (empty($credentials)) return new LoginResult(false, "Account corrupted, please contact an admin.");
 
     # Password verification
-    $storedPassword = $credentials->password_hash;
+    $storedPassword = $credentials['password_hash'];
     if (password_verify($password, $storedPassword)) {
         if (session_status() !== PHP_SESSION_ACTIVE) session_start();
         session_regenerate_id(true);

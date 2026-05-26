@@ -1,8 +1,6 @@
 <?php
 require_once dirname(dirname(__DIR__)). '/vendor/autoload.php';
-require_once dirname(__DIR__). '/database/mongodb_client.php';
 require_once dirname(__DIR__). '/database/mongodb_collections.php';
-require_once dirname(__DIR__). '/utils/schema_validator.php';
 
 function get_profile(?string $userID): ?array {
     # Ignore if user ID is null
@@ -18,31 +16,31 @@ function get_profile(?string $userID): ?array {
     $cacheKey = (string) $_id;
     if (isset($cache[$cacheKey])) return $cache[$cacheKey];
 
-    # Client and collections
-    $client = mongodb_client();
-    $collection_accounts = coll('accounts', $client);
-    $collection_organizations = coll('organizations', $client);
-
     # Query
-    $condition_profile = ["_id" => $_id];
-    $profile = $collection_accounts->findOne($condition_profile);
-    if (!$profile) return null;
+    $profile = coll('accounts')
+        ->findOne(["_id" => $_id])
+        ->execute();
+    if (empty($profile)) return null;
 
     # Organization resolution
     $organization_name = null;
-    if (!empty($identity->organization)) {
-        $org = $collection_organizations->findOne(["_id" => $profile->organization]);
-        if ($org) $organization_name = $org->organization_name ?? "None";
+    if (!empty($identity['organization'])) {
+        $org = coll('organizations')
+            ->findOne(["_id" => $profile['organization']])
+            ->execute();
+        if (!empty($org)) $organization_name = $org['organization_name'] ?? "None";
     }
 
     #Construction
     $result = [
-        'name' => $profile->name->getArrayCopy(),
-        'student_id_number' => $profile->student_id_number ?? "(unknown)",
-        'position' => $profile->position,
-        'doc_bookmarks' => $profile->doc_bookmarks ?? null,
-        'avatar_url' => $profile->avatar_url ?? "",
-        'date_joined' => (string) $profile->date_joined?->toDateTime()->format('M j Y') ?? "(unknown)"
+        'name' => $profile['name'],
+        'student_id_number' => $profile['student_id_number'] ?? "(unknown)",
+        'position' => $profile['position'],
+        'doc_bookmarks' => $profile['doc_bookmarks'] ?? null,
+        'avatar_url' => $profile['avatar_url'] ?? "",
+        'date_joined' => !empty($profile['date_joined'])
+            ? (new DateTime($profile['date_joined']))->format('M j, Y')
+            : '(unknown)',
     ];
 
     # Result caching and return
