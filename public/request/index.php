@@ -1,7 +1,7 @@
 <?php
     session_start();
     
-    require_once dirname(dirname(__DIR__)). '/src/loader.php';
+    require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
     load (
         'authentication',
         'authorization',

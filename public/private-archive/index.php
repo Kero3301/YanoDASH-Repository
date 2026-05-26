@@ -5,7 +5,7 @@
 
     error_reporting(0);
 
-    require_once '../../src/loader.php';
+    require_once '../../bootstrap/app.php';
     load (
         'vendor_autoload',
         'mongodb_client',

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../src/loader.php';
+require_once '../../bootstrap/app.php';
 load (
     'vendor_autoload',
     'mongodb_client',

@@ -4,7 +4,7 @@
 <?php
     session_start();
 
-    require_once '../../src/loader.php';
+    require_once '../../bootstrap/app.php';
     load (
         'authentication',
         'authorization',

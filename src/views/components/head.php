@@ -7,8 +7,6 @@
 
        <?php initialize_page("Your page title goes here")?>
     */
-    require_once dirname(dirname(__DIR__)). '/loader.php';
-
     function initialize_page(string $title) {
         global $app_url;
         $sanitizedTitle = htmlspecialchars($title);

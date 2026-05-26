@@ -3,7 +3,7 @@
 <?php
     session_start();
 
-    require_once '../src/loader.php';
+    require_once '../bootstrap/app.php';
     load (
         'navbar', 
         'main_section', 
@@ -15,7 +15,7 @@
 <html>
     <head>
         <?php initialize_page("YanoDASH")?>
-        <link rel="stylesheet" href="css/elements.css">
+        <link rel="stylesheet" href="css/style.css">
         <style>
         </style>
     </head>
@@ -38,8 +38,8 @@
                 "images/backgrounds/headerimg.jpeg",
                 "rgba(236, 53, 47, 0.7)",
                 linksList: [
-                    ['Browse Public Archive ↗', APP_URL. '/documents/br_arch.php', 'bpa'],
-                    ['Latest Releases ↗', APP_URL. '/documents/latest_rel.php', 'lr']
+                    ['Browse Public Archive ↗', $app_url. '/documents/br_arch.php', 'bpa'],
+                    ['Latest Releases ↗', $app_url. '/documents/latest_rel.php', 'lr']
                 ]
             );
 
@@ -71,7 +71,7 @@
                 "images/backgrounds/dms-section-bg.webp",
                 "rgba(147, 169, 241, 0.6)",
                 linksList: [
-                    ['Open YanoDASH DMS ↗', APP_URL. '/dms/', 'oyddms']
+                    ['Open YanoDASH DMS ↗', $app_url. '/dms/', 'oyddms']
                 ]
             ); 
             ?>    

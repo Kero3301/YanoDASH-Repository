@@ -3,7 +3,7 @@
     error_reporting(0);
 
 
-    require_once '../../src/loader.php';
+    require_once '../../bootstrap/app.php';
     load (
         'authentication',
         'authorization',

@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once '../../../src/loader.php';
+    require_once '../../../bootstrap/app.php';
     load('vendor_autoload', 'authentication', 'authorization', 'navbar', 'mongodb_client', 'mongodb_collections');
 
     if (!is_logged_in()) {

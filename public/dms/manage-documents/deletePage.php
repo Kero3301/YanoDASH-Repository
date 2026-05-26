@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../../src/loader.php';
+require_once '../../../bootstrap/app.php';
 load('mongodb_client', 'mongodb_collections', 'authentication', 'authorization');
 
 // 1. Security Check

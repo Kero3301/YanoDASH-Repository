@@ -1,5 +1,5 @@
 <?php
-    require_once '../../src/loader.php';
+    require_once '../../bootstrap/app.php';
 
     session_start();
     session_unset();

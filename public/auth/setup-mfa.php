@@ -4,7 +4,7 @@ session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once '../../src/loader.php';
+require_once '../../bootstrap/app.php';
 
 load(
     'vendor_autoload',

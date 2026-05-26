@@ -4,9 +4,9 @@ const SOURCES_PATH = __DIR__;
 const COMPONENT_BASE_PATH = SOURCES_PATH. '/views/components/';
 
 # Bootstrap inclusion of common basic utilities and configurational files
-require_once COMPONENT_BASE_PATH. 'head.php';
-require_once SOURCES_PATH. '/../config/directory.php';
-require_once SOURCES_PATH. '/services/auth_bootstrap.php';
+# require_once COMPONENT_BASE_PATH. 'head.php';
+# require_once SOURCES_PATH. '/../config/directory.php';
+# require_once SOURCES_PATH. '/services/auth_bootstrap.php';
 
 # Safe whitelist of allowed sources to prevent arbitrary file inclusion
 const SOURCES = [
@@ -28,6 +28,7 @@ const SOURCES = [
     'schema_validator' => 'utils/schema_validator',
     'text_utils' => 'utils/text_utils',
     'mailing' => 'utils/mailing',
+    'query_builder' => 'database/query_builder',
     
     # Components
     'accordion' => 'views/components/accordion',

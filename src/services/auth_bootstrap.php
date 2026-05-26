@@ -15,7 +15,7 @@ $identity = null;
 $permissions = null;
 
 # Populate data only if USER_ID is truly set
-if ($USER_ID) {
+if ($USER_ID !== null) {
     $profile = get_profile($USER_ID);
     $identity = resolve_identity($USER_ID);
     $permissions = resolve_permissions($USER_ID);
