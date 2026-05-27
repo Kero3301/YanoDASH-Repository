@@ -1,52 +1,111 @@
 <?php
 session_start();
+
 require_once '../../../bootstrap/app.php';
-load (
+
+load(
     'vendor_autoload',
     'mongodb_client',
     'mongodb_collections'
 );
 
 $client = mongodb_client();
-$collection = coll('accounts', $client);
+
+$accountsColl = coll('accounts', $client);
 $credentialsColl = coll('login_credentials', $client);
 
-$email = $_SESSION['reset_email'];
-$inputOtp = $_POST['otp'];
+// =========================
+// CHECK SESSION
+// =========================
+if (!isset($_SESSION['reset_email'])) {
+    header('Location: verify.php?error=invalid_otp');
+    exit();
+}
 
-$user = $collection->findOne(['email_address' => $email]);
+$email = $_SESSION['reset_email'];
+
+// =========================
+// CHECK OTP INPUT
+// =========================
+if (!isset($_POST['otp'])) {
+    header('Location: verify.php?error=invalid_otp');
+    exit();
+}
+
+$inputOtp = trim($_POST['otp']);
+
+// =========================
+// FIND USER
+// =========================
+$user = $accountsColl
+    ->findOne(['email_address' => $email])
+    ->execute();   // ✅ already returns row/array
 
 if (!$user) {
-    echo "User not found.";
-    exit();
+    die("User not found.");
 }
 
-$userID = $user->_id;
-$credentials = $credentialsColl->findOne(['user' => $userID]);
+$userID = $user['id']; // adjust to your schema
+
+// =========================
+// FIND CREDENTIALS
+// =========================
+$credentials = $credentialsColl
+    ->findOne(['user' => $userID])
+    ->execute();   // ✅ already returns row/array
+
 if (!$credentials) {
-    echo "Credentials not found. Please reach out to an admin.";
+    die("Credentials not found.");
+}
+
+// =========================
+// CHECK OTP DATA
+// =========================
+if (
+    !isset($credentials['otp_code']) ||
+    !isset($credentials['otp_expiry'])
+) {
+    header('Location: verify.php?error=invalid_otp');
     exit();
 }
 
-$storedOTP = $credentials->otp->code;
-$storedExpiry = $credentials->otp->expiry;
+$storedOTP = (string)$credentials['otp_code'];   // ✅ flat column
+$storedExpiry = (int)$credentials['otp_expiry'];
+$currentTime = time();
 
-// Check OTP
-if ($storedOTP == $inputOtp && time() < $storedExpiry) {
-    // Clear OTP
+// =========================
+// VERIFY OTP
+// =========================
+if (
+    $inputOtp === $storedOTP &&
+    $currentTime <= $storedExpiry
+) {
+    // Remove OTP after successful verification
     $credentialsColl->updateOne(
         ['user' => $userID],
-        ['$set' => ['otp' => ['code' => null, 'expiry' => null]]]
+        [
+            '$unset' => [
+                'otp_code' => "",
+                'otp_expiry' => ""
+            ]
+        ]
     );
 
-    // Set session for password reset
     $_SESSION['verified_for_reset'] = true;
-
-    // Redirect to reset password page
     header('Location: reset_password.php');
-    exit;
-} else {
-    header('Location: verify.php?error=invalid_otp');
-    exit;
+    exit();
 }
-?>
+
+// =========================
+// EXPIRED
+// =========================
+if ($currentTime > $storedExpiry) {
+    header('Location: verify.php?error=expired');
+    exit();
+}
+
+// =========================
+// INVALID
+// =========================
+header('Location: verify.php?error=invalid_otp');
+exit();
