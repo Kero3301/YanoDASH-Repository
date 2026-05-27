@@ -5,39 +5,29 @@ use MongoDB\BSON\Decimal128;
 
 final class QueryBuilder {
     private const ALLOWED_OPERATIONS = [
-        'find',
-        'findOne',
-        'insertOne',
-        'updateOne',
-        'deleteOne',
+        'find' => true,
+        'findOne' => true,
+        'insertOne' => true,
+        'updateOne' => true,
+        'deleteOne' => true,
     ];
 
     private const ALLOWED_OPERATORS = [
-        '$set',
-        '$inc',
-        '$gt',
-        '$gte',
-        '$lt',
-        '$lte',
-        '$ne',
-        '$in',
-        '$nin',
-        '$or',
-        '$and',
-        '$oid',
-        '$date'
+        '$set' => true, '$inc' => true, '$gt' => true, '$gte' => true,
+        '$lt' => true, '$lte' => true, '$ne' => true, '$in' => true,
+        '$nin' => true, '$or' => true, '$and' => true, '$oid' => true, '$date' => true
     ];
 
     private const ALLOWED_COLLECTIONS = [
-        'access_levels',
-        'account_requests',
-        'accounts',
-        'archive_requests',
-        'document_versions',
-        'documents',
-        'folders',
-        'login_credentials',
-        'organizations'
+        'access_levels' => true,
+        'account_requests' => true,
+        'accounts' => true,
+        'archive_requests' => true,
+        'document_versions' => true,
+        'documents' => true,
+        'folders' => true,
+        'login_credentials' => true,
+        'organizations' => true
     ];
 
     private string $collection = '';
@@ -50,6 +40,14 @@ final class QueryBuilder {
 
     private string $endpoint;
     private string $apiKey;
+
+    private $ch;
+
+    private function getCurlHandle() {
+        if ($this->ch === null) $this->ch = curl_init();
+        curl_reset($this->ch);
+        return $this->ch;
+    }
 
     public function __construct() {
         $baseUrl = $_ENV['YANODASH_API_URL'] ?? '';
@@ -65,9 +63,8 @@ final class QueryBuilder {
     }
 
     public function collection(string $collection): self {
-        if (!in_array($collection, self::ALLOWED_COLLECTIONS, true)) {
+        if (!isset(self::ALLOWED_COLLECTIONS[$collection])) 
             throw new InvalidArgumentException('Invalid collection');
-        }
 
         $this->collection = $collection;
         return $this;
@@ -76,59 +73,53 @@ final class QueryBuilder {
     public function find(array $filter = []): self {
         $this->operation = 'find';
         $this->validateArray($filter);
-
-        $this->filter = $filter;
+        $this->filter = $this->encodeTypes($filter);
         return $this;
     }
 
     public function findOne(array $filter = []): self {
         $this->operation = 'findOne';
         $this->validateArray($filter);
-
-        $this->filter = $filter;
+        $this->filter = $this->encodeTypes($filter);
         return $this;
     }
 
     public function insertOne(array $data): self {
-        if ($data === []) {
+        if ($data === []) 
             throw new InvalidArgumentException('Insert data cannot be empty');
-        }
 
         $this->validateArray($data);
 
         $this->operation = 'insertOne';
-        $this->data = $data;
+        $this->data = $this->encodeTypes($data);
         return $this;
     }
 
     public function updateOne(array $filter, array $update, array $options = []): self {
-        if ($filter === []) {
+        if ($filter === []) 
             throw new InvalidArgumentException('Empty update filters are not allowed');
-        }
 
-        if ($update === []) {
+        if ($update === [])
             throw new InvalidArgumentException('Update payload cannot be empty');
-        }
 
         $this->validateArray($filter);
         $this->validateArray($update);
 
         $this->operation = 'updateOne';
-        $this->filter = $filter;
-        $this->update = $update;
-        $this->options = $options;
+        $this->filter = $this->encodeTypes($filter);
+        $this->update = $this->encodeTypes($update);
+        $this->options = $this->encodeTypes($options);
         return $this;
     }
 
     public function deleteOne(array $filter): self {
-        if ($filter === []) {
+        if ($filter === []) 
             throw new InvalidArgumentException('Empty delete filters are not allowed');
-        }
 
         $this->validateArray($filter);
 
         $this->operation = 'deleteOne';
-        $this->filter = $filter;
+        $this->filter = $this->encodeTypes($filter);
         return $this;
     }
 
@@ -152,26 +143,27 @@ final class QueryBuilder {
     }
 
     public function execute(): array {
-        if ($this->collection === '') {
+        if ($this->collection === '')
             throw new RuntimeException('Collection is required');
-        }
 
-        if (!in_array($this->operation, self::ALLOWED_OPERATIONS, true)) throw new RuntimeException('Invalid operation');
+        if (!isset(self::ALLOWED_OPERATIONS[$this->operation])) 
+            throw new RuntimeException('Invalid operation');
 
         $payload = [
             'collection' => $this->collection,
             'operation' => $this->operation,
-            'filter' => $this->encodeTypes($this->filter),
-            'data' => $this->encodeTypes($this->data),
-            'update' => $this->encodeTypes($this->update),
-            'options' => $this->encodeTypes($this->options),
+            'filter' => $this->filter,
+            'data' => $this->data,
+            'update' => $this->update,
+            'options' => $this->options,
         ];
 
         $jsonPayload = json_encode($payload, JSON_THROW_ON_ERROR);
 
-        $ch = curl_init($this->endpoint);
-
+        $ch = $this->getCurlHandle();
         curl_setopt_array($ch, [
+            CURLOPT_URL => $this->endpoint,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => $jsonPayload,
@@ -192,26 +184,18 @@ final class QueryBuilder {
 
         if ($response === false) {
             $error = curl_error($ch);
-
             curl_close($ch);
-
-            throw new RuntimeException(
-                'Request failed: ' . $error
-            );
+            throw new RuntimeException('Request failed: ' . $error);
         }
 
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
-        if ($httpCode >= 400) {
-            // Add this debug line to see exactly what the Node API says
+        if ($httpCode >= 400) 
             throw new RuntimeException('Database operation failed: ' . $response);
-        }
+        
 
         try { $decoded = json_decode($response, true, 512, JSON_THROW_ON_ERROR); } 
         catch (JsonException $e) { throw new RuntimeException('Invalid API response'); }
-
-        if ($httpCode >= 400) throw new RuntimeException('Database operation failed');
 
         $this->reset();
 
@@ -234,15 +218,8 @@ final class QueryBuilder {
 
     private function validateArray(array $input): void {
         foreach ($input as $key => $value) {
-            if (
-                is_string($key) &&
-                str_starts_with($key, '$') &&
-                !in_array(
-                    $key,
-                    self::ALLOWED_OPERATORS,
-                    true
-                )
-            ) throw new InvalidArgumentException("Disallowed operator: {$key}");
+            if (is_string($key) && str_starts_with($key, '$') && !isset(self::ALLOWED_OPERATORS[$key])) 
+                throw new InvalidArgumentException("Disallowed operator: {$key}");
             if (is_string($key) && str_contains($key, "\0")) throw new InvalidArgumentException('Invalid key detected');
             if (is_array($value)) $this->validateArray($value);
         }
