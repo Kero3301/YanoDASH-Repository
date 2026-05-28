@@ -11,7 +11,7 @@
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border-top: 8px solid #000000;
+    border-top: 6px solid #63071e;
     margin: 50px auto;
 }
 
@@ -27,7 +27,7 @@
     width: 400px;
 }
 
-.btn {
+/* .btn {
     background-color: #ffffff;
     color: #000000;
     padding: 10px 20px;
@@ -35,4 +35,4 @@
     border-radius: 5px;
     cursor: pointer;
     justify-items: center;
-}
+} */

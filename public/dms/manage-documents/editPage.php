@@ -60,23 +60,32 @@
 <html>
 <head>
     <style>
-        .dw {
+        .version-card {
             display: grid;
-            /* grid-template-columns: repeat(3, auto); two autosized columns */
             gap: 8px;
             justify-items: center;
             align-items: center;
-            border: 3px solid black;
+            border: 3px dotted #DDD;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             flex-shrink: 0;
-            }
+            background: #F1f1f1;
+            padding: 6px;
+        }
+
+        .version-card:has(.document-action.use-version:hover) {
+            border-color: #86ff86;
+        }
+
+        .version-card.active {
+            border-color: #2dd32d;
+        }
 
             /* Top block spans full width */
             .id-box {
             grid-column: 1 / -1;
             padding: 8px;
-            background: black;
-            color: white;
+            background: transparent;
             text-align: left;
             border-radius: 8px;
             }
@@ -89,17 +98,47 @@
                 cursor: pointer;
             }
 
-            .current-version-badge {
+            .in-use-badge {
                 display: inline;
                 border: 2px solid #86ff86;
                 background: #2dd32d;
-                color: #004d00;
+                color: black;
                 text-align: center;
                 padding: 2px 6px;
                 border-radius: 12px;
                 font-size: 0.85rem;
                 font-family: 'RobotoFlex', sans-serif
             }
+
+            .file-upload {
+                display: none;
+                margin: auto;
+                text-align: center;
+            }
+
+            .file-upload-container {
+                justify-items: center;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 8px;
+                border: 3px solid black;
+                border-radius: 16px;
+                background: black;
+                color: white;
+                width: max-content;
+                margin: auto;
+            }
+
+            .file-upload-btn {
+                padding: 4px 8px;
+                border-radius: 8px;
+                background: white;
+                border: 3px dotted lightgray;
+                font-family: 'RobotoFlex', sans-serif;
+                cursor: pointer;
+            }
+
     </style>
     <?php initialize_page('Edit Document | YanoDASH')?>
     <link rel="stylesheet" type="text/css" href="../../css/pages/editstyle.css">
@@ -124,10 +163,11 @@
                     <input type="hidden" name="doc_id" value="<?php echo $docID; ?>">
 
                     <label class="doc_title" for="doc_title">
-                        Document Title:
+                        Document Title
                     </label>
 
                     <input class="box"
+                        id="doc_title"
                         type="text"
                         name="doc_title"
                         required
@@ -135,7 +175,7 @@
                 </div>
 
                 <div class="tca">
-                    <label for="category">Category:</label>
+                    <label for="category">Document Category</label>
 
                     <select id="category" name="category" required>
                         <option value="">Select Category</option>
@@ -150,19 +190,9 @@
                 </div>
 
                 <div class="tca">
-                    <label for="area">Area:</label>
-
-                    <input class="box"
-                        type="text"
-                        name="area"
-                        required
-                        value="<?php echo htmlspecialchars($area); ?>" disabled>
-                </div>
-
-                <div class="tca">
                     <label>Version History</label>
-                    <div style="border-radius: 8px; padding: 12px; width: 100%; background: #eee; border: 2px solid #ddd">
-                        <div  id="version-container" class="version-container" style="border-radius: 16px; background: #FAFAFA; text-align: center; padding: 24px 8px; display: flex; flex-direction: row; gap: 8px; overflow-x: auto; ">
+                    <div style="border-radius: 16px; padding: 12px; width: 100%; background: #eee; border: 3px solid #ddd">
+                        <div  id="version-container" class="version-container" style="border-radius: 14px; background: #FAFAFA; text-align: center; padding: 24px 8px; display: flex; flex-direction: row; gap: 10px; overflow-x: auto; ">
                             <?php if(!empty($versions)):?>
                                 <?php 
                                     global $app_url;
@@ -170,41 +200,48 @@
                                     foreach($versions as $v) {
                                         $vn = $v['version_number'];
                                         $vd = !empty($v['date_added'])
-                                            ? (new DateTime($v['date_added']))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M d, Y - g:i A')
+                                            ? (new DateTime($v['date_added']))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M d Y, g:i A')
                                             : '(unknown)';
-                                        $currentVersionBadge = $vn === $currentVersion 
+                                        $inUseBadge = $vn === $currentVersion 
                                             ? <<< HTML
-                                                <div class="current-version-badge">
+                                                <!-- <img style="vertical-align: middle;" width="20" height="20" alt="Green checkmark" src="$app_url/images/doc-actions/use-version.png"> -->
+                                                <div class="in-use-badge">
                                                     IN USE
                                                 </div>
                                             HTML
                                             : "";
                                         $useVersionButton = $vn !== $currentVersion
                                             ? <<< HTML
-                                                <button type="button" class="document-action" style="display: inline-block;">
+                                                <button type="button" class="document-action use-version" style="display: inline-block;">
                                                     <img src="$app_url/images/doc-actions/use-version.png" draggable="false">
                                                 </button>
                                             HTML
                                             : "";
-
-                                        echo <<< HTML
-                                            <div class="dw">
-                                                <div class="id-box">
-                                                    <p style="display: inline;"><b>Version $vn</b> $currentVersionBadge</p>
-                                                    <p>$vd</p>
-                                                </div>
-
-                                                <div>
-                                                <button type="button" class="document-action" style="display: inline-block;">
-                                                    <img src="$app_url/images/doc-actions/preview-doc.png" draggable="false">
-                                                </button>
-                                                <button type="button" class="document-action" style="display: inline-block;">
-                                                    <img src="$app_url/images/doc-actions/download-doc.png" draggable="false">
-                                                </button>
-                                                $useVersionButton
+                                        $deleteVersionButton = $vn !== $currentVersion
+                                            ? <<< HTML
                                                 <button type="button" class="document-action" style="display: inline-block;">
                                                     <img src="$app_url/images/doc-actions/delete-doc.png" draggable="false">
                                                 </button>
+                                            HTML
+                                            : "";
+                                        $versionActiveness = $vn === $currentVersion ? "active": "";
+
+                                        echo <<< HTML
+                                            <div class="version-card $versionActiveness">
+                                                <div class="id-box">
+                                                    <p style="display: inline;"><b>Version $vn</b> $inUseBadge</p>
+                                                    <p>$vd</p>
+                                                </div>
+
+                                                <div class="button-list">
+                                                    <button type="button" class="document-action" style="display: inline-block;">
+                                                        <img src="$app_url/images/doc-actions/preview-doc.png" draggable="false">
+                                                    </button>
+                                                    <button type="button" class="document-action" style="display: inline-block;">
+                                                        <img src="$app_url/images/doc-actions/download-doc.png" draggable="false">
+                                                    </button>
+                                                    $useVersionButton
+                                                    $deleteVersionButton
                                                 </div>
                                             </div>
                                         HTML;
@@ -215,26 +252,37 @@
                             <?php endif; ?>
                         </div>
                         <p style="text-align: center">The version you use <img style="vertical-align: middle;" width="20" height="20" alt="Green checkmark: Use this version" src="<?= $app_url. '/images/doc-actions/use-version.png' ?>"> will be the one seen by reviewers during the archiving process.</p>
-                        <div id="fileupload-accordion" class="accordion-container">
-                            <button type="button" class="accordion">
-                                Upload a New Version
-                            </button>
+                        
+                        <hr class="short-divider">
 
-                            <div class="panel">
-                                <input type="file"
-                                    name="new_file"
-                                    style="display: block; margin: auto;"
-                                    accept=".pdf,.doc,.docx,.txt">
-                            </div>
+                        <div class="file-upload-container">
+                            <label for="new_file"><b>Upload a New Version</b></label>
+                            <input type="file" id="new_file" class="file-upload"
+                                        name="new_file"
+                                        style="display: block; margin: auto;"
+                                        accept=".pdf,.doc,.docx,.txt"
+                                        hidden>
+                            <p class="instructional-label-technical">Maximum file size: 5 MB</p>
+                            <p id="new-version-label" style="text-align: center; display: none; font-size: 0.8rem; padding: 2px 10px; border-radius: 16px; background: #8e86ff; color: black">Version: <b><?php $newVersion = ++$currentVersion; echo $newVersion; ?></b></p>
+                        <button type="button"
+                                id="remove-version-btn"
+                                class="btn danger small-padding"
+                                style="display: none; margin-top: 10px; font-size: 0.8rem; font-weight: normal">
+                            Remove Version
+                        </button>
                         </div>
+                        <p id="version-add-notice" style="text-align: center; display: none;">After saving changes, this version will be added<br>to the version history and used automatically</p>
                     </div>
                 </div>
 
                 
 
-                <button type="submit" class="btn">
+                <div class="button-list">
+                <button type="submit" class="btn positive">
                     Save Changes
                 </button>
+                <a class="btn danger" href="./">Cancel</a>
+                </div>
             </form>
         </div>
         <!-- Display this message if the requested document is not found/doesn't exist -->
@@ -258,5 +306,28 @@
             document.getElementById("category").value = "<?php echo $category?>";
         </script>
     <?php endif; ?>
+
+    <script>
+        const fileInput = document.getElementById("new_file");
+        const uploadBtn = document.getElementById("uploadBtn");
+        const versionAddNotice = document.getElementById("version-add-notice");
+        const newVersionLabel = document.getElementById("new-version-label");
+        const removeVersionBtn = document.getElementById("remove-version-btn");
+
+        function updateVersionUI() {
+            const hasFiles = fileInput.files.length > 0;
+
+            versionAddNotice.style.display = hasFiles ? "block" : "none";
+            newVersionLabel.style.display = hasFiles ? "inline" : "none";
+            removeVersionBtn.style.display = hasFiles ? "inline-block" : "none";
+        }
+
+        fileInput.addEventListener("change", updateVersionUI);
+
+        removeVersionBtn.addEventListener("click", function () {
+            fileInput.value = "";
+            updateVersionUI();
+        });
+    </script>
 </body>
 </html>

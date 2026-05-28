@@ -1,5 +1,19 @@
 /* GLOBAL STYLES */
 
+span.blue-text {
+    color: #8e86ff;
+    font-family: 'RobotoFlex', sans-serif;
+}
+
+hr.short-divider {
+    border: none;
+    margin: 4px auto;
+    height: 3px;
+    background: lightgray;
+    border-radius: 999px;
+    width: 40px;
+}
+
 .docs-grid {
     padding: 2rem;
     display: grid;
@@ -60,6 +74,12 @@
     font-family: 'RobotoFlex', sans-serif;
     margin-top: 16px;
     color: #888;
+}
+
+.instructional-label-technical {
+    font-size: 0.8rem;
+    font-style: italic;
+    font-family: 'RobotoFlex', sans-serif;
 }
 
 
@@ -141,6 +161,16 @@ button {
     cursor: pointer;
 }
 
+.button-list {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: stretch;
+    gap: 4px;
+}
+
 .btn {
     font-family: 'RobotoFlex', sans-serif !important;
     display: inline-block;
@@ -155,11 +185,43 @@ button {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: white;
     padding: 10px 25px;
+    cursor: pointer;
+}
+
+.small-padding {
+    padding: 2px 10px;
+}
+
+.btn.action {
+    background: black;
+    border-color: #303030;
+    color: white;
+}
+
+.btn.action:hover {
+    background-color: #1F1F1F;
+    border-color: #303030;
+}
+
+.btn.positive {
+    background-color: #256E2E;
+    border-color: #256E2E;
+    color: white;
+}
+
+.btn.positive:hover {
+    background-color: #2b8b30;
+    border-color: #2b8b30;
 }
 
 .btn.danger {
     background: red;
     color: white;
+    border: none;
+}
+
+.btn.danger:hover {
+    background-color: darkred;
 }
 
 .btn:hover {
@@ -174,6 +236,8 @@ button {
     background-color: #b01717;
     color: white;
 }
+
+
 
 .btn.green:hover {
     background-color: #256E2E !important;
@@ -194,9 +258,13 @@ button {
 .btn:disabled,
 .btn.locked:hover,
 .btn:disabled:hover {
+    border: none;
     background-color: #DDD;
     color: gray;
+    transform: none;
     transition: none;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 /* INPUTS */
