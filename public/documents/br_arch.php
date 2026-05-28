@@ -4,7 +4,6 @@
     require_once '../../bootstrap/app.php';
     load (
         'vendor_autoload',
-        'mongodb_client', 
         'mongodb_collections',
         'doc_ed',
         'doc_query',
@@ -17,26 +16,21 @@
         'pagination_controls'
     );
 
-    $client = mongodb_client();
-    $collection_documents = coll('documents', $client);
-
     $documentsPerPage = 8;
-    $totalDocuments = $collection_documents->countDocuments([
-        'doc_status' => 'PUBLICIZED'
-    ]);
-    
+    $totalDocuments = coll('documents')
+        ->countDocuments(['doc_status' => 'PUBLICIZED'])
+        ->execute();
+
     $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
     $currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
     $currentPage = max(1, min($currentPage, $totalPages));
     $skip = ($currentPage - 1) * $documentsPerPage;
 
-    $results = $collection_documents->find(
-        ['doc_status' => 'PUBLICIZED'],
-        [
-            'skip' => $skip,
-            'limit' => $documentsPerPage
-        ]
-    );
+    $results = coll('documents')
+        ->find(['doc_status' => 'PUBLICIZED'])
+        ->skip($skip)
+        ->limit($documentsPerPage)
+        ->execute();
 
     $all_docs = get_all($results);
 

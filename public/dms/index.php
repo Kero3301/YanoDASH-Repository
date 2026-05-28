@@ -7,7 +7,6 @@
     load (
         'authentication',
         'authorization',
-        'mongodb_client',
         'mongodb_collections',
         'document_factory',
         'navbar',
@@ -22,9 +21,6 @@
 
     if (!can_use_dms($permissions))
         die("You do not have permission to access this resource.");
-
-    $client = mongodb_client();
-    $collection_documents = coll('documents', $client);
 
     $baseQuery = [
         'doc_status' => 'EDITING',
@@ -41,10 +37,10 @@
 
     $documentsPerPage = 15;
 
-    $totalDocuments = $collection_documents->countDocuments($baseQuery);
-
+    $totalDocuments = coll('documents')
+        ->countDocuments($baseQuery)
+        ->execute();
     $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
-
     $currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
         'options' => [
             'default' => 1,
@@ -53,17 +49,21 @@
     ]);
 
     $currentPage = min($currentPage, $totalPages);
-
     $skip = (int)(($currentPage - 1) * $documentsPerPage);
-
-    $results = $collection_documents->find(
-        $baseQuery,
-        [
-            'sort' => ['dates.date_added' => -1],
-            'skip' => $skip,
-            'limit' => $documentsPerPage
-        ]
-    );
+    $results = coll('documents')
+        ->find($baseQuery)
+        ->sort(['dates.date_added' => -1])
+        ->skip($skip)
+        ->limit($documentsPerPage)
+        ->execute();
+    // $results = $collection_documents->find(
+    //     $baseQuery,
+    //     [
+    //         'sort' => ['dates.date_added' => -1],
+    //         'skip' => $skip,
+    //         'limit' => $documentsPerPage
+    //     ]
+    // );
 
     $all_docs = get_all($results);
 ?>

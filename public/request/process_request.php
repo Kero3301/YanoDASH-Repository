@@ -7,7 +7,6 @@ load (
     'authorization',
     'vendor_autoload',
     'mailing',
-    'mongodb_client',
     'mongodb_collections'
 );
 
@@ -15,35 +14,35 @@ load (
 if (!is_logged_in() || !can_use_dms($permissions))
     die("You do not have permission to access this resource.");
 
-try {
-    $client = mongodb_client(readOnly: false);
-    $collection = coll('archive_requests', $client);
-    $documentsCollection = coll('documents', $client);
-} catch (Exception $e) {
-    $_SESSION['error_msg'] = "MongoDB Connection Failed: " . $e->getMessage();
-    header("Location: archive.php");
-    exit();
-}
+// try {
+//     $client = mongodb_client(readOnly: false);
+//     $collection = coll('archive_requests', $client);
+//     $documentsCollection = coll('documents', $client);
+// } catch (Exception $e) {
+//     $_SESSION['error_msg'] = "MongoDB Connection Failed: " . $e->getMessage();
+//     header("Location: archive.php");
+//     exit();
+// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $purpose  = trim($_POST['purpose'] ?? '');
     $notes    = trim($_POST['notes'] ?? '');
 
     // Look for an existing document in the documents collection to verify if the document actually exists
-    $existingDocument = $documentsCollection->findOne(['tracking_code' => $notes]);
-    if (!$existingDocument) {
+    $existingDocument = coll('documents')->findOne(['tracking_code' => $notes])->execute();
+    if (empty($existingDocument)) {
         $_SESSION['error_msg'] = "Invalid document tracking code. No matching document was found in the records.";
         header("Location: archive.php");
         exit();
     }
 
-    $documentTC = $existingDocument->tracking_code;
+    $documentTC = $existingDocument['tracking_code'];
 
     // Check if an archive request already exists for this document
-    $existingArchiveRequest = $collection->findOne([
+    $existingArchiveRequest = coll('archive_requests')->findOne([
         'notes' => $documentTC
-    ]);
-    if ($existingArchiveRequest) {
+    ])->execute();
+    if (!empty($existingArchiveRequest)) {
         $_SESSION['error_msg'] = "An archive request for this document is already underway.";
         header("Location: archive.php");
         exit();
@@ -62,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    $documentCategory = $existingDocument->doc_category;
+    $documentCategory = $existingDocument['doc_category'];
     $fileName = null;
 
     // Assign document type / category automatically on the server.
@@ -98,10 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle File Upload
     if (!empty($_FILES['docs']['name'])) {
         $fileName = time() . "_" . basename($_FILES['docs']['name']);
-        $targetPath = "../uploads/" . $fileName;
+        $targetPath = "../../uploads/" . $fileName;
         
-        if (!is_dir("../uploads/")) {
-            mkdir("../uploads/", 0777, true);
+        if (!is_dir("../../uploads/")) {
+            mkdir("../../uploads/", 0777, true);
         }
         
         move_uploaded_file($_FILES['docs']['tmp_name'], $targetPath);
@@ -109,22 +108,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Generate a public tracking code for this request
     $year = date('Y');
-    $count = $collection->countDocuments();
+    $count = coll('archive_requests')->countDocuments()->execute();
     $tracking_code = sprintf('AR-%s-%03d', $year, $count + 1);
 
     // Insert into MongoDB
     try {
-        $result = $collection->insertOne([
-            'docType'       => $docType,
+        $result = coll('archive_requests')->insertOne([
+            'docType'       => "test",
             'purpose'       => $purpose,
             'notes'         => $notes,
             'file'          => $fileName,
             'tracking_code' => $tracking_code,
             'status'        => 'pending',
             'created_at'    => new MongoDB\BSON\UTCDateTime()
-        ]);
+        ])->execute();
         
-        if ($result->getInsertedCount() > 0) {
+        if (QueryBuilder::getInsertedCount($result) > 0) {
             $_SESSION['success_msg'] = "Request processed successfully! Your tracking code is {$tracking_code}. Use this code to check status in Track Request.";
             send_simple_email("ddpyu01202401015@usep.edu.ph", "[YanoDASH] Your archive request's tracking code", "Your archive request's tracking code is {$tracking_code}. Use it in the Track Request page to track the status of your request. Thank you!");
         } else {

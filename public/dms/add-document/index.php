@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once '../../../bootstrap/app.php';
-    load('vendor_autoload', 'authentication', 'authorization', 'navbar', 'mongodb_client', 'mongodb_collections');
+    load('vendor_autoload', 'authentication', 'authorization', 'navbar', 'mongodb_collections');
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
@@ -24,10 +24,6 @@
         $tcn = 'YD-'. date("Ymd"). date("His");
 
         try {
-            $client = mongodb_client();
-            $collection = coll('documents', $client);
-            $docver = coll('document_versions', $client);
-
             // Target the 'Uploads' folder in the Repository root
             $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
@@ -36,31 +32,35 @@
             $targetPath = $uploadDir . $fileName;
 
             if (move_uploaded_file($_FILES["document_file"]["tmp_name"], $targetPath)) {
-                $result = $collection->insertOne([
-                    "doc_title" => $doc_title,
-                    "doc_category" => $doc_category,
-                    "doc_tags" => [],
-                    "author" => $author,
-                    "area_of_origin" => $area_of_origin,
-                    "doc_status" => "EDITING",
-                    "tracking_code" => "$tcn",
-                    "dates" => [
-                        "date_added" => new MongoDB\BSON\UTCDateTime(),
-                        "date_finalized" => null,
-                        "date_archived" => null
-                    ],
-                    "current_version" => 1
-                ]);
-                $did = $result->getInsertedId();
-                $result2 = $docver->insertOne(
-                    [
+                $result = coll('documents')
+                    ->insertOne([
+                        "doc_title" => $doc_title,
+                        "doc_category" => $doc_category,
+                        "doc_tags" => [],
+                        "author" => $author,
+                        "area_of_origin" => $area_of_origin,
+                        "doc_status" => "EDITING",
+                        "tracking_code" => "$tcn",
+                        "dates" => [
+                            "date_added" => new MongoDB\BSON\UTCDateTime(),
+                            "date_finalized" => null,
+                            "date_archived" => null
+                        ],
+                        "current_version" => 1
+                    ])
+                    ->execute();
+                $did = QueryBuilder::getInsertedId($result);
+
+                $result2 = coll('document_versions')
+                    ->insertOne([
                         "doc_id" => $did,
                         "version_number" => 1,
                         "file_path" => $targetPath,
                         "date_added" => new MongoDB\BSON\UTCDateTime()
-                    ]
-                );
-                if ($result2) $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
+                    ])
+                    ->execute();
+    
+                if (!empty($result2)) $message = "<span style='color: #2ecc71;'>✔ Upload Successful!</span>";
             }
         } catch (Exception $e) {
             $message = "<span style='color: #e74c3c;'>Error: " . $e->getMessage() . "</span>";

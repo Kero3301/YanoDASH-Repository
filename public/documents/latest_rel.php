@@ -4,7 +4,6 @@ session_start();
 require_once '../../bootstrap/app.php';
 load (
     'vendor_autoload',
-    'mongodb_client',
     'mongodb_collections',
     'doc_ed',
     'document_factory',
@@ -16,32 +15,10 @@ load (
     'pagination_controls'
 );
 
-
-    $client = mongodb_client();
-
-    $collection_documents = $client->yano_dash->documents_schema;
-    $results = $collection_documents->find(
-        [
-            'doc_status' => 'ARCHIVED',
-            'is_publicized' => true
-        ],
-        [
-            'sort' => ['date_added' => -1],
-            'limit' => 3
-        ]
-    );
-    $all_docs = get_all($results);
-$client = mongodb_client();
-$collection_documents = coll('documents', $client);
-
-$baseQuery = [
-    'doc_status' => 'PUBLICIZED',
-];
-
 $documentsPerPage = 8;
-
-$totalDocuments = $collection_documents->countDocuments($baseQuery);
-
+$totalDocuments = coll('documents')
+    ->countDocuments(['doc_status' => 'PUBLICIZED'])
+    ->execute();
 $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
 
 $currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
@@ -50,19 +27,16 @@ $currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
         'min_range' => 1
     ]
 ]);
-
 $currentPage = min($currentPage, $totalPages);
 
 $skip = (int)(($currentPage - 1) * $documentsPerPage);
 
-$results = $collection_documents->find(
-    $baseQuery,
-    [
-        'sort' => ['dates.date_added' => -1],
-        'skip' => $skip,
-        'limit' => $documentsPerPage
-    ]
-);
+$results = coll('documents')
+    ->find(['doc_status' => 'PUBLICIZED'])
+    ->skip($skip)
+    ->sort(['dates.date_added' => -1])
+    ->limit($documentsPerPage)
+    ->execute();
 
 $all_docs = get_all($results);
 ?>

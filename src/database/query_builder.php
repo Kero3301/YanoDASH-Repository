@@ -10,6 +10,8 @@ final class QueryBuilder {
         'insertOne' => true,
         'updateOne' => true,
         'deleteOne' => true,
+        'deleteMany' => true,
+        'countDocuments' => true
     ];
 
     private const ALLOWED_OPERATORS = [
@@ -37,6 +39,8 @@ final class QueryBuilder {
     private array $data = [];
     private array $update = [];
     private array $options = [];
+
+    private mixed $lastResult = null;
 
     private string $endpoint;
     private string $apiKey;
@@ -67,6 +71,13 @@ final class QueryBuilder {
             throw new InvalidArgumentException('Invalid collection');
 
         $this->collection = $collection;
+        return $this;
+    }
+
+    public function countDocuments(array $filter = []): self {
+        $this->operation = 'countDocuments';
+        $this->validateArray($filter);
+        $this->filter = $this->encodeTypes($filter);
         return $this;
     }
 
@@ -123,6 +134,42 @@ final class QueryBuilder {
         return $this;
     }
 
+    public function deleteMany(array $filter): self {
+        if ($filter === []) {
+            throw new InvalidArgumentException(
+                'Empty delete filters are not allowed'
+            );
+        }
+
+        $this->validateArray($filter);
+
+        $this->operation = 'deleteMany';
+        $this->filter = $this->encodeTypes($filter);
+
+        return $this;
+    }
+
+    public static function getInsertedId(array $result): ?ObjectId {
+        if (!isset($result['insertedId'])) return null;
+
+        $id = $result['insertedId'];
+        if (!is_string($id)) throw new InvalidArgumentException('InsertedId must be a string');
+        return new ObjectId($id);
+    }
+
+    public static function getDeletedCount(array $result): int {
+        if (!isset($result['deletedCount'])) return 0;
+
+        $count = $result['deletedCount'];
+        if (!is_int($count)) 
+            throw new InvalidArgumentException('DeletedCount must be an integer');
+
+        if ($count < 0)
+            throw new InvalidArgumentException('DeletedCount cannot be negative');
+
+        return $count;
+    }
+
     public function limit(int $limit): self {
         if ($limit < 1 || $limit > 1000) {
             throw new InvalidArgumentException('Limit must be between 1 and 1000');
@@ -132,7 +179,33 @@ final class QueryBuilder {
         return $this;
     }
 
+    public function skip(int $skip): self {
+        if ($this->operation === 'countDocuments') {
+            throw new InvalidArgumentException('Skip is not supported for countDocuments');
+        }
+
+        if ($skip < 0) {
+            throw new InvalidArgumentException('Skip cannot be negative');
+        }
+
+        $this->options['skip'] = $skip;
+        return $this;
+    }
+
+    // public function sort(array $sort): self {
+    //     $this->options['sort'] = $sort;
+    //     return $this;
+    // }
+
     public function sort(array $sort): self {
+        foreach ($sort as $field => $direction) {
+            if (!is_string($field)) 
+                throw new InvalidArgumentException("Invalid sort field");
+            
+            if (!in_array($direction, [1, -1], true)) 
+                throw new InvalidArgumentException("Sort direction must be 1 or -1");
+        }
+
         $this->options['sort'] = $sort;
         return $this;
     }
@@ -142,7 +215,7 @@ final class QueryBuilder {
         return $this;
     }
 
-    public function execute(): array {
+    public function execute() {
         if ($this->collection === '')
             throw new RuntimeException('Collection is required');
 
@@ -197,6 +270,7 @@ final class QueryBuilder {
         try { $decoded = json_decode($response, true, 512, JSON_THROW_ON_ERROR); } 
         catch (JsonException $e) { throw new RuntimeException('Invalid API response'); }
 
+        $this->lastResult = $decoded;
         $this->reset();
 
         return $this->decodeTypes($decoded);
@@ -241,6 +315,7 @@ final class QueryBuilder {
         }
         if (is_int($value)) return ['$int' => $value];
         if (is_float($value)) return ['$double' => $value];
+        if ($value instanceof MongoDB\BSON\UTCDateTime) return ['$date' => $value->toDateTime()->format(DATE_ATOM)];
         if ($value instanceof DateTimeInterface) return ['$date' => $value->format(DATE_ATOM)];
         if ($value instanceof MongoDB\BSON\ObjectId) return ['$oid' => (string) $value];
         if (is_string($value) && preg_match('/^[a-f\d]{24}$/i', $value)) return ['$oid' => $value];

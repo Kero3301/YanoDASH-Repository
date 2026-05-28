@@ -23,9 +23,6 @@
     if (!can_use_dms($permissions))
         die("You do not have permission to access this resource.");
 
-    $client = mongodb_client();
-    $collection_documents = coll('documents', $client);
-
     $baseQuery = [
         'doc_status' => 'EDITING',
         'area_of_origin' => [
@@ -41,8 +38,9 @@
 
     $documentsPerPage = 15;
 
-    $totalDocuments = $collection_documents->countDocuments($baseQuery);
-
+    $totalDocuments = coll('documents')
+        ->countDocuments($baseQuery)
+        ->execute();
     $totalPages = (int) max(1, ceil($totalDocuments / $documentsPerPage));
 
     $currentPage = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, [
@@ -53,17 +51,13 @@
     ]);
 
     $currentPage = min($currentPage, $totalPages);
-
     $skip = (int)(($currentPage - 1) * $documentsPerPage);
-
-    $results = $collection_documents->find(
-        $baseQuery,
-        [
-            'sort' => ['dates.date_added' => -1],
-            'skip' => $skip,
-            'limit' => $documentsPerPage
-        ]
-    );
+    $results = coll('documents')
+        ->find($baseQuery)
+        ->sort(['dates.date_added' => -1])
+        ->skip($skip)
+        ->limit($documentsPerPage)
+        ->execute();
 
     $documents = $results;
 
@@ -158,31 +152,31 @@
 
     <?php foreach ($documents as $doc): ?>
         <tr>
-            <td><?php echo (string)$doc->tracking_code; ?></td>
-            <td><?php echo $doc->doc_title ?? ''; ?></td>
+            <td><?php echo (string)$doc['tracking_code']; ?></td>
+            <td><?php echo $doc['doc_title'] ?? ''; ?></td>
             <td>
                 <?php  
-                    echo $doc->doc_category; 
+                    echo $doc['doc_category']; 
                 ?>
             </td>
             <td>
                 <?php 
-                    echo isset($doc->dates->date_added)
-                        ? $doc->dates->date_added->toDateTime()->format('Y-m-d')
+                    echo isset($doc['dates']['date_added'])
+                        ? $doc['dates']['date_added']
                         : '';
                 ?>
             </td>
             <td>
-                <?php echo (int)$doc->current_version; ?>
+                <?php echo (int)$doc['current_version']; ?>
             </td>
-            <td><?php echo $doc->doc_status ?? ''; ?></td>
+            <td><?php echo $doc['doc_status'] ?? ''; ?></td>
 
             <td>
-                <a href="editPage.php?doc_id=<?php echo $doc->_id; ?>">
+                <a href="editPage.php?doc_id=<?php echo $doc['_id']; ?>">
                     <button class="edit">Edit</button>
                 </a>
 
-                <a href="deletePage.php?id=<?php echo $doc->_id; ?>"
+                <a href="deletePage.php?id=<?php echo $doc['_id']; ?>"
                    onclick="return confirm('Delete this document?')">
                     <button class="delete">Delete</button>
                 </a>

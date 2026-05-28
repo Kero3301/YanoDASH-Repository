@@ -15,16 +15,24 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 try {
-    $client = mongodb_client();
-    $collection = coll('documents', $client);
-
     // 3. Convert string ID to MongoDB ObjectId
     $targetId = new MongoDB\BSON\ObjectId($_GET['id']);
 
     // 4. Execute deletion
-    $result = $collection->deleteOne(['_id' => $targetId]);
+    $result = coll('documents')
+        ->deleteOne(['_id' => $targetId])
+        ->execute();
 
-    if ($result->getDeletedCount() === 1) {
+    if (!empty($result) && QueryBuilder::getDeletedCount($result) === 1) {
+        $relatedVersionsCount = coll('document_versions')
+            ->countDocuments(['doc_id' => $targetId])
+            ->execute();
+        // 5. Clean up any related document versions linked to this document
+        if ($relatedVersionsCount > 0) {
+            $result2 = coll('document_versions')
+                ->deleteMany(['doc_id' => $targetId])
+                ->execute();
+        }
         // Success! Redirect back to index
         header('Location: index.php?status=deleted');
     } else {

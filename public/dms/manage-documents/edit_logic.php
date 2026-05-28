@@ -5,16 +5,11 @@ load (
     'authentication',
     'authorization',
     'vendor_autoload',
-    'mongodb_client',
     'mongodb_collections'
 );
 
 if (!is_logged_in() || !can_use_dms($permissions))
     die("You do not have permission to access this resource.");
-
-$client = mongodb_client();
-$collection_documents = coll('documents', $client);
-$collection_documentVersions = coll('document_versions', $client);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     # Get the posted doc_id
@@ -22,43 +17,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_id = new MongoDB\BSON\ObjectId($docID);
 
     # Find the related document on the database based on its docID
-    $document = $collection_documents->findOne([
-        '_id' => $_id
-    ]);
+    $document = coll('documents')
+        ->findOne(['_id' => $_id])
+        ->execute();
 
     # Get current data about the document in the database
-    $tracking_code = $document->tracking_code;
-    $current_version = $document->current_version_id;
+    $tracking_code = $document['tracking_code'];
+    $current_version = $document['current_version'];
 
     # Get the updated data
     $new_title = $_POST['doc_title'];
+    $new_category = $_POST['category'];
 
     # Default doc update info, assuming no new file is uploaded
     $docUpdate = [
         '$set' => [
-            'doc_title' => $new_title
+            'doc_title' => $new_title,
+            'doc_category' => $new_category
         ]
     ];
 
     # If a new file is included/uploaded, create a new document version and link it to the document
     if (isset($_FILES['new_file']) && $_FILES['new_file']['error'] === UPLOAD_ERR_OK) {
-        $new_version = $current_version + 1;
         $extension = pathinfo($_FILES['new_file']['name'], PATHINFO_EXTENSION);
+
+        # Increment version
+        $new_version = $current_version + 1;
 
         # Set the new filename based on tracking code, new version, and file extension
         $new_filename = $tracking_code . "_v" . $new_version . "." . $extension;
 
         # Specify the directory where new files will go
-        $upload_path = '../uploads/' . $new_filename;
+        $upload_path = '../../../uploads/' . $new_filename;
 
         if (move_uploaded_file($_FILES['new_file']['tmp_name'], $upload_path)) {
-            # Increment version
+            
 
             # Define current date as date added
             $now = new DateTime("now", new DateTimeZone("UTC"));
-            $date_added = new MongoDB\BSON\UTCDateTime(
-                $now->getTimestamp() * 1000
-            );
+            $date_added = new MongoDB\BSON\UTCDateTime($now->getTimestamp() * 1000);
 
             # Create and insert new version for the document
             $version = [
@@ -67,13 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'file_path' => $upload_path,
                 'date_added' => $date_added
             ];
-            $res = $collection_documentVersions->insertOne($version);
-            if ($res) {
+            $res = coll('document_versions')
+                ->insertOne($version)
+                ->execute();
+            if (!empty($res)) {
                 # Change the doc update info to include the version
                 $docUpdate = [
                     '$set' => [
                         'doc_title' => $new_title,
-                        'current_version_id' => $new_version
+                        'doc_category' => $new_category,
+                        'current_version' => $new_version
                     ]
                 ];
             }
@@ -84,12 +84,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //     header("Location: $app_url/dms/manage-documents?success=metadata_updated");
     // }
 
-    $res2 = $collection_documents->updateOne(
-        ['_id' => new MongoDB\BSON\ObjectId($docID)],
-        $docUpdate
-    );
+   
+    $res2 = coll('documents')
+        ->updateOne(
+            ['_id' => new MongoDB\BSON\ObjectId($docID)],
+            $docUpdate
+        )
+        ->execute();
 
-    if ($res2) header("Location: $app_url/dms/manage-documents?success=new_version");
+    if (!empty($res2)) header("Location: $app_url/dms/manage-documents?success=new_version");
 }
 
 ?>

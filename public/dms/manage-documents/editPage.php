@@ -6,7 +6,6 @@
         'authentication',
         'authorization',
         'vendor_autoload',
-        'mongodb_client',
         'mongodb_collections',
         'navbar',
         'accordion',
@@ -22,17 +21,13 @@
 
     $docID = $_GET['doc_id'];
  
-    $client = mongodb_client();
-
-    $collection_documents = coll('documents', $client);
-
     $documentFound = false;
     $fetchedDocument = null;
 
     try {
-        $fetchedDocument = $collection_documents->findOne([
-            '_id' => new MongoDB\BSON\ObjectId($docID)
-        ]);
+        $fetchedDocument = coll('documents')
+            ->findOne(['_id' => new MongoDB\BSON\ObjectId($docID)])
+            ->execute();
         $documentFound = (bool) $fetchedDocument;
     } catch (Exception $e) {
         $documentFound = false;
@@ -44,10 +39,10 @@
     $currentVersion = 1;
 
     if ($documentFound) {
-        $title = $fetchedDocument->doc_title;
-        $area = $fetchedDocument->area_of_origin;
-        $category = $fetchedDocument->doc_category;
-        $currentVersion = $fetchedDocument->current_version;
+        $title = $fetchedDocument['doc_title'];
+        $area = $fetchedDocument['area_of_origin'];
+        $category = $fetchedDocument['doc_category'];
+        $currentVersion = $fetchedDocument['current_version'];
     }
 ?>
 
@@ -91,12 +86,13 @@
 
                     <select id="category" name="category" required>
                         <option value="">Select Category</option>
-                        <option value="Activity Designs">Activity Design</option>
+                        <option value="Activity Design">Activity Design</option>
                         <option value="Memorandum">Memorandum</option>
-                        <option value="Financial Statements">Financial Statement</option>
-                        <option value="Minutes of Meetings">Minutes of Meeting</option>
-                        <option value="Accomplishment Report">Accomplishment Report</option>
+                        <option value="Minutes of Meeting">Minutes of Meeting</option>
+                        <option value="Notice of Meeting">Notice of Meeting</option>
                         <option value="Project Proposal">Project Proposal</option>
+                        <option value="Financial Statement">Financial Statement</option>
+                        <option value="Accomplishment Report">Accomplishment Report</option>
                     </select>
                 </div>
 
@@ -118,7 +114,8 @@
                     <div class="panel">
                         <input type="file"
                             name="new_file"
-                            style="display: block; margin: auto;">
+                            style="display: block; margin: auto;"
+                            accept=".pdf,.doc,.docx,.txt">
                     </div>
                 </div>
 

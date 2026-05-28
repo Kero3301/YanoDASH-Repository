@@ -40,9 +40,16 @@
         $isPublic = $status === "PUBLICIZED";
         $readOnly = in_array($status, ["ARCHIVED", "PUBLICIZED"]);
         $tags = implode(',', $tags);
-        $add_date = (string) $dates['date_added']?->toDateTime()->format('Y-m-d g:i A');
-        $finalize_date = (string) $dates['date_finalized']?->toDateTime()->format('Y-m-d g:i A');
-        $archive_date = (string) $dates['date_archived']?->toDateTime()->format('Y-m-d g:i A');
+        $add_date = !empty($dates['date_added'])
+            ? (new DateTime($dates['date_added']))->format('Y-m-d g:i A')
+            : '(unknown)';
+        $finalize_date = !empty($dates['date_finalized'])
+            ? (new DateTime($dates['date_finalized']))->format('Y-m-d g:i A')
+            : '(unknown)';
+        $archive_date = !empty($dates['date_archived'])
+            ? (new DateTime($dates['date_archived']))->format('Y-m-d g:i A')
+            : '(unknown)';
+        // $archive_date = (string) $dates['date_archived']?->toDateTime()->format('Y-m-d g:i A');
 
         # Decorative data
         $tagClass = match (strtoupper($category)) {
