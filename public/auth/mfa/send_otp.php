@@ -2,6 +2,9 @@
 
 session_start();
 
+// Force UTC time globally
+date_default_timezone_set('UTC'); 
+
 require_once '../../../bootstrap/app.php';
 
 load(
@@ -15,9 +18,7 @@ $TEST_MODE = false;
 
 // Connect to MongoDB
 $client = mongodb_client();
-
 $accountsColl = coll('accounts', $client);
-$credentialsColl = coll('login_credentials', $client);
 
 // =========================
 // CHECK EMAIL INPUT
@@ -33,38 +34,34 @@ $email = trim($_POST['email']);
 // =========================
 $user = $accountsColl->findOne([
     'email_address' => $email
-]);
+])->execute(); // Make sure ->execute() is called if your wrapper needs it
 
 // Check if user exists
 if (!$user) {
     die("User not found.");
 }
 
-// Get MongoDB Object ID
-$userID = $user->_id;
+$userArray = (array)$user;
+$userID = $userArray['_id'];
 
 // =========================
-// GENERATE OTP
+// GENERATE OTP (5-Minute Window)
 // =========================
 $otp = rand(100000, 999999);
-
-// 5 minutes expiry
-$expiry = time() + 300;
+$expiry = time() + 300; // 5 minutes in seconds from right now
 
 // =========================
-// SAVE OTP
+// SAVE OTP (Saved flatly to match the database view)
 // =========================
-$credentialsColl->updateOne(
-    ['user' => $userID],
+$accountsColl->updateOne(
+    ['_id' => $userID],
     [
         '$set' => [
-            'otp' => [
-                'code' => (string)$otp,
-                'expiry' => (int)$expiry
-            ]
+            'otp' => (string)$otp,
+            'otp_expiry' => (int)$expiry
         ]
     ]
-);
+)->execute();
 
 // Save session
 $_SESSION['reset_email'] = $email;

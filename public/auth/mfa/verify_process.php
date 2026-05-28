@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Force UTC time globally to perfectly match the generation file
+date_default_timezone_set('UTC'); 
+
 require_once '../../../bootstrap/app.php';
 
 load(
@@ -9,13 +12,8 @@ load(
     'mongodb_collections'
 );
 
-$client = mongodb_client();
-
-$accountsColl = coll('accounts', $client);
-$credentialsColl = coll('login_credentials', $client);
-
 // =========================
-// CHECK SESSION
+// 1. CHECK SESSION
 // =========================
 if (!isset($_SESSION['reset_email'])) {
     header('Location: verify.php?error=invalid_otp');
@@ -25,79 +23,52 @@ if (!isset($_SESSION['reset_email'])) {
 $email = $_SESSION['reset_email'];
 
 // =========================
-// CHECK OTP INPUT
+// 2. CHECK OTP INPUT
 // =========================
-if (!isset($_POST['otp'])) {
+if (!isset($_POST['otp']) || empty(trim($_POST['otp']))) {
     header('Location: verify.php?error=invalid_otp');
     exit();
 }
 
-$inputOtp = trim($_POST['otp']);
+$inputOtp = trim((string)$_POST['otp']);
 
 // =========================
-// FIND USER
+// 3. FIND USER
 // =========================
-$user = $accountsColl
-    ->findOne(['email_address' => $email])
-    ->execute();   // ✅ already returns row/array
+try {
+    $user = coll('accounts')
+        ->findOne(['email_address' => $email])
+        ->execute();
+} catch (Exception $e) {
+    error_log("Database error: " . $e->getMessage());
+    header('Location: verify.php?error=server_error');
+    exit();
+}
 
 if (!$user) {
-    die("User not found.");
-}
-
-$userID = $user['id']; // adjust to your schema
-
-// =========================
-// FIND CREDENTIALS
-// =========================
-$credentials = $credentialsColl
-    ->findOne(['user' => $userID])
-    ->execute();   // ✅ already returns row/array
-
-if (!$credentials) {
-    die("Credentials not found.");
-}
-
-// =========================
-// CHECK OTP DATA
-// =========================
-if (
-    !isset($credentials['otp_code']) ||
-    !isset($credentials['otp_expiry'])
-) {
     header('Location: verify.php?error=invalid_otp');
     exit();
 }
 
-$storedOTP = (string)$credentials['otp_code'];   // ✅ flat column
-$storedExpiry = (int)$credentials['otp_expiry'];
-$currentTime = time();
+$userArray = (array)$user;
 
 // =========================
-// VERIFY OTP
+// 4. VALIDATE OTP FIELDS
 // =========================
-if (
-    $inputOtp === $storedOTP &&
-    $currentTime <= $storedExpiry
-) {
-    // Remove OTP after successful verification
-    $credentialsColl->updateOne(
-        ['user' => $userID],
-        [
-            '$unset' => [
-                'otp_code' => "",
-                'otp_expiry' => ""
-            ]
-        ]
-    );
-
-    $_SESSION['verified_for_reset'] = true;
-    header('Location: reset_password.php');
+if (!isset($userArray['otp']) || !isset($userArray['otp_expiry'])) {
+    header('Location: verify.php?error=invalid_otp');
     exit();
 }
 
 // =========================
-// EXPIRED
+// 5. EXTRACT VALUES
+// =========================
+$storedOTP    = trim((string)$userArray['otp']);
+$storedExpiry = (int)$userArray['otp_expiry'];
+$currentTime  = time();
+
+// =========================
+// 6. CHECK EXPIRY
 // =========================
 if ($currentTime > $storedExpiry) {
     header('Location: verify.php?error=expired');
@@ -105,7 +76,29 @@ if ($currentTime > $storedExpiry) {
 }
 
 // =========================
-// INVALID
+// 7. VERIFY OTP
+// =========================
+if ($inputOtp === $storedOTP) {
+    
+    // Clear OTP keys after successful verification
+    try {
+        coll('accounts')
+            ->updateOne(
+                ['_id' => $userArray['_id']],
+                ['$unset' => ['otp' => '', 'otp_expiry' => '']]
+            )
+            ->execute();
+    } catch (Exception $e) {
+        error_log("Update error: " . $e->getMessage());
+    }
+
+    $_SESSION['verified_for_reset'] = true;
+    header('Location: reset_password.php');
+    exit();
+}
+
+// =========================
+// 8. FALLBACK INVALID
 // =========================
 header('Location: verify.php?error=invalid_otp');
 exit();

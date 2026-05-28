@@ -25,36 +25,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif (strlen($new_password) < 8) {
         $error = "Password must be at least 8 characters.";
     } else { // Passwords match
-        // Find account
-        $account = $collection->findOne(['email_address' => $_SESSION['reset_email']]);
+        
+        // BUG FIX: Added ->execute() to retrieve the actual data document instead of QueryBuilder object
+        $account = $collection->findOne(['email_address' => $_SESSION['reset_email']])->execute();
+        
         // If account is found
         if ($account) {
-            $userID = $account->_id;
+            $accountArray = (array)$account;
+            $userID = $accountArray['_id'];
+            
             $hashed_password = password_hash($new_password, PASSWORD_ARGON2ID);
-            $accountCredentials = $credentialsColl->findOne(['user' => $userID]);
+            
+            // BUG FIX: Added ->execute() here as well
+            $accountCredentials = $credentialsColl->findOne(['user' => $userID])->execute();
+            
             if (!$accountCredentials) {
-                echo "Credentials not found.";
-                exit;
+                die("Credentials not found.");
             }
             
+            // Update database with the new password
             $credentialsColl->updateOne(
                 ['user' => $userID],
                 ['$set' => ['password_hash' => $hashed_password]]
-            );
+            )->execute(); // Added ->execute() here for standard consistency
 
             $reset_finished = true;
-            $success_message = "Password reset successful! </br></br> <a href='../login.php'>Login here</a>";
+            $success_message = "Password reset successful! </br></br> <a href='../login.php' class='login-link'>Login here</a>";
 
-            // Clear session
+            // Clear multi-factor verification session tags safely
             unset($_SESSION['verified_for_reset']);
             unset($_SESSION['reset_email']);
-
-            // echo "Password reset successful! <a href='../login.php'>Login here</a>";
-            // exit;
-        } 
-        // else {
-        //     exit;
-        // }
+        } else {
+            $error = "Account account data synchronization error.";
+        }
     }
 }
 ?>
@@ -95,20 +98,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     <?php endif; ?>
 </div>
-    <script>
-    function toggleVisibility(inputId) {
-        const input = document.getElementById(inputId);
-        const icon = input.nextElementSibling;
-        
-        if (input.type === "password") {
-            input.type = "text";
-            icon.textContent = "⊚"; 
-        } else {
-            input.type = "password";
-            icon.textContent = "⊘";
-        }
+
+<script>
+function toggleVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.nextElementSibling;
+    
+    if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "⊚"; 
+    } else {
+        input.type = "password";
+        icon.textContent = "⊘";
     }
-    </script>
-</div>
+}
+</script>
 </body>
 </html>
