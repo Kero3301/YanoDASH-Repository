@@ -157,6 +157,11 @@ button {
     padding: 10px 25px;
 }
 
+.btn.danger {
+    background: red;
+    color: white;
+}
+
 .btn:hover {
     background-color: #5f0000;
     border-color: #5f0000;
@@ -233,7 +238,8 @@ input[type="password"].compact {
 
 input[type="text"]:hover,
 input[type="email"]:hover,
-input[type="password"]:hover {
+input[type="password"]:hover,
+select:hover, select:focus-within {
     border-color: #cb7878;
     outline: none !important;
 }
@@ -245,6 +251,18 @@ input[type="password"]:focus-within {
     outline: none !important;
 }
 
+/* ========== SELECT ==========*/
+select {
+    padding: 10px 4px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-family: 'RobotoFlex', sans-serif
+}
+
+option {
+    padding: 10px 4px;
+    font-family: 'RobotoFlex', sans-serif
+}
 
 /* ========== FORMS ========== */
 form {
