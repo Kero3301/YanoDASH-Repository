@@ -93,12 +93,6 @@
             font-size: 14px;
         }
 
-        /* .search-input-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        } */
-
         .siw {
             margin: auto;
             display: block;
@@ -348,7 +342,7 @@
         <label for="track_id">Enter Tracking Code</label>
         <div class="siw">
         <div class="search-input-wrapper">
-            <input type="text" id="track_id" placeholder="e.g. AR-2024-00001" required>
+            <input type="text" id="track_id" placeholder="e.g. AR-2026-05-ABC123" style="font-size: 0.85rem; width: 320px" required>
             <button class="btn-track">Track Now</button>
         </div>
         </div>

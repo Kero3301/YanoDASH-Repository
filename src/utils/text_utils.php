@@ -17,4 +17,13 @@
         if ($lowercase) $title = strtolower($title);
         return $title;
     }
+
+    function generate_six_char_code() {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $uniqueCode = '';
+        for ($i = 0; $i < 6; $i++) {
+            $uniqueCode .= $characters[random_int(0, strlen($characters) - 1)];
+        }
+        return $uniqueCode;
+    }
 ?>

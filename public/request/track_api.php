@@ -34,12 +34,10 @@ if ($tracking_code === 'TEST-BYPASS') {
 }
 
 try {
-    $client = mongodb_client(readOnly: true);
-    $collection = coll('archive_requests', $client);
+    $collection = coll('archive_requests');
 
-    $request = $collection->findOne(['tracking_code' => $tracking_code]);
-
-    if ($request === null) {
+    $request = $collection->findOne(['tracking_code' => $tracking_code])->execute();
+    if (empty($request)) {
         echo json_encode(['found' => false, 'message' => 'Tracking code not found']);
         exit;
     }

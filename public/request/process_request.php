@@ -7,7 +7,8 @@ load (
     'authorization',
     'vendor_autoload',
     'mailing',
-    'mongodb_collections'
+    'mongodb_collections',
+    'text_utils'
 );
 
 // Check authentication and permissions
@@ -108,8 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Generate a public tracking code for this request
     $year = date('Y');
-    $count = coll('archive_requests')->countDocuments()->execute();
-    $tracking_code = sprintf('AR-%s-%03d', $year, $count + 1);
+    $month = date('m');
+    $code = generate_six_char_code();
+    $tracking_code = 'AR-'. $year. '-'. $month. '-'. $code;
 
     // Insert into MongoDB
     try {
@@ -123,11 +125,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'created_at'    => new MongoDB\BSON\UTCDateTime()
         ])->execute();
         
-        if (QueryBuilder::getInsertedCount($result) > 0) {
-            $_SESSION['success_msg'] = "Request processed successfully! Your tracking code is {$tracking_code}. Use this code to check status in Track Request.";
+        if (QueryBuilder::getInsertedId($result) !== null) {
+            $_SESSION['success_msg'] = "Request created successfully! Your tracking code is {$tracking_code}. Use this code to check status in Track Request.";
             send_simple_email("ddpyu01202401015@usep.edu.ph", "[YanoDASH] Your archive request's tracking code", "Your archive request's tracking code is {$tracking_code}. Use it in the Track Request page to track the status of your request. Thank you!");
         } else {
-            $_SESSION['error_msg'] = "Failed to save to database.";
+            $_SESSION['error_msg'] = "Failed to create request. Please try again.";
         }
     } catch (Exception $e) {
         $_SESSION['error_msg'] = "Database error: " . $e->getMessage();
