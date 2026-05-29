@@ -23,79 +23,35 @@
         die("You do not have permission to access this resource.");
     }
 
-    $client = mongodb_client();
-    $collection_archive = coll('archive_requests', $client);
-    $collection_documents = coll('documents', $client);
+    $collection_requests = coll('archive_requests');
+    $collection_documents = coll('documents');
+    $collection_accounts = coll('accounts');
 
-//     $pipeline = [
-//     [
-//         '$lookup' => [
-//             'from' => 'documents',
-//             'let' => [
-//                 'request_note' => '$notes'
-//             ],
-//             'pipeline' => [
-//                 [
-//                     '$match' => [
-//                         '$expr' => [
-//                             '$and' => [
-//                                 [
-//                                     '$eq' => [
-//                                         '$tracking_code',
-//                                         '$$request_note'
-//                                     ]
-//                                 ],
-//                                 [
-//                                     '$eq' => [
-//                                         '$doc_status',
-//                                         'PENDING'
-//                                     ]
-//                                 ]
-//                             ]
-//                         ]
-//                     ]
-//                 ]
-//             ],
-//             'as' => 'doc_details'
-//         ]
-//     ],
-//     [
-//         '$unwind' => '$doc_details'
-//     ],
-//     [
-//         '$sort' => [
-//             'doc_details.dates.date_added' => -1
-//         ]
-//     ]
-// ];
+    $requests = $collection_requests
+        ->find(['status' => 'pending'])
+        ->execute();
+        
+    $pending_requests = [];
+    if (!empty($requests)) {
+        foreach($requests as $req) {
+            $reqTC = $req['tracking_code'];
+            $requesterID = $req['requested_by'];
+            $requestID = $req['_id'];
+            $requester = $collection_accounts
+                ->findOne(['_id' => new MongoDB\BSON\ObjectId($requesterID)])
+                ->execute();
+            $requesterName = $requester['name']['first_name'] ?? ''. $requester['name']['last_name'] ?? '';
+            $reqDate = (new DateTime($req['created_at']))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M d Y, g:i A');
+            $purpose = $req['purpose'];
+            $docTC = $req['notes'];
+            $doc = $collection_documents
+                ->findOne(['tracking_code' => $docTC])
+                ->execute();
+            $docTitle = $doc['doc_title'] ?? '(unknown)';
 
-// $pending_requests = $collection_archive
-//     ->aggregate($pipeline)
-//     ->toArray();
-
-    $pipeline = [
-        [
-            '$lookup' => [
-                'from' => 'documents',
-                'localField' => 'document_tc',
-                'foreignField' => 'tracking_code',
-                'as' => 'doc_details'
-            ]
-        ],
-        [
-            '$unwind' => '$doc_details'
-        ],
-        [
-            '$match' => [
-                'doc_details.doc_status' => 'PENDING'
-            ]
-        ],
-        [
-            '$sort' => ['doc_details.dates.date_added' => -1]
-        ]
-    ];
-
-    $pending_requests = $collection_archive->aggregate($pipeline)->toArray();
+            array_push($pending_requests, [$docTC, $docTitle, $purpose, $requesterName, $reqDate, $requestID]);
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -129,6 +85,7 @@
                         <th> Tracking Code </th>
                         <th> Document Title </th>
                         <th> Purpose </th>
+                        <th> Requester </th>
                         <th> Date Requested </th>
                         <th> Actions </th>
                     </tr>
@@ -137,39 +94,34 @@
                 <tbody>
                     <?php if (count($pending_requests) > 0): ?>
                         <?php foreach ($pending_requests as $request): ?>
-                            <?php $doc = $request['doc_details']; ?>
                             <tr>
                                 <td>
-                                    <?php echo (string)$doc['tracking_code']; ?>
+                                    <?php echo htmlspecialchars($request[0]); ?>
                                 </td>
 
                                 <td>
-                                    <?php echo htmlspecialchars($doc['doc_title'] ?? 'Untitled'); ?>
+                                    <?php echo htmlspecialchars($request[1]); ?>
                                 </td>
 
                                 <td>
-                                    <?php echo htmlspecialchars($request['purpose']); ?>
+                                    <?php echo htmlspecialchars($request[2]); ?>
                                 </td>
 
                                 <td>
-                                    <?php
-                                        if (isset($doc['dates']['date_added'])) {
-                                            echo $doc['dates']['date_added']
-                                                ->toDateTime()
-                                                ->format('Y-m-d');
-                                        } else {
-                                            echo 'N/A';
-                                        }
-                                    ?>
+                                    <?php echo htmlspecialchars($request[3]); ?>
+                                </td>
+
+                                <td>
+                                    <?php echo htmlspecialchars($request[4]); ?>
                                 </td>
 
                                 <td>
                                     <form action="action.php" method="POST">
                                         <input type="hidden" name="redirect_to" value="archive-rq.php">
-                                        <input type="hidden" name="archive_id" value="<?php echo (string)$request['_id']; ?>">
+                                        <input type="hidden" name="archive_id" value="<?php echo (string)$request[5]; ?>">
                                         <input type="hidden" name="doc_id" value="<?php echo (string)$doc['_id']; ?>">
                                         
-                                        <input type="hidden" name="tracking_code" value="<?php echo $request['document_tc']; ?>">
+                                        <input type="hidden" name="tracking_code" value="<?php echo $request[0]; ?>">
 
                                         <button type="submit" name="action" value="approve" class="approve"> Approve </button>
                                         <button type="submit" name="action" value="reject" class="reject" onclick="..."> Reject </button>

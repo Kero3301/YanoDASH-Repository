@@ -56,8 +56,10 @@
                             => "$app_url/private-archive/archive-rq.php",
                     ])
                 : menu("private-archive-menu", [
-                    "Home" 
-                        => "$app_url/private-archive/"                
+                    "All Documents" 
+                        => "$app_url/private-archive/",
+                    "Request..."
+                        => "$app_url/request/"
                 ]));
 
         $dms_menu = !$shouldShowPrivate

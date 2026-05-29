@@ -12,7 +12,7 @@ load (
 );
 
 // Check authentication and permissions
-if (!is_logged_in() || !can_use_dms($permissions))
+if (!is_logged_in() || !can_use_dms($permissions) || $identity['user_id'] === null)
     die("You do not have permission to access this resource.");
 
 // try {
@@ -112,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $month = date('m');
     $code = generate_six_char_code();
     $tracking_code = 'AR-'. $year. '-'. $month. '-'. $code;
+    $userID = $identity['user_id'];
 
     // Insert into MongoDB
     try {
@@ -122,10 +123,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'file'          => $fileName,
             'tracking_code' => $tracking_code,
             'status'        => 'pending',
+            'requested_by'  => new MongoDB\BSON\ObjectId($userID),
             'created_at'    => new MongoDB\BSON\UTCDateTime()
         ])->execute();
-        
+
+        $success = false;
         if (QueryBuilder::getInsertedId($result) !== null) {
+            $update = coll('documents')
+                ->updateOne(
+                    ['tracking_code' => $notes],
+                    [
+                        '$set' => ['doc_status' => 'PENDING ARCHIVAL']
+                    ]
+                )
+                ->execute();
+            if (!empty($update)) $success = true;
+        }
+        
+        if ($success) {
             $_SESSION['success_msg'] = "Request created successfully! Your tracking code is {$tracking_code}. Use this code to check status in Track Request.";
             send_simple_email("ddpyu01202401015@usep.edu.ph", "[YanoDASH] Your archive request's tracking code", "Your archive request's tracking code is {$tracking_code}. Use it in the Track Request page to track the status of your request. Thank you!");
         } else {

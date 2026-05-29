@@ -24,7 +24,9 @@
         die("You do not have permission to access this resource.");
 
     $baseQuery = [
-        'doc_status' => 'EDITING',
+        'doc_status' => [
+                '$in' => ['EDITING', 'PENDING ARCHIVAL']
+            ],
         'area_of_origin' => [
             '$in' => $permissions['access_domains']
         ]
@@ -32,7 +34,9 @@
 
     if (is_president($identity, $permissions)) {
         $baseQuery = [
-            'doc_status' => 'EDITING'
+            'doc_status' => [
+                '$in' => ['EDITING', 'PENDING ARCHIVAL']
+            ]
         ];
     }
 
