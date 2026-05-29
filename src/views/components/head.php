@@ -19,6 +19,7 @@
             <link rel="stylesheet" type="text/css" href="$app_url/css/style.css">
             <link rel="stylesheet" type="text/css" href="$app_url/css/fonts.css">
             <script src="$app_url/script/form-validation.js" defer></script>
+            <script src="$app_url/script/download-handler.js" defer></script>
         HTML;
     }
 ?>

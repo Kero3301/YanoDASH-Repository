@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once '../../../bootstrap/app.php';
-    load('vendor_autoload', 'authentication', 'authorization', 'navbar', 'mongodb_collections');
+    load('vendor_autoload', 'authentication', 'authorization', 'text_utils', 'navbar', 'mongodb_collections');
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
@@ -10,26 +10,23 @@
 
 
     $message = "";
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file'])) {
-        // Dynamic credentials from the active session
-        $user = urlencode($_SESSION['user_email'] ?? ''); 
-        $pass = urlencode($_SESSION['user_password'] ?? ''); 
-        $dbName = "yano_dash";
-        
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file']) && $_FILES['document_file']['error'] === UPLOAD_ERR_OK) {
+        $extension = pathinfo($_FILES['document_file']['name'], PATHINFO_EXTENSION);    
+    
         $doc_title = $_POST['docname'];
         $doc_category = $_POST['categories'];
         $author = new MongoDB\BSON\ObjectId($identity['user_id']);
         $area_of_origin = $identity['department'];
         $yr = date('Y');
-        $tcn = 'YD-'. date("Ymd"). date("His");
+        $tracking_code = 'YD-'. date("Ymd"). date("His");
 
         try {
             // Target the 'Uploads' folder in the Repository root
             $uploadDir = dirname(__DIR__, 3) . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
-            $fileName = time() . "_" . basename($_FILES["document_file"]["name"]);
-            $targetPath = $uploadDir . $fileName;
+            $fileName = $tracking_code. "_v1_". normalize_title_for_download($doc_title). ".". $extension; 
+            $targetPath = $uploadDir. $fileName;
 
             if (move_uploaded_file($_FILES["document_file"]["tmp_name"], $targetPath)) {
                 $result = coll('documents')
@@ -40,7 +37,7 @@
                         "author" => $author,
                         "area_of_origin" => $area_of_origin,
                         "doc_status" => "EDITING",
-                        "tracking_code" => "$tcn",
+                        "tracking_code" => "$tracking_code",
                         "dates" => [
                             "date_added" => new MongoDB\BSON\UTCDateTime(),
                             "date_finalized" => null,
@@ -55,7 +52,7 @@
                     ->insertOne([
                         "doc_id" => $did,
                         "version_number" => 1,
-                        "file_path" => $targetPath,
+                        "file_path" => "/uploads/$fileName",
                         "date_added" => new MongoDB\BSON\UTCDateTime()
                     ])
                     ->execute();

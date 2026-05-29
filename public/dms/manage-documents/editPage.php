@@ -198,13 +198,16 @@
                                     global $app_url;
 
                                     foreach($versions as $v) {
+                                        $vid = $v['_id'];
                                         $vn = $v['version_number'];
                                         $vd = !empty($v['date_added'])
                                             ? (new DateTime($v['date_added']))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M d Y, g:i A')
                                             : '(unknown)';
+                                        $vfp = $v['file_path'];
+                                        $filePath = ROOT. $vfp;
+
                                         $inUseBadge = $vn === $currentVersion 
                                             ? <<< HTML
-                                                <!-- <img style="vertical-align: middle;" width="20" height="20" alt="Green checkmark" src="$app_url/images/doc-actions/use-version.png"> -->
                                                 <div class="in-use-badge">
                                                     IN USE
                                                 </div>
@@ -237,7 +240,7 @@
                                                     <button type="button" class="document-action" style="display: inline-block;">
                                                         <img src="$app_url/images/doc-actions/preview-doc.png" draggable="false">
                                                     </button>
-                                                    <button type="button" class="document-action" style="display: inline-block;">
+                                                    <button type="button" class="document-action download-btn" data-version-id="$vid" style="display: inline-block;">
                                                         <img src="$app_url/images/doc-actions/download-doc.png" draggable="false">
                                                     </button>
                                                     $useVersionButton
@@ -271,7 +274,7 @@
                             Remove Version
                         </button>
                         </div>
-                        <p id="version-add-notice" style="text-align: center; display: none;">After saving changes, this version will be added<br>to the version history and used automatically</p>
+                        <p id="version-add-notice" style="text-align: center; display: none;">After saving changes, this version will be added<br>to the version history and used automatically.</p>
                     </div>
                 </div>
 
