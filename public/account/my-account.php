@@ -1,6 +1,4 @@
     <?php
-    session_start();
-
     require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
     load (
         'authentication',
@@ -8,13 +6,16 @@
         'user_profile_service',
         'navbar',
         'footer',
-        'password_input'
+        'password_input',
+        'mongodb_collections'
     );
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');
         exit;
     }
+
+    $userID = $identity['user_id'] ?? null;
     ?>
 
     <!DOCTYPE html>
@@ -258,7 +259,7 @@ button:hover {
             <input type="password" name="current_password" placeholder="Current password" minlength="8" required>
             <input type="password" name="new_password" placeholder="New password" minlength="8" required>
             <input type="password" name="confirm_new_password" placeholder="Confirm new password" minlength="8" required>
-            <input type="submit" class="btn black" value="Update">
+            <input type="submit" class="btn action" value="Update">
         </form>
         <?php
             if (isset($_SESSION['msg']['passwordChangeMsg']) && !empty($_SESSION['msg']['passwordChangeMsg'])) {
@@ -266,30 +267,51 @@ button:hover {
                 unset($_SESSION['msg']['passwordChangeMsg']);
             }
         ?>
-        <p style="text-align: center"><a href="../auth/setup-mfa.php" class="inline-link" style="text-align: center; font-size: 13px">Set up two-factor authentication</a></p>
+        <p style="text-align: center"><a href="../auth/setup-mfa.php" class="inline-link" style="text-align: center; font-size: 13px">Set up two-factor authentication ↗</a></p>
     </div>
 
     <!-- DOCUMENTS -->
     <div class="card div3">
         <div class="title">Documents</div>
         <div class="scroll">
-            <?php for($i=1;$i<=12;$i++): ?>
-            <div class="item">
-                Resolution_<?php echo str_pad($i,2,'0',STR_PAD_LEFT); ?>.pdf
-            </div>
-            <?php endfor; ?>
+            <?php
+                $documentTitles = [];
+                try {
+                    $documents = coll('documents')
+                        ->find(["author" => new MongoDB\BSON\ObjectId($userID)])
+                        ->sort(['dates.date_added' => -1])
+                        ->execute();
+                    if (!empty($documents)) {
+                        foreach($documents as $document) {
+                            $title = $document['doc_title'];
+                            array_push($documentTitles, $title);
+                        }
+                    }
+                } catch (Exception $e) { 
+                    $documentTitles = [];
+                }
+                
+                if (!empty($documentTitles)) {
+                    foreach($documentTitles as $docTitle) echo <<< HTML
+                        <div class="item">
+                            $docTitle
+                        </div>
+                    HTML;
+                } else echo <<< HTML
+                    <div class="item">
+                        (no documents)
+                    </div>
+                HTML;
+            ?>
         </div>
+        <p style="text-align: center"><a href="../dms/" class="inline-link" style="text-align: center; font-size: 13px">Visit DMS ↗</a></p>
     </div>
 
     <!-- ACTIVITY -->
     <div class="card div4">
         <div class="title">Activity</div>
         <div class="scroll">
-            <div class="item">Viewed document</div>
-            <div class="item">Updated password</div>
-            <div class="item">Logged in</div>
-            <div class="item">Downloaded file</div>
-            <div class="item">Edited profile</div>
+            <div class="item">(no data)</div>
         </div>
     </div>
 
