@@ -259,12 +259,12 @@
                                             HTML
                                             : "";
                                         $deleteVersionButton = $vn !== $currentVersion
-                                            ? <<< HTML
-                                                <button type="button" class="document-action" style="display: inline-block;">
-                                                    <img src="$app_url/images/doc-actions/delete-doc.png" draggable="false">
-                                                </button>
-                                            HTML
-                                            : "";
+                                        ? <<< HTML
+                                            <button type="button" class="document-action delete-version-btn" data-version="$vn" style="display: inline-block;">
+                                                <img src="$app_url/images/doc-actions/delete-doc.png" draggable="false">
+                                            </button>
+                                        HTML
+                                        : "";
                                         $versionActiveness = $vn === $currentVersion ? "active": "";
 
                                         echo <<< HTML
@@ -366,6 +366,12 @@
     <?php endif; ?>
 
     <script>
+        // Initialize state with data calculated during page setup
+        const versionState = {
+            highestVersion: <?= (int)$highestVersion ?>
+        };
+
+
         const uploadContainer =
             document.getElementById("file-upload-container");
 
@@ -407,43 +413,29 @@
         // }
 
 function updateVersionUI() {
-
-    const hasFiles =
-        fileInput.files.length > 0;
+    const hasFiles = fileInput.files.length > 0;
 
     versionAddNotice.style.display =
-        (hasFiles || pendingVersion)
-            ? "block"
-            : "none";
+        (hasFiles || pendingVersion) ? "block" : "none";
 
-    newVersionLabel.style.display =
-        hasFiles ? "inline" : "none";
+    newVersionLabel.style.display = hasFiles ? "inline" : "none";
+    removeVersionBtn.style.display = hasFiles ? "inline-block" : "none";
 
-    removeVersionBtn.style.display =
-        hasFiles ? "inline-block" : "none";
-
-    uploadContainer.classList.toggle(
-        "has-upload",
-        hasFiles
-    );
+    uploadContainer.classList.toggle("has-upload", hasFiles);
 
     if (hasFiles) {
-
-    clearPendingVersion();
-
-    versionAddNotice.innerHTML =
-        "After saving changes, <b>Version <?= $highestVersion + 1 ?></b> will be uploaded and then used automatically.";
-
-} else if (pendingVersion) {
-
-    versionAddNotice.innerHTML =
-        `After saving changes, <b>Version ${pendingVersion}</b> will be used.`;
-
-} else {
-
-    versionAddNotice.style.display = "none";
-    versionAddNotice.innerHTML = "";
-}
+        clearPendingVersion();
+        
+        // Use the mutable tracked state counter here instead of standard PHP echo text strings
+        const nextVersionNumber = versionState.highestVersion + 1;
+        newVersionLabel.innerHTML = `<b>Version ${nextVersionNumber}</b>`;
+        versionAddNotice.innerHTML = `After saving changes, <b>Version ${nextVersionNumber}</b> will be uploaded and then used automatically.`;
+    } else if (pendingVersion) {
+        versionAddNotice.innerHTML = `After saving changes, <b>Version ${pendingVersion}</b> will be used.`;
+    } else {
+        versionAddNotice.style.display = "none";
+        versionAddNotice.innerHTML = "";
+    }
 }
 
         fileInput.addEventListener("change", updateVersionUI);
@@ -455,6 +447,70 @@ function updateVersionUI() {
     </script>
 
     <script>
+
+document.addEventListener("DOMContentLoaded", () => {
+    const versionContainer = document.getElementById("version-container");
+    const docIdInput = document.querySelector('input[name="doc_id"]');
+
+    if (!versionContainer || !docIdInput) return;
+
+    // Handle asynchronous deletions using dynamic event delegation
+    versionContainer.addEventListener("click", async (event) => {
+        // Trace capture upstream to see if a delete action button was clicked
+        const deleteBtn = event.target.closest(".delete-version-btn");
+        if (!deleteBtn) return;
+
+        const targetVersion = deleteBtn.dataset.version;
+        
+        // Quick visual confirmation before committing drop
+        if (!confirm(`Are you sure you want to permanently delete Version ${targetVersion}?`)) {
+            return;
+        }
+
+        // Display low-overhead fallback indicators while executing asynchronously
+        deleteBtn.style.opacity = "0.4";
+        deleteBtn.disabled = true;
+
+        try {
+            const payload = new FormData();
+            payload.append("doc_id", docIdInput.value);
+            payload.append("version_number", targetVersion);
+
+            const response = await fetch("delete_version_logic.php", {
+                method: "POST",
+                body: payload
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || "Server caught a processing error.");
+            }
+
+            // Sync state tracking variables with the calculated server metrics
+            const returnedHighestVersion = response.headers.get("X-Highest-Version");
+            if (returnedHighestVersion !== null) {
+                versionState.highestVersion = parseInt(returnedHighestVersion, 10);
+            }
+
+            const freshHTMLSnippet = await response.text();
+            versionContainer.innerHTML = freshHTMLSnippet;
+            
+            if (typeof clearPendingVersion === "function") {
+                clearPendingVersion();
+                updateVersionUI(); // Re-trigger UI update to paint accurate upcoming versions
+            }
+
+            console.log(`Successfully dropped Document Version ${targetVersion}`);
+
+        } catch (error) {
+            alert(`Deletion Failed: ${error.message}`);
+            deleteBtn.style.opacity = "1";
+            deleteBtn.disabled = false;
+        }
+    });
+});
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
     

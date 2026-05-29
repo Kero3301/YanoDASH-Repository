@@ -32,7 +32,7 @@
         return <<< HTML
             <div id="$sanitizedID" class="password-input-wrapper" style="--w: {$finalWidth}px; --h: {$finalHeight}px;">
                 <div class="password-input">
-                    <input id="$sanitizedInputID" class="password-input-field" name="$sanitizedInputName" type="password" placeholder="$sanitizedWatermark" required>
+                    <input id="$sanitizedInputID" class="password-input-field" name="$sanitizedInputName" type="password" placeholder="$sanitizedWatermark" minlength="8" required>
                     <button id="$sanitizedButtonID" class="toggle-visibility" type="button" onclick="togglePasswordVisibility(this)">⊘</button>
                 </div>
             </div>

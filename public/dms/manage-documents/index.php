@@ -93,9 +93,11 @@
 </head>
 <body>
 	<?php echo navbar(0) ?>
-	<header class="title">
+
+    <div class="page-contents no-padding">
+	<div class="pch">
 		<h1> Manage Documents </h1>
-	</header>
+    </div>
 
     <div class="controls">
         <form method="GET" class="controls-bar" id="filterForm">
@@ -141,7 +143,7 @@
             <th>Tracking Code</th>
             <th>Document Title</th>
             <th>Category</th>
-            <th>Date Uploaded</th>
+            <th>Date Created</th>
             <th>Version</th>
             <th>Status</th>
             <th>Actions</th>
@@ -162,7 +164,7 @@
             <td>
                 <?php 
                     echo isset($doc['dates']['date_added'])
-                        ? $doc['dates']['date_added']
+                        ? (new DateTime($doc['dates']['date_added']))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M d Y, g:i A')
                         : '';
                 ?>
             </td>
@@ -186,6 +188,6 @@
 
     </tbody>
 </table>
-
+    </div>
 </body>
 </html>

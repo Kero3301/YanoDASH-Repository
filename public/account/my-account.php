@@ -254,10 +254,18 @@ button:hover {
     <div class="card div2">
         <div class="title">Security</div>
         <p><b>Change Password</b></p>
-        <input type="password" placeholder="Current password">
-        <input type="password" placeholder="New password">
-        <input type="password" placeholder="Confirm password">
-        <button>Update</button>
+        <form method="POST" action="../auth/change_password.php">
+            <input type="password" name="current_password" placeholder="Current password" minlength="8" required>
+            <input type="password" name="new_password" placeholder="New password" minlength="8" required>
+            <input type="password" name="confirm_new_password" placeholder="Confirm new password" minlength="8" required>
+            <input type="submit" class="btn black" value="Update">
+        </form>
+        <?php
+            if (isset($_SESSION['msg']['passwordChangeMsg']) && !empty($_SESSION['msg']['passwordChangeMsg'])) {
+                echo '<p style="font-size: 0.7rem; text-align: center">'. $_SESSION['msg']['passwordChangeMsg'] . '</p>';
+                unset($_SESSION['msg']['passwordChangeMsg']);
+            }
+        ?>
         <p style="text-align: center"><a href="../auth/setup-mfa.php" class="inline-link" style="text-align: center; font-size: 13px">Set up two-factor authentication</a></p>
     </div>
 

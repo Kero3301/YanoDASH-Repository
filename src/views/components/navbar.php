@@ -35,68 +35,26 @@
         $about_activeness = $activeIndex === 6? "active": "";
 
         $documents_menu = menu("document-menu", [
-            "Document Directory" 
-                => "$app_url/documents",
-
             "Latest Releases" 
                 => "$app_url/documents/latest_rel.php",
 
-            "Browse Public Archive" 
+            "All Documents" 
                 => "$app_url/documents/br_arch.php"
         ]);
-
-        $request_menu = !$shouldShowPrivate
-            ? ""
-            : (
-                can_access_admin_pages($identity)
-                ? menu("request-menu", [
-                    "Request Menu" 
-                        => "$app_url/request",
-
-                    "Request Document Archiving" 
-                        => "$app_url/request/archive.php",
-
-                    "Track Request" 
-                        => "$app_url/request/track.php",
-
-                    "Requests Overview" 
-                        => "$app_url/request/overview.php"
-                ])
-                : menu("request-menu", [
-                    "Request Menu" 
-                        => "$app_url/request",
-
-                    "Request Document Archiving" 
-                        => "$app_url/request/archive.php",
-
-                    "Track Request" 
-                        => "$app_url/request/track.php",
-                ])
-            );
 
         $privateArchive_menu = !$shouldShowPrivate
             ? ""
             : ($isAdmin
-                ? (
-                    is_president($identity, $permissions)
-                    ? menu("private-archive-menu", [
-                        "Home" 
+                ? menu("private-archive-menu", [
+                        "All Documents" 
                             => "$app_url/private-archive/",
-
-                        "Pending Archive Requests" 
-                            => "$app_url/private-archive/archive-rq.php",
                         
-                        "Important Documents" 
-                            => "$app_url/private-archive/key-docs.php"
-                    ])
-                    : menu("private-archive-menu", [
-                        "Home" 
-                            => "$app_url/private-archive/",
+                        "Request..."
+                            => "$app_url/request/",
 
                         "Pending Archive Requests" 
                             => "$app_url/private-archive/archive-rq.php",
                     ])
-                )
                 : menu("private-archive-menu", [
                     "Home" 
                         => "$app_url/private-archive/"                
@@ -159,16 +117,16 @@
                 ], isDark: true);
             }
         
-        $request_content = !$shouldShowPrivate
-            ? ""
-            : <<< HTML
-                <div class="nav-item dropdown $request_activeness">
-                    <a class="nav-item-link">
-                        <h3>Request</h3>
-                    </a>
-                    $request_menu
-                </div>
-            HTML;
+        // $request_content = !$shouldShowPrivate
+        //     ? ""
+        //     : <<< HTML
+        //         <div class="nav-item dropdown $request_activeness">
+        //             <a class="nav-item-link">
+        //                 <h3>Request</h3>
+        //             </a>
+        //             $request_menu
+        //         </div>
+        //     HTML;
 
         $privateArchive_content = !$shouldShowPrivate
             ? ""
@@ -221,12 +179,11 @@
 
                     <div class="nav-item dropdown $documents_activeness">
                         <a class="nav-item-link" href="$app_url/documents/">
-                            <h3>Documents</h3>
+                            <h3>Public Archive</h3>
                         </a>
                         $documents_menu
                     </div>
 
-                    $request_content
 
                     $privateArchive_content
                     
