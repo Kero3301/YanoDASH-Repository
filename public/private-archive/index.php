@@ -29,12 +29,10 @@
     if (!can_use_dms($permissions)) {
         die("You do not have permission to access this resource.");
     }
-
-    $client = mongodb_client();
     
-    $collection_documents = coll('documents', $client);
+    $collection_documents = coll('documents');
 
-    $results = $collection_documents->find(["doc_status" => "ARCHIVED"]);
+    $results = $collection_documents->find(["doc_status" => "ARCHIVED"])->execute();
     $all_docs = get_all($results);
 ?>
 

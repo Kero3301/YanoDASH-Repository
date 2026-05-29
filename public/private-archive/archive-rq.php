@@ -119,7 +119,7 @@
                                     <form action="action.php" method="POST">
                                         <input type="hidden" name="redirect_to" value="archive-rq.php">
                                         <input type="hidden" name="archive_id" value="<?php echo (string)$request[5]; ?>">
-                                        <input type="hidden" name="doc_id" value="<?php echo (string)$doc['_id']; ?>">
+
                                         
                                         <input type="hidden" name="tracking_code" value="<?php echo $request[0]; ?>">
 

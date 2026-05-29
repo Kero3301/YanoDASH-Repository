@@ -117,7 +117,7 @@
                                 <p>👤 $sanitizedAuthor</p> 
                                 <p>🏢 $sanitizedAreaOfOrigin</p>
                                 <p>🔎 <span class="doc-tc">$sanitizedTC</span></p>
-                                <p class="doc-desc">Lorem ipsum</p>
+                                <p class="doc-desc" style="display: none">(no description)</p>
                             </div>
                             <!-- <div class="doc-actions">
                                 $view_button
