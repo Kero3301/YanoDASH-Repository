@@ -37,6 +37,7 @@
     $area = "";
     $category = "Select Category";
     $currentVersion = 1;
+    $highestVersion = 0;
 
     $v_ids = [];
 
@@ -52,6 +53,11 @@
 
         foreach ($versions as $v) {
             array_push($v_ids, $v['_id']);
+
+            $highestVersion = max(
+                $highestVersion,
+                $v['version_number']
+            );
         }
     }
 ?>
@@ -76,6 +82,23 @@
         .version-card:has(.document-action.use-version:hover) {
             border-color: #86ff86;
         }
+
+        .to-use-badge {
+    display: inline;
+    border: 2px solid #b7ff86;
+    background: #cfff9d;
+    color: black;
+    text-align: center;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-family: 'RobotoFlex', sans-serif;
+    margin-left: 4px;
+}
+
+.version-card.pending {
+    border-color: #86ff86;
+}
 
         .version-card.active {
             border-color: #2dd32d;
@@ -130,6 +153,10 @@
                 margin: auto;
             }
 
+            .file-upload-container.has-upload {
+                border: 3px solid #2dd32d;
+            }
+
             .file-upload-btn {
                 padding: 4px 8px;
                 border-radius: 8px;
@@ -158,6 +185,11 @@
                 method="POST"
                 action="edit_logic.php"
                 enctype="multipart/form-data">
+
+                <input type="hidden"
+                id="selected_version"
+                name="selected_version"
+                value="">
 
                 <div class="tca">
                     <input type="hidden" name="doc_id" value="<?php echo $docID; ?>">
@@ -215,7 +247,13 @@
                                             : "";
                                         $useVersionButton = $vn !== $currentVersion
                                             ? <<< HTML
-                                                <button type="button" class="document-action use-version" style="display: inline-block;">
+                                                <!-- <button type="button" class="document-action use-version" style="display: inline-block;">
+                                                    <img src="$app_url/images/doc-actions/use-version.png" draggable="false">
+                                                </button> -->
+                                                <button
+                                                    type="button"
+                                                    class="document-action use-version"
+                                                    data-version="$vn">
                                                     <img src="$app_url/images/doc-actions/use-version.png" draggable="false">
                                                 </button>
                                             HTML
@@ -230,10 +268,11 @@
                                         $versionActiveness = $vn === $currentVersion ? "active": "";
 
                                         echo <<< HTML
-                                            <div class="version-card $versionActiveness">
+                                            <!-- <div class="version-card $versionActiveness"> -->
+                                            <div class="version-card $versionActiveness" data-version="$vn">
                                                 <div class="id-box">
                                                     <p style="display: inline;"><b>Version $vn</b> $inUseBadge</p>
-                                                    <p>$vd</p>
+                                                    <p style="font-size: 0.85rem">$vd</p>
                                                 </div>
 
                                                 <div class="button-list">
@@ -254,11 +293,12 @@
                                 <p>No versions</p>
                             <?php endif; ?>
                         </div>
-                        <p style="text-align: center">The version you use <img style="vertical-align: middle;" width="20" height="20" alt="Green checkmark: Use this version" src="<?= $app_url. '/images/doc-actions/use-version.png' ?>"> will be the one seen by reviewers during the archiving process.</p>
+                        <p style="text-align: center">The version marked <span class="in-use-badge">IN USE</span> will be the one seen by reviewers during archiving process.</p>
+                        <p style="text-align: center">To use a different version, click <img style="vertical-align: middle;" width="20" height="20" alt="Green checkmark: Use this version" src="<?= $app_url. '/images/doc-actions/use-version.png' ?>"> or upload a new version below.</p>
                         
                         <hr class="short-divider">
 
-                        <div class="file-upload-container">
+                        <div id="file-upload-container" class="file-upload-container">
                             <label for="new_file"><b>Upload a New Version</b></label>
                             <input type="file" id="new_file" class="file-upload"
                                         name="new_file"
@@ -266,7 +306,7 @@
                                         accept=".pdf,.doc,.docx,.txt"
                                         hidden>
                             <p class="instructional-label-technical">Maximum file size: 5 MB</p>
-                            <p id="new-version-label" style="text-align: center; display: none; font-size: 0.8rem; padding: 2px 10px; border-radius: 16px; background: #8e86ff; color: black">Version: <b><?php $newVersion = ++$currentVersion; echo $newVersion; ?></b></p>
+                            <p id="new-version-label" style="text-align: center; display: none; font-size: 0.8rem; padding: 2px 10px; border-radius: 16px; background: #8e86ff; color: black"><b>Version <?= $highestVersion + 1 ?></b></p>
                         <button type="button"
                                 id="remove-version-btn"
                                 class="btn danger small-padding"
@@ -274,7 +314,10 @@
                             Remove Version
                         </button>
                         </div>
-                        <p id="version-add-notice" style="text-align: center; display: none;">After saving changes, this version will be added<br>to the version history and used automatically.</p>
+                        <!-- <p id="version-add-notice" style="text-align: center; display: none;">After saving changes, this version will be added<br>to the version history and used automatically.</p> -->
+                        <p id="version-add-notice"
+                            style="text-align: center; display: none;">
+                        </p>
                     </div>
                 </div>
 
@@ -323,19 +366,85 @@
     <?php endif; ?>
 
     <script>
+        const uploadContainer =
+            document.getElementById("file-upload-container");
+
+            const hiddenInput =
+        document.getElementById("selected_version");
+
+    let pendingVersion = null;
+
+        function clearPendingVersion() {
+
+    document
+        .querySelectorAll(".version-card.pending")
+        .forEach(card => {
+
+            card.classList.remove("pending");
+
+            const badge =
+                card.querySelector(".to-use-badge");
+
+            if (badge) badge.remove();
+        });
+
+    pendingVersion = null;
+    hiddenInput.value = "";
+}
+
         const fileInput = document.getElementById("new_file");
         const uploadBtn = document.getElementById("uploadBtn");
         const versionAddNotice = document.getElementById("version-add-notice");
         const newVersionLabel = document.getElementById("new-version-label");
         const removeVersionBtn = document.getElementById("remove-version-btn");
 
-        function updateVersionUI() {
-            const hasFiles = fileInput.files.length > 0;
+        // function updateVersionUI() {
+        //     const hasFiles = fileInput.files.length > 0;
 
-            versionAddNotice.style.display = hasFiles ? "block" : "none";
-            newVersionLabel.style.display = hasFiles ? "inline" : "none";
-            removeVersionBtn.style.display = hasFiles ? "inline-block" : "none";
-        }
+        //     versionAddNotice.style.display = hasFiles ? "block" : "none";
+        //     newVersionLabel.style.display = hasFiles ? "inline" : "none";
+        //     removeVersionBtn.style.display = hasFiles ? "inline-block" : "none";
+        // }
+
+function updateVersionUI() {
+
+    const hasFiles =
+        fileInput.files.length > 0;
+
+    versionAddNotice.style.display =
+        (hasFiles || pendingVersion)
+            ? "block"
+            : "none";
+
+    newVersionLabel.style.display =
+        hasFiles ? "inline" : "none";
+
+    removeVersionBtn.style.display =
+        hasFiles ? "inline-block" : "none";
+
+    uploadContainer.classList.toggle(
+        "has-upload",
+        hasFiles
+    );
+
+    if (hasFiles) {
+
+    clearPendingVersion();
+
+    versionAddNotice.innerHTML =
+        "After saving changes, <b>Version <?= $highestVersion + 1 ?></b> will be uploaded and then used automatically.";
+
+} else if (pendingVersion) {
+
+    versionAddNotice.innerHTML =
+        `After saving changes, <b>Version ${pendingVersion}</b> will be used.`;
+
+} else {
+
+    versionAddNotice.style.display = "none";
+    versionAddNotice.innerHTML = "";
+}
+}
 
         fileInput.addEventListener("change", updateVersionUI);
 
@@ -344,5 +453,81 @@
             updateVersionUI();
         });
     </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    
+
+    document.querySelectorAll(".use-version")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                const version =
+                    button.dataset.version;
+
+                const card =
+                    button.closest(".version-card");
+
+                const isCurrent =
+                    card.classList.contains("active");
+
+                if (isCurrent) return;
+
+                // deselect current pending version
+                document
+                    .querySelectorAll(".version-card.pending")
+                    .forEach(c => {
+                        c.classList.remove("pending");
+
+                        const badge =
+                            c.querySelector(".to-use-badge");
+
+                        if (badge) badge.remove();
+                    });
+
+                // clicked same pending version again
+                if (pendingVersion === version) {
+    pendingVersion = null;
+    hiddenInput.value = "";
+
+    updateVersionUI();
+    return;
+}
+
+                // mark new pending version
+                pendingVersion = version;
+                hiddenInput.value = version;
+
+                if (fileInput.files.length > 0) {
+                    fileInput.value = "";
+
+                    uploadContainer.classList.remove(
+                        "has-upload"
+                    );
+
+                    newVersionLabel.style.display = "none";
+
+                    removeVersionBtn.style.display = "none";
+                }
+
+                card.classList.add("pending");
+
+                const badge =
+                    document.createElement("div");
+
+                badge.className = "to-use-badge";
+                badge.textContent = "TO USE";
+
+                card
+                    .querySelector(".id-box p")
+                    .appendChild(badge);
+
+                    updateVersionUI();
+            });
+        });
+});
+</script>
 </body>
 </html>
