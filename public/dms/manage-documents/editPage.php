@@ -287,6 +287,18 @@
                 <a class="btn danger" href="./">Cancel</a>
                 </div>
             </form>
+
+          
+            <div id="download-toast" class="toast">
+                <span class="toast-message"></span>
+
+                <button
+                    type="button"
+                    class="toast-close"
+                    aria-label="Close">
+                    ×
+                </button>
+            </div>
         </div>
         <!-- Display this message if the requested document is not found/doesn't exist -->
         <?php else: ?>
