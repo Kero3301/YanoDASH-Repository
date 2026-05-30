@@ -8,8 +8,7 @@
         'vendor_autoload',
         'accordion',
         'footer',
-        'mongodb_client',
-        'mongodb_collections',
+        'mongodb',
         'user_form'
     );
 

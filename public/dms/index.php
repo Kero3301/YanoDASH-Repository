@@ -7,7 +7,7 @@
     load (
         'authentication',
         'authorization',
-        'mongodb_collections',
+        'mongodb',
         'document_factory',
         'navbar',
         'document_list',

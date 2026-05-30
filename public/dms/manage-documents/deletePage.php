@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../../../bootstrap/app.php';
-load('mongodb_client', 'mongodb_collections', 'authentication', 'authorization');
+load('mongodb', 'authentication', 'authorization');
 
 // 1. Security Check
 if (!is_logged_in() || !can_use_dms($permissions)) {

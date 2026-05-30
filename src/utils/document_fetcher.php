@@ -1,6 +1,6 @@
 <?php
     require __DIR__. '/../vendor/autoload.php';
-    require dirname(__DIR__). '/database/mongodb_collections.php';
+    require dirname(__DIR__). '/database/mongodb.php';
 
     $client = new MongoDB\Client(getenv('YANODASH_V_DBU_URI'));
     $collection_accounts = coll('accounts', $client);

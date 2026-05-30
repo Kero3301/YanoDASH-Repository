@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
-load('authentication', 'authorization', 'mongodb_client', 'mongodb_collections');
+load('authentication', 'authorization', 'mongodb');
 
 header('Content-Type: application/json');
 

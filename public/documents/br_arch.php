@@ -4,7 +4,7 @@
     require_once '../../bootstrap/app.php';
     load (
         'vendor_autoload',
-        'mongodb_collections',
+        'mongodb',
         'doc_ed',
         'doc_query',
         'document_factory',

@@ -7,7 +7,7 @@
         'navbar',
         'footer',
         'password_input',
-        'mongodb_collections'
+        'mongodb'
     );
 
     if (!is_logged_in()) {

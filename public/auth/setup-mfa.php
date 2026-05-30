@@ -8,8 +8,7 @@ require_once '../../bootstrap/app.php';
 
 load(
     'vendor_autoload',
-    'mongodb_client',
-    'mongodb_collections',
+    'mongodb',
     'mailing'
 );
 

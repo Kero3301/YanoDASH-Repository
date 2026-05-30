@@ -1,6 +1,6 @@
 <?php
 require_once dirname(dirname(__DIR__)). '/vendor/autoload.php';
-require_once dirname(__DIR__). '/database/mongodb_collections.php';
+require_once dirname(__DIR__). '/database/mongodb.php';
 
 function get_profile(?string $userID): ?array {
     # Ignore if user ID is null

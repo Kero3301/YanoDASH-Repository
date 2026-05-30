@@ -1,7 +1,7 @@
 <?php
 require_once 'identity_resolver.php';
 require_once dirname(__DIR__, 2). '/vendor/autoload.php'; 
-require_once dirname(__DIR__). '/database/mongodb_collections.php';
+require_once dirname(__DIR__). '/database/mongodb.php';
 
 # Check and verify if the user is logged in
 function is_logged_in(): bool {
@@ -15,15 +15,18 @@ function login_user(string $email, string $password): LoginResult {
     # Initial validation
     if (trim($email) === '' || trim($password) === '')
         return new LoginResult(false, "Credentials cannot be blank.");
+
+    # Collection definitions
+    $accounts = coll('accounts');
+    $login_credentials = coll('login_credentials');
     
-    $account = coll('accounts')
-        ->findOne(['email_address' => $email])
-        ->execute();
+    # Account query
+    $account = $accounts->findOne(['email_address' => $email])->execute();
     if (empty($account)) return new LoginResult(false, "Incorrect credentials.");
 
     $userID = $account['_id'];
     $credentials = coll('login_credentials')
-        ->findOne(['user' => $userID])
+        ->findOne(['user' => oid($userID)])
         ->execute();
     if (empty($credentials)) return new LoginResult(false, "Account corrupted, please contact an admin.");
 

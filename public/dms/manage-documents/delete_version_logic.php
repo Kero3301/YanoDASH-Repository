@@ -5,7 +5,7 @@ load (
     'authentication',
     'authorization',
     'vendor_autoload',
-    'mongodb_collections'
+    'mongodb'
 );
 
 if (!is_logged_in() || !can_use_dms($permissions)) {

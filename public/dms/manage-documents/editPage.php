@@ -6,7 +6,7 @@
         'authentication',
         'authorization',
         'vendor_autoload',
-        'mongodb_collections',
+        'mongodb',
         'navbar',
         'accordion',
     );

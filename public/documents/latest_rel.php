@@ -4,7 +4,7 @@ session_start();
 require_once '../../bootstrap/app.php';
 load (
     'vendor_autoload',
-    'mongodb_collections',
+    'mongodb',
     'doc_ed',
     'document_factory',
     'navbar',

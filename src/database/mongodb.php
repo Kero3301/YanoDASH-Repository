@@ -3,6 +3,36 @@ require_once dirname(__DIR__, 2). '/vendor/autoload.php';
 use MongoDB\BSON\ObjectId;
 use MongoDB\BSON\Decimal128;
 
+# List of recognized and allowed MongoDB collections from the database
+const COLLECTIONS = [
+    'access_levels',
+    'account_requests',
+    'accounts',
+    'archive_requests',
+    'document_versions',
+    'documents',
+    'folders',
+    'login_credentials',
+    'organizations',
+];
+
+# A helper function to instantiate a QueryBuilder object prepared to the specified collection name
+function coll(string $collectionName): mixed {
+    if (!in_array($collectionName, COLLECTIONS)) 
+        throw new InvalidArgumentException("Collection $collectionName not found in database!");
+    return (new QueryBuilder())->collection($collectionName);
+}
+
+# A helper function to abstract and simplify the process of creating an ObjectId from any type without worrying about manual exception handling
+function oid(mixed $oid): ?ObjectId {
+    if ($oid === null) return null;
+    if ($oid instanceof ObjectId) return $oid;       
+    if (!is_string($oid)) return null;
+    try { return new ObjectId($oid); }              
+    catch (Exception $e) { error_log('Failed to create ObjectId from value: '. $oid); return null; }
+}
+
+# A class for building and executing MongoDB queries over HTTPS
 final class QueryBuilder {
     private const ALLOWED_OPERATIONS = [
         'find' => true,
@@ -39,8 +69,6 @@ final class QueryBuilder {
     private array $data = [];
     private array $update = [];
     private array $options = [];
-
-    private mixed $lastResult = null;
 
     private string $endpoint;
     private string $apiKey;
@@ -192,18 +220,10 @@ final class QueryBuilder {
         return $this;
     }
 
-    // public function sort(array $sort): self {
-    //     $this->options['sort'] = $sort;
-    //     return $this;
-    // }
-
     public function sort(array $sort): self {
         foreach ($sort as $field => $direction) {
-            if (!is_string($field)) 
-                throw new InvalidArgumentException("Invalid sort field");
-            
-            if (!in_array($direction, [1, -1], true)) 
-                throw new InvalidArgumentException("Sort direction must be 1 or -1");
+            if (!is_string($field)) throw new InvalidArgumentException("Invalid sort field");
+            if (!in_array($direction, [1, -1], true)) throw new InvalidArgumentException("Sort direction must be 1 or -1");
         }
 
         $this->options['sort'] = $sort;
@@ -215,65 +235,68 @@ final class QueryBuilder {
         return $this;
     }
 
-    public function execute() {
-        if ($this->collection === '')
-            throw new RuntimeException('Collection is required');
+    public function execute(): mixed {
+        try {
+            # Safeguard from exceptions early
+            if ($this->collection === '') throw new RuntimeException('Collection is required');
+            if (!isset(self::ALLOWED_OPERATIONS[$this->operation])) throw new RuntimeException('Invalid operation');
 
-        if (!isset(self::ALLOWED_OPERATIONS[$this->operation])) 
-            throw new RuntimeException('Invalid operation');
+            # Prepare the query payload
+            $payload = [
+                'collection' => $this->collection,
+                'operation' => $this->operation,
+                'filter' => $this->filter,
+                'data' => $this->data,
+                'update' => $this->update,
+                'options' => $this->options,
+            ];
+            $jsonPayload = json_encode($payload, JSON_THROW_ON_ERROR);
 
-        $payload = [
-            'collection' => $this->collection,
-            'operation' => $this->operation,
-            'filter' => $this->filter,
-            'data' => $this->data,
-            'update' => $this->update,
-            'options' => $this->options,
-        ];
+            # Prepare the cURL HTTP request
+            $ch = $this->getCurlHandle();
+            curl_setopt_array($ch, [
+                CURLOPT_URL => $this->endpoint,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => $jsonPayload,
 
-        $jsonPayload = json_encode($payload, JSON_THROW_ON_ERROR);
+                CURLOPT_HTTPHEADER => [
+                    'Content-Type: application/json',
+                    'x-api-key: ' . $this->apiKey,
+                ],
 
-        $ch = $this->getCurlHandle();
-        curl_setopt_array($ch, [
-            CURLOPT_URL => $this->endpoint,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_2_0,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $jsonPayload,
+                CURLOPT_TIMEOUT => 60,
+                CURLOPT_CONNECTTIMEOUT => 30,
 
-            CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
-                'x-api-key: ' . $this->apiKey,
-            ],
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+            ]);
 
-            CURLOPT_TIMEOUT => 60,
-            CURLOPT_CONNECTTIMEOUT => 30,
+            # Perform the HTTP request
+            $response = curl_exec($ch);
+            if ($response === false) throw new RuntimeException('cURL error: ' . curl_error($ch));
+            
+            # Check the returned HTTP status code
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($httpCode < 200 || $httpCode >= 300) throw new RuntimeException("Unexpected HTTP status {$httpCode}");
 
-            CURLOPT_SSL_VERIFYPEER => true,
-            CURLOPT_SSL_VERIFYHOST => 2,
-        ]);
+            # Attempt to decode the response from JSON data
+            $decoded = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+            $decoded = $this->decodeTypes($decoded);
 
-        $response = curl_exec($ch);
-
-        if ($response === false) {
-            $error = curl_error($ch);
-            curl_close($ch);
-            throw new RuntimeException('Request failed: ' . $error);
+            # Return the decoded data
+            return $decoded;
         }
-
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        if ($httpCode >= 400) 
-            throw new RuntimeException('Database operation failed: ' . $response);
-        
-
-        try { $decoded = json_decode($response, true, 512, JSON_THROW_ON_ERROR); } 
-        catch (JsonException $e) { throw new RuntimeException('Invalid API response'); }
-
-        $this->lastResult = $decoded;
-        $this->reset();
-
-        return $this->decodeTypes($decoded);
+        catch (Throwable $e) {
+            # Log the caught error backend-side to prevent the propagation of noisy errors to the frontend 
+            error_log(sprintf(
+                '[QueryBuilder] collection=%s operation=%s error=%s: %s', $this->collection, $this->operation,
+                get_class($e), $e->getMessage()));
+            # Return null upon failure 
+            return null;
+        } 
+        finally { $this->reset(); } # In all cases, succeeding or failing, reset the query parameters
     }
 
     private function validateEndpoint(): void {

@@ -1,6 +1,6 @@
 <?php
 require_once dirname(dirname(__DIR__)). '/vendor/autoload.php';
-require_once dirname(__DIR__). '/database/mongodb_collections.php';
+require_once dirname(__DIR__). '/database/mongodb.php';
 
 # Resolve the associated user permissions from the database given a userID
 function resolve_permissions(?string $userID): ?array {

@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once '../../../bootstrap/app.php';
-    load('vendor_autoload', 'authentication', 'authorization', 'text_utils', 'navbar', 'mongodb_collections');
+    load('vendor_autoload', 'authentication', 'authorization', 'text_utils', 'navbar', 'mongodb');
 
     if (!is_logged_in()) {
         header('location: '. $app_url. '/auth/login.php');

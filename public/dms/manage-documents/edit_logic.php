@@ -5,7 +5,7 @@ load (
     'authentication',
     'authorization',
     'vendor_autoload',
-    'mongodb_collections',
+    'mongodb',
     'text_utils'
 );
 

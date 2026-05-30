@@ -8,8 +8,7 @@
     load (
         'authentication',
         'authorization',
-        'mongodb_client',
-        'mongodb_collections',
+        'mongodb',
         'navbar',
         'footer'
     );
@@ -63,17 +62,15 @@
 
 <body class="archive-page">
     <?php echo navbar(0) ?>
+    <div class="page-contents no-padding">
+    <div class="pch">
+        <h1>Pending Archive Requests</h1>
+    </div>
 
-    <div class="page-header">
-        <header class="title">
-            <h1> Pending Archive Requests </h1>
-        </header>
-
-        <div class="top-actions">
-            <a href="key-docs.php" class="important-btn">
-                View Important Documents
-            </a>
-        </div>
+    <div class="top-actions">
+        <a href="key-docs.php" class="important-btn">
+            View Important Documents
+        </a>
     </div>
 
     <main>
@@ -138,6 +135,6 @@
             </table>
         </div>
     </main>
-
+    </div>
 </body>
 </html>

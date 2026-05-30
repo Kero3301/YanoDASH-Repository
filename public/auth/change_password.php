@@ -1,6 +1,6 @@
 <?php
 require_once '../../bootstrap/app.php';
-load('mongodb_collections');
+load('mongodb');
 
 $userId = $identity['user_id'] ?? null;
 if (!$userId) die("User not found");

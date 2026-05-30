@@ -3,17 +3,11 @@
 const SOURCES_PATH = __DIR__;
 const COMPONENT_BASE_PATH = SOURCES_PATH. '/views/components/';
 
-# Bootstrap inclusion of common basic utilities and configurational files
-# require_once COMPONENT_BASE_PATH. 'head.php';
-# require_once SOURCES_PATH. '/../config/directory.php';
-# require_once SOURCES_PATH. '/services/auth_bootstrap.php';
-
 # Safe whitelist of allowed sources to prevent arbitrary file inclusion
 const SOURCES = [
     # Non-components
     'vendor_autoload' => '../vendor/autoload',        
-    'mongodb_client' => 'database/mongodb_client',
-    'mongodb_collections' => 'database/mongodb_collections',
+    'mongodb' => 'database/mongodb',
     'authentication' => 'iam/authentication',
     'authorization' => 'iam/authorization',
     'doc_ed' => 'models/DocEd',

@@ -7,7 +7,7 @@ load (
     'authorization',
     'vendor_autoload',
     'mailing',
-    'mongodb_collections',
+    'mongodb',
     'text_utils'
 );
 

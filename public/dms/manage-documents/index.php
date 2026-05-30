@@ -8,8 +8,7 @@
 
     load (
         'vendor_autoload',
-        'mongodb_client',
-        'mongodb_collections',
+        'mongodb',
         'authentication',
         'authorization',
         'navbar'
@@ -64,29 +63,6 @@
         ->execute();
 
     $documents = $results;
-
-
-    // $client = mongodb_client();
-
-    // $collection = coll('documents', $client);
-
-    // $search = $_GET['search'] ?? '';
-    // $category = $_GET['category'] ?? '';
-
-    // $query = [];
-
-    // if (!empty($search)) {
-    //     $query['doc_title'] = [
-    //         '$regex' => $search,
-    //         '$options' => 'i'
-    //     ];
-    // }
-
-    // if (!empty($category) && $category !== 'All Categories') {
-    //     $query['doc_categories'] = $category;
-    // }
-
-    // $documents = $collection->find($query);
 ?>
 
 <!DOCTYPE html>

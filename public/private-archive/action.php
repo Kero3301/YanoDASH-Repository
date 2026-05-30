@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../../bootstrap/app.php';
-load('mongodb_collections');
+load('mongodb');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
