@@ -10,14 +10,14 @@ if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 $USER_ID = $_SESSION['user_id'] ?? null;
 
 # Assume guest/null user by default
-$profile = null;
 $identity = null;
 $permissions = null;
+$profile = null;
 
 # Populate data only if USER_ID is truly set
 if ($USER_ID !== null) {
-    $profile = get_profile($USER_ID);
     $identity = resolve_identity($USER_ID);
-    $permissions = resolve_permissions($USER_ID);
+    $permissions = resolve_permissions($identity);
+    $profile = get_profile($USER_ID);
 }
 ?>

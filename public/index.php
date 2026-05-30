@@ -38,8 +38,8 @@
                 "images/backgrounds/headerimg.jpeg",
                 "rgba(236, 53, 47, 0.7)",
                 linksList: [
-                    ['Browse Public Archive ↗', $app_url. '/documents/br_arch.php', 'bpa'],
-                    ['Latest Releases ↗', $app_url. '/documents/latest_rel.php', 'lr']
+                    ['Browse Public Archive ↗', $app_url. '/public-archive/br_arch.php', 'bpa'],
+                    ['Latest Releases ↗', $app_url. '/public-archive/latest_rel.php', 'lr']
                 ]
             );
 

@@ -215,6 +215,7 @@
                         <option value="Memorandum">Memorandum</option>
                         <option value="Minutes of Meeting">Minutes of Meeting</option>
                         <option value="Notice of Meeting">Notice of Meeting</option>
+                        <option value="Attendance">Attendance</option>
                         <option value="Project Proposal">Project Proposal</option>
                         <option value="Financial Statement">Financial Statement</option>
                         <option value="Accomplishment Report">Accomplishment Report</option>

@@ -32,7 +32,7 @@ function is_president(?array $identity, ?array $permissions): bool {
     $accessDomains = $permissions['access_domains'] ?? [];
     
     return 
-        $position === 'PRESIDENT' &&
+        strtoupper(trim($position)) === 'PRESIDENT' &&
         $accessLevel === 'admin' &&
         in_array('*', $accessDomains, true);
 }

@@ -36,10 +36,10 @@
 
         $documents_menu = menu("document-menu", [
             "Latest Releases" 
-                => "$app_url/documents/latest_rel.php",
+                => "$app_url/public-archive/latest_rel.php",
 
             "All Documents" 
-                => "$app_url/documents/br_arch.php"
+                => "$app_url/public-archive/br_arch.php"
         ]);
 
         $privateArchive_menu = !$shouldShowPrivate
