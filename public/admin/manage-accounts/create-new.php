@@ -6,7 +6,9 @@ load (
     'navbar',
     'footer',
     'mongodb',
-    'user_form'
+    'user_form',
+    'password_input',
+    'multiselect'
 );
 
 if (!is_logged_in()) {
@@ -74,6 +76,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 'Viewer-level User' => 'viewer',
                             ]
                         )),
+                        form_group("Access Domains", "access_domains", multiselect(
+    id: "access_domains",
+    name: "access_domains",
+    label: "Access Domains",
+    options: [
+        ["label" => "Office of the President", "value" => "osc_president_office"],
+        ["label" => "Office of the Internal Vice President", "value" => "osc_ivp_office"],
+        ["label" => "Office of the External Vice President", "value" => "osc_evp_office"],
+        ["label" => "CAEC Local Council", "value" => "caeclc"],
+        ["label" => "CAS Local Council", "value" => "caslc"],
+        ["label" => "Public Area", "value" => "public"]
+    ]
+)),
+
+                        form_group("Password", "passwd", password_input("passwd", "passwd", "Password (8 characters minimum)", percentWidth: '100%')),
                     ],
                     description: "Use this form to manually register an account.",
                     submitButtonText: "Create",

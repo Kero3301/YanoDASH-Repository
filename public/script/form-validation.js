@@ -97,7 +97,7 @@ function validateInput(input) {
     if (input.hasAttribute("pattern")) {
         const pat = new RegExp(input.getAttribute("pattern"));
         if (!pat.test(value)) {
-            message = "Invalid pattern";
+            message = "Invalid format";
             isValid = false;
         }
     }

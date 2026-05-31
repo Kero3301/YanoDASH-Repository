@@ -34,6 +34,7 @@ const SOURCES = [
     'footer' => 'views/components/footer',
     'main_section' => 'views/components/main_section',
     'menu' => 'views/components/menu',
+    'multiselect' => 'views/components/multiselect',
     'navbar' => 'views/components/navbar',
     'page_header' => 'views/components/page_header',
     'pagination_controls' => 'views/components/pagination_controls', 
