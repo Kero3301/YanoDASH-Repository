@@ -1,7 +1,5 @@
-<?php
-    session_start();
-    
-    require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
+<?php    
+    require_once '../../../../bootstrap/app.php';
     load (
         'authentication',
         'authorization',
@@ -14,7 +12,7 @@
         exit;
     }
 
-    if (!can_use_dms($permissions)) {
+    if (!can_use_dms($_CURRENTUSER['PERMISSIONS'])) {
         die("You do not have permission to access this resource.");
     }
 ?>
@@ -140,7 +138,7 @@ body {
 
 <body>
 
-<?php echo navbar(0); ?>
+<?php echo navbar($_CURRENTUSER); ?>
 
 <div class="page-contents no-padding">
     <div class="container">

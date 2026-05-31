@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once '../../bootstrap/app.php';
+require_once '../../../bootstrap/app.php';
 load (
     'vendor_autoload',
     'mongodb',
@@ -45,10 +45,10 @@ $all_docs = get_all($results);
 <html>
 <head>
     <?php initialize_page("Latest Releases | YanoDASH")?>
-    <link rel="stylesheet" href="../css/pages/docsss.css"/>
+    <link rel="stylesheet" href="../../css/pages/docsss.css"/>
 </head>
 <body>
-    <?php echo navbar(1) ?>
+    <?php echo navbar($_CURRENTUSER) ?>
     <?php echo page_header("Latest Releases")?>
 
     <div id="docs-list-container">
@@ -61,7 +61,7 @@ $all_docs = get_all($results);
     <?php echo document_modal()?>
    
 
-    <script src="../script/documents-display.js"></script>
+    <script src="../../script/documents-display.js"></script>
 
 </body>
 </html>

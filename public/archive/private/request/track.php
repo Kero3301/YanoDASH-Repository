@@ -1,6 +1,5 @@
 <?php
-    session_start();
-    require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
+    require_once '../../../../bootstrap/app.php';
     load(
         'authentication',
         'authorization',
@@ -331,7 +330,7 @@
 
 <body>
 
-<?php echo navbar(0); ?>
+<?php echo navbar($_CURRENTUSER); ?>
 
 <div class="form-container">
     <a href="index.php" class="btn-back">← Back to Menu</a>

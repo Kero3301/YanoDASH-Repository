@@ -14,9 +14,30 @@
     transition: opacity 0.5s ease, transform 0.5s ease, clip-path 0.5s ease;
 }
 
+.menu a:has(p.menu-category-label) {
+    cursor: auto !important;
+}
+
+.menu a:hover:has(p.menu-category-label) {
+    background-color: transparent !important;
+}
+
 .menu.dark {
     background-color: #313131 !important;
     border-color: #CE5253 !important;
+}
+
+.menu-category-label {
+    font-size: 0.8rem;
+    margin: 0;
+    font-weight: bold !important;
+    text-align: center;
+    color: #63071e;
+    padding: 4px 8px;
+    border-radius: 16px;
+    background: rgb(255, 203, 203);
+    border: 1px solid rgb(255, 155, 155);
+    border-bottom-width: 4px;
 }
 
 .menu a {

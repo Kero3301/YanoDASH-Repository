@@ -1,7 +1,5 @@
 <?php
-session_start();
-
-require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
+require_once '../../../../bootstrap/app.php';
 
 // Load utilities FIRST before using any functions
 load (
@@ -18,7 +16,7 @@ if (!is_logged_in()) {
 }
 
 // Check if user has permission to use DMS
-if (!can_use_dms($permissions))
+if (!can_use_dms($_CURRENTUSER['PERMISSIONS']))
     die("You do not have permission to access this resource.");
 ?>
 
@@ -200,7 +198,7 @@ if (!can_use_dms($permissions))
 
 <body>
 
-<?php echo navbar(0); ?>
+<?php echo navbar($_CURRENTUSER); ?>
 
 <!-- Add this message display section -->
 <?php if (isset($_SESSION['success_msg'])): ?>

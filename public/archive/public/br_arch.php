@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    require_once '../../bootstrap/app.php';
+    require_once '../../../bootstrap/app.php';
     load (
         'vendor_autoload',
         'mongodb',
@@ -42,7 +42,7 @@
 <html>
 <head>
     <?php initialize_page("All Documents | YanoDASH")?>
-    <link rel="stylesheet" href="../css/pages/docsss.css"/>
+    <link rel="stylesheet" href="../../css/pages/docsss.css"/>
     
     <style>
         :root {
@@ -293,7 +293,7 @@
     </style>
 </head>
 <body>
-    <?php echo navbar()?>
+    <?php echo navbar($_CURRENTUSER)?>
 
     <div class="mw<?php echo $isCollapsedClass; ?>" id="mainWrapper">
         <div id="sidebarWrap">
@@ -480,6 +480,6 @@
     });
 </script>
 
-    <script src="../script/documents-display.js"></script>
+    <script src="../../script/documents-display.js"></script>
 </body>
 </html>

@@ -15,15 +15,6 @@ load (
 if (!is_logged_in() || !can_use_dms($permissions) || $identity['user_id'] === null)
     die("You do not have permission to access this resource.");
 
-// try {
-//     $client = mongodb_client(readOnly: false);
-//     $collection = coll('archive_requests', $client);
-//     $documentsCollection = coll('documents', $client);
-// } catch (Exception $e) {
-//     $_SESSION['error_msg'] = "MongoDB Connection Failed: " . $e->getMessage();
-//     header("Location: archive.php");
-//     exit();
-// }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $purpose  = trim($_POST['purpose'] ?? '');

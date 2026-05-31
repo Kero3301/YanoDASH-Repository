@@ -1,11 +1,8 @@
 <?php
 require_once '../bootstrap/app.php';
-load('mongodb', 'user_context_resolver');
+load('mongodb', 'user_resolver', 'profile', 'user_context');
 
-$userContext = resolve_user($_SESSION['user_id']);
-
-// var_dump($userContext);
-
+$userContext = UserResolver::resolve($_SESSION['user_id'] ?? null);
 $results = QueryRunner::tryWithCollections([
     ($C1='documents')
         => fn ($C1)=> $C1->find(['doc_status' => 'ARCHIVED'])->execute(),
@@ -22,7 +19,7 @@ $results = QueryRunner::tryWithCollections([
     </head>
     <body>
         <pre style="font-family: monospace; background: lightgray; padding: 8px; border-radius: 16px; width: max-content">
-            <?php var_dump($userContext)?>
+            <?php var_dump(UserContext::constructFromUID($_SESSION['user_id'] ?? null))?>
         </pre>
     </body>
 </html>

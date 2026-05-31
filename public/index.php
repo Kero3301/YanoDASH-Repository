@@ -20,7 +20,7 @@
         </style>
     </head>
     <body>
-        <?php echo navbar()?>
+        <?php echo navbar($_CURRENTUSER)?>
         <div class="contents">
         
         <div class="page-contents no-padding">

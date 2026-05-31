@@ -1,11 +1,9 @@
 <!-- Private Archive Home Page -->
 <!-- Assigned Member: Shannon -->
 <?php
-    session_start();
+    // error_reporting(0);
 
-    error_reporting(0);
-
-    require_once '../../bootstrap/app.php';
+    require_once '../../../bootstrap/app.php';
     load (
         'vendor_autoload',
         'mongodb',
@@ -25,7 +23,7 @@
         exit;
     }
 
-    if (!can_use_dms($permissions)) {
+    if (!can_use_dms($_CURRENTUSER['PERMISSIONS'])) {
         die("You do not have permission to access this resource.");
     }
     
@@ -39,10 +37,10 @@
 <html lang="en">
 <head>
     <?php initialize_page('Private Archive | YanoDASH')?>    
-        <link rel="stylesheet" href="../css/pages/docsss.css"/>
+        <link rel="stylesheet" href="../../css/pages/docsss.css"/>
 </head>
 <body>    
-    <?php echo navbar(0); ?>
+    <?php echo navbar($_CURRENTUSER); ?>
     <?php echo page_header("Private Archive")?>
 
     <div id="docs-list-container">
@@ -52,7 +50,7 @@
     </div>
     <?php echo document_modal()?>
 
-    <script src="../script/documents-display.js"></script>
+    <script src="../../script/documents-display.js"></script>
 
 </body>
 </html>
