@@ -1,12 +1,11 @@
 <?php
     session_start();
-    error_reporting(0);
-
+    // error_reporting(0);
 
     require_once '../../bootstrap/app.php';
     load (
-        'authentication',
-        'authorization',
+        'authenticator',
+        'authorizer',
         'mongodb',
         'document_factory',
         'navbar',
@@ -14,22 +13,22 @@
         'footer'
     );
 
-    if (!is_logged_in()) {
-        header('location: '. $app_url. '/auth/login.php');
+    if (!Authenticator::isLoggedIn()) {
+        header('location: '. $app_url. '/auth/login.php?redirect=dms');
         exit;
     }
 
-    if (!can_use_dms($permissions))
+    if (!Authorizer::canUseDMS($_CURRENTUSER['PERMISSIONS']))
         die("You do not have permission to access this resource.");
 
     $baseQuery = [
         'doc_status' => 'EDITING',
         'area_of_origin' => [
-            '$in' => $permissions['access_domains']
+            '$in' => $_CURRENTUSER['PERMISSIONS']['access_domains']
         ]
     ];
 
-    if (is_president($identity, $permissions)) {
+    if (Authorizer::isPresident($_CURRENTUSER)) {
         $baseQuery = [
             'doc_status' => 'EDITING'
         ];
@@ -56,14 +55,6 @@
         ->skip($skip)
         ->limit($documentsPerPage)
         ->execute();
-    // $results = $collection_documents->find(
-    //     $baseQuery,
-    //     [
-    //         'sort' => ['dates.date_added' => -1],
-    //         'skip' => $skip,
-    //         'limit' => $documentsPerPage
-    //     ]
-    // );
 
     $all_docs = get_all($results);
 ?>
@@ -74,7 +65,7 @@
     <link rel="stylesheet" href="../css/pages/dmsstyle.css">
 </head>
 <body>
-    <?php echo navbar();?>
+    <?php echo navbar($_CURRENTUSER);?>
 
     <div class="page-contents no-padding">
         <div class="pch">

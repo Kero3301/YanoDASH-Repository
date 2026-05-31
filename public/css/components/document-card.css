@@ -155,20 +155,28 @@
     inset: 0;
 }
 
-.gsp {
-    background: #2D5A27 !important;
+.general {
+    background: #927012 !important;
 }
 
-.research {
-    background: #4B0082 !important;
+.administrative {
+    background: #71100F !important;
 }
 
-.essay {
+.secretarial {
     background: #0000CD !important;
 }
 
+.financial {
+    background: #2D5A27 !important;
+}
+
 .technical {
-    background: #71100F !important;
+    background: #4B0082 !important;
+}
+
+.external {
+    background: #555 !important;
 }
 
 .doc-tc {

@@ -3,14 +3,37 @@
 
     require_once '../../bootstrap/app.php';
     load (
-        'authentication',
+        'authenticator',
         'csrf_token',
         'password_input'
     );
  
-    if (is_logged_in()) {
-        header("location: ". $app_url. '/account/my-account.php');
+    if (Authenticator::isLoggedIn()) {
+        header("Location: ". $app_url. '/account/my-account.php');
         exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $email = (string) trim($_POST['email'] ?? '');
+        $password = (string) trim($_POST['password'] ?? '');
+
+        $loginResult = Authenticator::loginUser($email, $password);
+        if (!$loginResult->success) {
+            header('Location: '. $_SERVER['REQUEST_URI']);
+            exit;
+        } else {
+            $redir = trim($_GET['redirect'] ?? '');
+            if ($redir !== '') {
+                $parts = parse_url($redir);
+                if (!isset($parts['scheme']) && !isset($parts['host'])) {
+                    $path = '/'. ltrim($redir, '/');
+                    header('Location: '. rtrim($app_url, '/'). $path);
+                    exit;
+                }
+            }
+            header('Location: '. rtrim($app_url, '/'). '/');
+            exit;
+        }
     }
 
     $error = $_SESSION['errorMsg'] ?? '';
@@ -189,7 +212,7 @@
                     </div>
                 </div>
                 <div class="login-area">
-                    <form id="form-login" action="process_login.php" method="POST" style="padding: 60px 80px; border-radius: 16px; border-top: 6px solid maroon; background: #f4f4f4;">
+                    <form id="form-login" method="POST" style="padding: 60px 80px; border-radius: 16px; border-top: 6px solid maroon; background: #f4f4f4;">
                         <?= csrf_input_field() ?>
                         
                         <div>

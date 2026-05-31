@@ -8,8 +8,8 @@ const SOURCES = [
     # Non-components
     'vendor_autoload' => '../vendor/autoload',        
     'mongodb' => 'database/mongodb',
-    'authentication' => 'iam/authentication',
-    'authorization' => 'iam/authorization',
+    'authenticator' => 'iam/Authenticator',
+    'authorizer' => 'iam/Authorizer',
     'doc_ed' => 'models/DocEd',
     'user_profile' => 'models/UserProfile',
     'auth_bootstrap' => 'services/auth_bootstrap',

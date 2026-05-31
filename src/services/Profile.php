@@ -56,8 +56,14 @@ final class Profile {
     }
 
     public static function fullName(mixed $profile): string {
-        if (!validate($profile)) return "(unknown)";
-        if (is_null($profile)) return "(unknown)";
+        if (!is_array($profile)) return "(unknown)";
+        if (!array_key_exists('name', $profile)) return "(unknown)";
+
+        $name = $profile['name'];
+        return $name['first_name']. ' '. $name['last_name'];
+    }
+
+    public static function initials(mixed $profile): string {
 
     }
 

@@ -23,7 +23,7 @@ function renderDocs() {
 
     const filteredDocs = Documents.filter(doc => {
         const title = doc.querySelector('.doc-title').textContent.toLowerCase();
-        const description = doc.querySelector('.doc-desc').textContent.toLowerCase();
+        const description = doc.querySelector('.doc-desc')?.textContent.toLowerCase();
         const maincateg = doc.querySelector('.doc-card').dataset.category;
         const trackingCode = doc.querySelector('.doc-tc')
             .textContent
@@ -35,7 +35,7 @@ function renderDocs() {
             currentCategory.toLowerCase() === maincateg.toLowerCase();
         const hasValidDescription = description !== "(no description)";
         const matchesDescription =
-            hasValidDescription && description.includes(searchTerm);
+            hasValidDescription && description?.includes(searchTerm);
         const matchesTrackingCode =
             trackingCode.includes(searchTerm);
 
@@ -112,7 +112,7 @@ function openModal(documentCard) {
 
     const title = documentCard.querySelector('.doc-title').textContent;
     const catLabel = documentCard.dataset.category;
-    const description = documentCard.querySelector('.doc-desc').textContent;
+    const description = documentCard.querySelector('.doc-desc')?.textContent;
 
     document.getElementById('modalTitle').innerHTML = title;
     document.getElementById('modalDescription').innerText = description;
