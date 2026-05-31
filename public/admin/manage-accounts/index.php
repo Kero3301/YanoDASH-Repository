@@ -5,7 +5,8 @@
         'authorization',
         'navbar',
         'footer',
-        'filter_chips'
+        'filter_chips',
+        'mongodb'
     );
 
     if (!is_logged_in()) {
@@ -30,12 +31,14 @@
             }
 
             table.acclist {
-                width: 100%;
+                width: max-content;
+                min-width: 100%;
                 margin: 8px 0;
                 background: white;
                 border: 2px solid lightgray;
                 border-radius: 8px;
                 padding: 6px;
+                overflow: auto;
             }
 
             table.acclist .headingrow th {
@@ -43,8 +46,8 @@
             }
 
             table.acclist td {
-                padding: 8px 16px;
-                border-radius: 24px;
+                padding: 4px 8px;
+                border-radius: 8px;
                 border: 1px solid #CCC;
                 box-sizing: border-box;
             }
@@ -59,9 +62,15 @@
 
             table.acclist tr:not(.headingrow) td:hover {
                 background: rgba(255,0,0,0.17);
-                outline: 3px solid #800000;
+                outline: 1px solid #800000;
                 outline-offset: -3px;
                 transform: translateY(-3px);
+            }
+
+            .table-scroll {
+                overflow: auto;
+                width: 100%;
+                height: 400px;
             }
         </style>
     </head>
@@ -148,6 +157,79 @@
             <div class="sec">
                 <h3>Sort by:</h3>
                 <?php echo filter_chips(["Newest", "Oldest", "Alphabetical"], "Newest")?>
+                <div class="table-scroll">
+                <table class="acclist">
+                    <tr class="headingrow">
+                        <th>Name</th>
+                        <th>Email Address</th>
+                        <th>Student ID Number</th>
+                        <th>College</th>
+                        <th>Organization</th>
+                        <th>Department</th>
+                        <th>Position</th>
+                        <th>Date Joined</th>
+                        <th>Access Level</th>
+                        <th>Access Domains</th>
+                    </tr>
+                    <?php
+                        $accounts = QueryRunner::tryWithCollections([
+                            ($C1='accounts') 
+                                => fn ($C1)=> $C1->find(['_id' => ['$nin' => [null]]])->execute()
+                        ])->getResults($C1);
+                        // var_dump($accounts);
+                    ?>
+                    <?php if (!empty($accounts)):?>
+                        <?php 
+                            foreach($accounts as $account) {
+                                $name = $account['name']['first_name']. ' '. $account['name']['last_name'];
+                                $email = $account['email_address'];
+                                $idnum = $account['student_id_number'] ?? '(not provided)';
+                                $college = $account['college'] ?? '(unknown)';
+                                $org = isset($account['organization']) 
+                                    ? QueryRunner::tryWithCollections([
+                                        ($C2='organizations')
+                                            => fn ($C2)=> $C2->findOne(['_id' => $account['organization'] ?? null])->execute()
+                                    ])->getResults($C2)['organization_name'] ?? '(none)'
+                                    : "(none)";
+                                $department = $account['department'] ?? '(unknown)';
+                                $position = $account['position'];
+                                $datejoined = isset($account['date_joined']) 
+                                    ? (new DateTime($account['date_joined']))->setTimezone(new DateTimeZone('Asia/Manila'))->format('M d Y, g:i A') ?? null
+                                    : "(unknown)";
+                                $acclevel = QueryRunner::tryWithCollections([
+                                    ($C3='access_levels')
+                                        => fn ($C3)=> $C3->findOne(['_id' => $account['access_level']])->execute()
+                                ])->getResults($C3)['level'] ?? 'Viewer';
+
+                                $name = htmlspecialchars($name);
+                                $email = htmlspecialchars($email);
+                                $idnum = htmlspecialchars($idnum);
+                                $college = htmlspecialchars($college);
+                                $org = htmlspecialchars($org);
+                                $department = htmlspecialchars($department);
+                                $position = htmlspecialchars($position);
+                                $datejoined = htmlspecialchars($datejoined);
+                                $acclevel = htmlspecialchars($acclevel);
+
+                                echo <<< HTML
+                                    <tr>
+                                        <td>$name</td>
+                                        <td>$email</td>
+                                        <td>$idnum</td>
+                                        <td>$college</td>
+                                        <td>$org</td>
+                                        <td>$department</td>
+                                        <td>$position</td>
+                                        <td>$datejoined</td>
+                                        <td>$acclevel</td>
+                                    </tr>
+                                HTML;
+                            }
+                        ?>
+                    <?php else: ?>
+                    <?php endif; ?>
+                </table>
+                </div>
                 <a class="btn action" href="create-new.php">Create New Account</a>
             </div>
             </div>

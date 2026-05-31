@@ -21,6 +21,35 @@ if (!can_access_admin_pages($permissions)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $firstName = $_POST['first_name'];
+    $lastName = $_POST['last_name'];
+    $emailAddress = $_POST['email_address'];
+    $idNumber = $_POST['id_number'];
+    $college = $_POST['college'];
+    $org = $_POST['org'];
+    $dept = $_POST['dept'];
+    $position = $_POST['position'];
+    $accessLevel = $_POST['access_level'];
+    $passwd = $_POST['passwd'];
+
+    
+
+    $addAccount = [
+        'name' => [
+            'first_name' => $firstName,
+            'last_name' => $lastName
+        ],
+        'email_address' => $emailAddress,
+        'student_id_number' => $idNumber,
+        'college' => $college,
+        'organization' => $org
+    ];
+
+    $result = QueryBuilder::tryWithCollections([
+        ($C1='accounts') 
+            => fn ($C1)=> $C1->insertOne($addAccount)->execute()
+    ]);
+
     header("Location: " . $_SERVER['REQUEST_URI']);
     exit;
 }
@@ -77,17 +106,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             ]
                         )),
                         form_group("Access Domains", "access_domains", multiselect(
-    id: "access_domains",
-    name: "access_domains",
-    label: "Access Domains",
-    options: [
-        ["label" => "Office of the President", "value" => "osc_president_office"],
-        ["label" => "Office of the Internal Vice President", "value" => "osc_ivp_office"],
-        ["label" => "Office of the External Vice President", "value" => "osc_evp_office"],
-        ["label" => "CAEC Local Council", "value" => "caeclc"],
-        ["label" => "CAS Local Council", "value" => "caslc"],
-        ["label" => "Public Area", "value" => "public"]
-    ]
+                        id: "access_domains",
+                        name: "access_domains",
+                        label: "Access Domains",
+                        options: [
+                            ["label" => "Office of the President", "value" => "osc_president_office"],
+                            ["label" => "Office of the Internal Vice President", "value" => "osc_ivp_office"],
+                            ["label" => "Office of the External Vice President", "value" => "osc_evp_office"],
+                            ["label" => "CAEC Local Council", "value" => "caeclc"],
+                            ["label" => "CAS Local Council", "value" => "caslc"],
+                            ["label" => "Public Area", "value" => "public"]
+                        ]
 )),
 
                         form_group("Password", "passwd", password_input("passwd", "passwd", "Password (8 characters minimum)", percentWidth: '100%')),
