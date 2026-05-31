@@ -6,6 +6,9 @@
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     border-top: 8px solid #2e7d32;
+    min-height: 560px;
+    height: 630px;
+    max-height: 630px;
 }
 
 .btn-back {
@@ -31,19 +34,35 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.form-group {
-    margin-bottom: 25px;
+.form-scroll-panel {
+    min-height: 0;
+    height: 75%;
+    overflow-y: auto;
+    overflow-x: visible;
+    padding: 32px;
+    border-radius: 16px;
+    background: #EEE;
+    border: 8px solid #EEE;
 }
+
+.form-group {
+    margin-bottom: 12px;
+}
+
 
 .form-group label {
     display: block;
     font-family: Arial, sans-serif;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 1px;
     color: #333;
 }
 
-.form-group input,
+.form-group input, .form-group select {
+    width: 100%;
+}
+
+/* .form-group input,
 .form-group select,
 .form-group textarea {
     width: 100%;
@@ -53,7 +72,7 @@
     font-family: Arial, sans-serif;
     box-sizing: border-box;
     font-size: 14px;
-}
+} */
 
 .file-input-wrapper {
     padding: 15px;
@@ -81,7 +100,7 @@ input[type="file"]::file-selector-button {
     border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
-    width: 100%;
+    /* width: 100%; */
     transition: background 0.3s;
     font-size: 16px;
     box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2);

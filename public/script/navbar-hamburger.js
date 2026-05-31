@@ -97,7 +97,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    document.querySelector("#nav-links").addEventListener("mouseleave", () => {
+    const l = document.querySelector("#nav-links");
+
+    if (l)
+    l.addEventListener("mouseleave", () => {
         highlight.style.transformOrigin = "right center";
         highlight.style.transition = "transform 0.35s ease, opacity 0.2s ease";
         highlight.style.transform = highlight.style.transform.replace(/scaleX\(1\)/, "scaleX(0)");

@@ -32,7 +32,7 @@
                 $email = $identity['email'];
             ?>
             <p>Welcome, <b><?= "$fullname</b> ($email)" ?>!</p>
-            <a class="btn" href="manage-accounts.php">Manage Accounts</a>
+            <a class="btn" href="manage-accounts/">Manage Accounts</a>
             <a class="btn" href="manage-security.php">Manage Security</a>
         </div>
     </body>

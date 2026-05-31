@@ -52,26 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         form.addEventListener("submit", (e) => {
             e.preventDefault();
-
-            let isValid = true;
-
-            const inputs = form.querySelectorAll(`
-                input:not([type='submit']):not([type='button']):not([type='reset']):not([type='checkbox']),
-                textarea,
-                select
-            `);
-
-            inputs.forEach(input => {
-                if (!validateInput(input)) {
-                    isValid = false;
-                }
-            });
-
-            if (!form.checkValidity()) {
-                isValid = false;
+            
+            if (!validateForm(form)) {
+                alert("Form invalid. Please check warnings to see if any details are incorrect."); 
+                return;
             }
-
-            if (!isValid) return;
 
             // ONLY now allow submission
             form.submit(); // safe because we fully validated manually
@@ -105,6 +90,14 @@ function validateInput(input) {
         const pattern = /^[^ ]+@[^ ]+\.[a-z]{2,}$/;
         if (!pattern.test(value)) {
             message = "Invalid email";
+            isValid = false;
+        }
+    }
+
+    if (input.hasAttribute("pattern")) {
+        const pat = new RegExp(input.getAttribute("pattern"));
+        if (!pat.test(value)) {
+            message = "Invalid pattern";
             isValid = false;
         }
     }
@@ -186,9 +179,9 @@ function validateForm(form) {
         }
     });
 
-    if (!form.checkValidity()) {
-        isValid = false;
-    }
-
     return isValid;
+}
+
+function clearError(input) {
+    toggleError(input, "");
 }

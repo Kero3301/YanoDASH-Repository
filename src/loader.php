@@ -23,6 +23,7 @@ const SOURCES = [
     'text_utils' => 'utils/text_utils',
     'mailing' => 'utils/mailing',
     'query_builder' => 'database/query_builder',
+    'user_context_resolver' => 'iam/user_context_resolver',
     
     # Components
     'accordion' => 'views/components/accordion',

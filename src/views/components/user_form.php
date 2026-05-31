@@ -30,8 +30,9 @@
     function user_form(
         string $id, 
         string $label,
-        array $formGroups, 
-        string $action,
+        array $formGroups,
+        string $description = "", 
+        string $action = "",
         string $method = "POST",
         string $enctype = "multipart/form-data",
         string $submitButtonText = "Submit",
@@ -41,6 +42,7 @@
         # Sanitization
         $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedLabel = htmlspecialchars($label);
+        $sanitizedDescription = htmlspecialchars($description);
         $sanitizedAction = htmlspecialchars($action);
         $sanitizedMethod = htmlspecialchars($method);
         $sanitizedEnctype = htmlspecialchars($enctype);
@@ -59,38 +61,45 @@
         return <<< HTML
             <div class="form-container">
                 $precontent
-                <h2>$sanitizedLabel</h2>
+                <h2 style="text-align: center; font-weight: bold">$sanitizedLabel</h2>
+                <p style="text-align: center">$sanitizedDescription</p>
                 <form action="$sanitizedAction" method="$sanitizedMethod" enctype="$sanitizedEnctype">
-                    $formGroupsHTML
-                    <button type="submit" name="$submissionName" class="btn-submit">$sanitizedSubmitButtonText</button>
+                    <div class="form-scroll-panel">
+                        $formGroupsHTML
+                    </div>
+                    <div style="justify-content: center; align-items: center; display: flex; margin-top: 10px;">
+                        <input type="submit" name="$submissionName" class="btn positive" value="$sanitizedSubmitButtonText">
+                    </div>
                 </form>
             </div>
         HTML;
     }
 
-    function form_group(string $label, string $labelFor, string $content, bool $inline = false) {
+    function form_group(string $label, string $labelFor, string $content, bool $inline = true) {
         $sanitizedLabel = htmlspecialchars($label);
         $separation = $inline? "" : "<br>";
 
         return <<< HTML
             <div class="form-group">
-                <label for="$labelFor">$sanitizedLabel</label>
+                <label for="$labelFor" style="font-family: 'RobotoFlex', sans-serif">$sanitizedLabel</label>
                 $separation
                 $content
             </div>
         HTML;
     }
 
-    function options(string $id, array $options) {
+    function options(string $id, array $options, bool $required = true) {
         $sanitizedID = htmlspecialchars(normalize_identifier($id));
+        $requirement = $required? "required": "";
         
         $optionList = [];
-        foreach ($options as $value) {
+        foreach ($options as $label => $value) {
+            $sanitizedLabel = htmlspecialchars($label);
             $sanitizedValue = htmlspecialchars($value);
 
             $optionHTML = <<< HTML
-                <option id="$sanitizedID" value="$sanitizedValue">
-                    $sanitizedValue
+                <option value="$sanitizedValue">
+                    $sanitizedLabel
                 </option>
             HTML;
             array_push($optionList, $optionHTML);
@@ -102,13 +111,14 @@
             HTML;
 
         return <<< HTML
-            <select id="$sanitizedID" name="$sanitizedID">
+            <select class="sct" id="$sanitizedID" name="$sanitizedID" $requirement>
+                <option value="" selected disabled hidden>Select one...</option>
                 $optionListHTML
             </select>
         HTML;
     }
 
-    function input(string $id, string $type = "text", bool $required = true, string $placeholder = null) {
+    function input(string $id, string $type = "text", bool $required = true, string $placeholder = null, string $pattern="") {
         $sanitizedID = htmlspecialchars(normalize_identifier($id));
         $sanitizedInputType = htmlspecialchars($type);
     
@@ -120,7 +130,7 @@
         }
 
         return <<< HTML
-            <input id="$sanitizedID" name="$sanitizedID" type="$sanitizedInputType" $placeholderContent $requirement>
+            <input id="$sanitizedID" name="$sanitizedID" type="$sanitizedInputType" $placeholderContent pattern="$pattern" $requirement>
         HTML;     
     }
 

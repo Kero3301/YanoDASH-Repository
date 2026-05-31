@@ -1,6 +1,10 @@
 <?php
 require_once '../bootstrap/app.php';
-load('mongodb');
+load('mongodb', 'user_context_resolver');
+
+$userContext = resolve_user($_SESSION['user_id']);
+
+// var_dump($userContext);
 
 $results = QueryRunner::tryWithCollections([
     ($C1='documents')
@@ -18,7 +22,7 @@ $results = QueryRunner::tryWithCollections([
     </head>
     <body>
         <pre style="font-family: monospace; background: lightgray; padding: 8px; border-radius: 16px; width: max-content">
-            <?php var_dump($results)?>
+            <?php var_dump($userContext)?>
         </pre>
     </body>
 </html>

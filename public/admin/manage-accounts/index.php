@@ -1,7 +1,5 @@
 <?php
-    session_start();
-
-    require_once '../../bootstrap/app.php';
+    require_once '../../../bootstrap/app.php';
     load (
         'authentication',
         'authorization',
@@ -69,10 +67,13 @@
     </head>
     <body>
         <?php echo navbar(); ?>
-        <div class="page-contents" style="background: white">
-            <h1 class="pagetitle" style="text-align: center">
-                Manage Accounts
-            </h1>
+        <div class="page-contents no-padding">
+            <div class="pch">
+                <h1>
+                    Manage Accounts
+                </h1>
+            </div>
+            <div style="padding: 32px">
             <h2>Pending Account Requests</h2>
             <div class="sec">
                 <h3>Sort by:</h3>
@@ -147,6 +148,8 @@
             <div class="sec">
                 <h3>Sort by:</h3>
                 <?php echo filter_chips(["Newest", "Oldest", "Alphabetical"], "Newest")?>
+                <a class="btn action" href="create-new.php">Create New Account</a>
+            </div>
             </div>
         </div>
         <?php echo footer(); ?>

@@ -1,6 +1,7 @@
 const toast = document.getElementById('download-toast');
-const toastMessage = toast.querySelector('.toast-message');
-const toastClose = toast.querySelector('.toast-close');
+
+const toastMessage = toast?.querySelector('.toast-message');
+const toastClose = toast?.querySelector('.toast-close');
 
 let toastTimeout;
 
@@ -21,7 +22,7 @@ function showDownloadToast(message) {
     }, 3000);
 }
 
-toastClose.addEventListener('click', () => {
+toastClose?.addEventListener('click', () => {
     clearTimeout(toastTimeout);
     hideToast();
 });
