@@ -9,6 +9,7 @@ echo (Authorizer::isOSCAdviser($_CURRENTUSER)? "OSC Adviser": "Not OSC Adviser")
 echo (Authorizer::isOSCOfficial($_CURRENTUSER)? "OSC Official": "Not OSC Official"). '<br>';
 echo (Authorizer::isAdmin($_CURRENTUSER)? "Admin": "Not Admin"). '<br>';
 echo (Authorizer::isEditor($_CURRENTUSER)? "Editor": "Not Editor"). '<br>';
+echo (Authorizer::isViewer($_CURRENTUSER)? "Viewer": "Not Viewer"). '<br>';
 echo (Authorizer::isCouncilOfficial($_CURRENTUSER)? "Council Official": "Not Council Official"). '<br>';
 echo (Authorizer::canUseDMS($_CURRENTUSER)? "Can Use DMS": "Cannot Use DMS"). '<br>';
 echo (Authorizer::canAccessAdminPages($_CURRENTUSER)? "Can Access Admin Pages": "Cannot Access Admin Pages"). '<br>';

@@ -226,6 +226,18 @@ final class Authorizer {
         return $hasExactDeptScope;
     }
 
+    # Evaluate if the user is a genuine Viewer-level user
+    public static function isViewer(mixed $user): bool {
+        if (!Authorizer::validateIAM($user)) return false;
+        $permissions = $user['PERMISSIONS'];
+        if (trim($permissions['access_level']) !== 'viewer') return false;
+        $expected = array_flip(self::ACCESS_SCOPES['viewer']);
+        $actual = array_flip($permissions['access_scope']);
+        return 
+            empty(array_diff_key($expected, $actual)) &&
+            empty(array_diff_key($actual, $expected));
+    }
+
     # Evaluate if a user, given their permissions, has admin claims
     private static function hasAdminClaims(mixed $user): bool {
         if (!Authorizer::validateIAM($user)) return false;

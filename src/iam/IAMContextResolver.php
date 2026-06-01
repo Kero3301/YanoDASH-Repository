@@ -33,7 +33,7 @@ final class IAMContextResolver {
         # POSTCONDITIONS: The appropriate account was found
 
         # Query user's associated access level from database
-        $accessLevelID = oid($account['access_level']);
+        $accessLevelID = oid($account['access_level'] ?? null);
         $accessLevel = QueryRunner::tryWithCollections([
             ($C2='access_levels') => fn ($C2)=> $C2->findOne(['_id' => $accessLevelID])->execute()])
             ->getResults($C2);
