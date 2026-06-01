@@ -27,6 +27,7 @@ const SOURCES = [
     'iam_context_resolver' => 'iam/IAMContextResolver',
     'iam_context_validator' => 'iam/IAMContextValidator',
     'user_context' => 'services/UserContext',
+    'mapper' => 'presentation/Mapper',
     
     # Components
     'accordion' => 'views/components/accordion',

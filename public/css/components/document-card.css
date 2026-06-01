@@ -155,11 +155,11 @@
     inset: 0;
 }
 
-.general {
-    background: #927012 !important;
-}
+/* .general {
+    background: #cc9600 !important;
+} */
 
-.administrative {
+.general {
     background: #71100F !important;
 }
 

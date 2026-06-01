@@ -41,6 +41,7 @@ if (!preg_match('#^https?://#', $app_url) || !filter_var($app_url, FILTER_VALIDA
 
 # Subsequent requires
 require_once 'user.php';                                    # Require user context bootstrapper
+require_once ROOT. '/src/iam/Authorizer.php';               # Require user authorizer
 require_once ROOT. '/src/loader.php';                       # Require own lightweight source loader
 require_once ROOT. '/src/views/components/head.php';        # Require component for initializing page <head>
 

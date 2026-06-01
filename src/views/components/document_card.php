@@ -19,6 +19,7 @@
         # Load first document data
         $_id = $document->_id;
         $title = $document->doc_title ?? "(unknown)";
+        $description = $document->description ?? "(no description)";
         $category = $document->doc_category ?? "";
         $tags = $document->doc_tags ?? [];
         $tc = $document->tracking_code;
@@ -26,12 +27,13 @@
         $author = $document->author ?? "(unknown)";
         $areaOfOrigin = $document->area_of_origin ?? "(unknown)";
         $dates = $document->dates ?? [];
-        $version = $document->version ?? 0;
+        $version = $document->current_version ?? 0;
         $categoryData = $document->categoryData ?? null;
 
         # Sanitize data to be displayed
         $sanitizedID = htmlspecialchars($_id);
         $sanitizedTitle = htmlspecialchars($title);
+        $sanitizedDescription = htmlspecialchars($description);
         $sanitizedCategory = htmlspecialchars($category);
         $sanitizedTC = htmlspecialchars($tc);
         $sanitizedAuthor = htmlspecialchars($author);
@@ -86,6 +88,7 @@
                                         <p>👤 $sanitizedAuthor</p> 
                                         <p>🏢 $sanitizedAreaOfOrigin</p>
                                         <p>🔎 <span class="doc-tc">$sanitizedTC</span></p>
+                                        <p class="doc-desc">$sanitizedDescription</p>
                                     </div>
                                 </div>
                             </div>
