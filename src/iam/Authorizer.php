@@ -296,6 +296,32 @@ final class Authorizer {
         return true;
     }
 
+    # Templates for specific authorship rules
+    public static function canAuthor(mixed $docCategory, mixed $user): bool {
+        if (!Authorizer::validateIAM($user)) return false;
+        if (!is_string($docCategory)) return false;
+
+        $isCouncilOfficial = Authorizer::isCouncilOfficial($user);
+        $isOSCOfficial = Authorizer::isOSCOfficial($user);
+        $isHOROfficial = $isOSCOfficial && trim($user['IDENTITY']['department']) === 'osc_hor';
+        $isOSCExec = Authorizer::isOSCExecutive($user);
+        $isOSCGenSecOfficial = ($isOSCOfficial && trim($user['IDENTITY']['department']) === 'osc_gensec_office');
+        $isOSCGenSec = ($isOSCGenSecOfficial && trim($user['IDENTITY']['position']) === 'osc_gensec');
+        $isOSCGenTreas = ($isOSCExec && trim($user['IDENTITY']['position']) === 'osc_gentreas');
+
+        $canAuthorCategory = match 
+        (strtoupper(trim($docCategory))) {
+            default => false,
+            'ACTIVITY_DESIGN', 'ATTENDANCE' => $isOSCGenSecOfficial,
+            'ACCOMPLISHMENT_REPORT', 'MEETING_MINUTES', 'MEETING_NOTICE' => $isOSCGenSec,
+            'FINANCIAL_STATEMENT' => $isOSCGenTreas,
+            'MEMORANDUM' => $isOSCExec,
+            'PROJECT_PROPOSAL' => $isCouncilOfficial,
+            'MERCH_DOC' => $isHOROfficial
+        };
+        return $canAuthorCategory;
+    }
+
     # Evaluate if a user, given their identity and permissions, can access a specific page or action given its requirements
     function can_access(?array $identity, ?array $permissions, array $req): bool {
         if (!is_array($identity) || !is_array($permissions)) return false;

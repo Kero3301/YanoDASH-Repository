@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once '../../../bootstrap/app.php';
-    load('vendor_autoload', 'authenticator', 'authorizer', 'text_utils', 'navbar', 'mongodb');
+    load('vendor_autoload', 'authenticator', 'authorizer', 'text_utils', 'navbar', 'mongodb', 'dynamic_options');
 
     if (!Authenticator::isLoggedIn()) {
         header('location: '. $app_url. '/auth/login.php?redirect=dms');
@@ -66,6 +66,40 @@
             $message = "<span style='color: #e74c3c;'>Error: " . $e->getMessage() . "</span>";
         }
     }
+
+    function can_author(mixed $category): bool { 
+        global $_CURRENTUSER;
+        return is_string($category) && Authorizer::canAuthor($category, $_CURRENTUSER); 
+    }
+
+    $categoryOptions = dynamic_options([
+        'Accomplishment Report' 
+            => [($C1 = 'ACCOMPLISHMENT_REPORT'), can_author($C1)],
+
+        'Activity Design' 
+            => [($C2 = 'ACTIVITY_DESIGN'), can_author($C2)],
+
+        'Attendance' 
+            => [($C3 = 'ATTENDANCE'), can_author($C3)],
+
+        'Financial Statement' 
+            => [($C4 = 'FINANCIAL_STATEMENT'), can_author($C4)],
+
+        'Memorandum' 
+            => [($C5 = 'MEMORANDUM'), can_author($C5)],
+
+        'Merchandise-related Document' 
+            => [($C6 = 'MERCH_DOC'), can_author($C6)],
+
+        'Minutes of Meeting' 
+            => [($C7 = 'MEETING_MINUTES'), can_author($C7)],
+        
+        'Notice of Meeting' 
+            => [($C8 = 'MEETING_NOTICE'), can_author($C8)],
+        
+        'Project Proposal' 
+            => [($C9 = 'PROJECT_PROPOSAL'), can_author($C9)]
+    ]);
 ?>
 
 <!DOCTYPE html>
@@ -92,14 +126,7 @@
                 
                 <p style="color: white;">Category </p>
                 <select class="sct" name="categories" id="categories">
-                    <option value="Activity Design">Activity Design</option>
-                    <option value="Memorandum">Memorandum</option>
-                    <option value="Minutes of Meeting">Minutes of Meeting</option> 
-                    <option value="Notice of Meeting">Notice of Meeting</option> 
-                    <option value="Attendance">Attendance</option> 
-                    <option value="Project Proposal">Project Proposal </option>
-                    <option value="Financial Statement">Financial Statement </option>
-                    <option value="Accomplishment Report">Accomplishment Report </option>
+                    <?= $categoryOptions ?>
                 </select>
                 <br><br>
 
