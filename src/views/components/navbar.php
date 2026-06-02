@@ -99,8 +99,8 @@ function navbar($user): string {
             $fullName = Profile::fullName($user['PROFILE']);
 
             # Access level check
-            $isAdmin = Authorizer::isAdmin($user['PERMISSIONS']);
-            $isEditor = Authorizer::isEditor($user['PERMISSIONS']);
+            $isAdmin = Authorizer::isAdmin($user);
+            $isEditor = Authorizer::isEditor($user);
             $showGenProtected = $isAdmin === true || $isEditor === true;
 
             # Archive Menu

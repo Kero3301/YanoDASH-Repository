@@ -58,7 +58,7 @@
     color: #6E192E;
     margin: 0;
     font-weight: bold;
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
 
     white-space: nowrap;
     overflow: hidden;
@@ -88,6 +88,20 @@
     font-size: 0.75rem;
     box-shadow: 0 -24px 24px rgba(0, 0, 0, 0.1);
     min-width: 0;
+}
+
+.doc-info p {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-radius: 6px;
+    padding: 0 4px 0 0;
+}
+
+.doc-info p:hover {
+    background: rgba(0,0,0,0.08);
 }
 
 .doc-actions {

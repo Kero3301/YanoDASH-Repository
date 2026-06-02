@@ -36,11 +36,27 @@ final class Mapper {
         'osc_gentreas' 
             => 'OSC General Treasurer',
         'osc_genpio' 
-            => 'OSC General PIO'
+            => 'OSC General PIO',
+
+        # Local Council names
+        'caslc'
+            => 'CAS Local Council',
+        'caeclc'
+            => 'CAEc Local Council',
+        'cbalc'
+            => 'CBA Local Council',
+        'cedlc' 
+            => 'CEd Local Council',
+        'ciclc'
+            => 'CIC Local Council',
+        'coelc'
+            => 'COE Local Council',
+        'ctlc'
+            => 'CT Local Council'
     ];
 
     # A function for looking up a key's value from an array for the purposes of safe string rendering/presentation
-    public static function find(mixed $object, mixed $map = MAP, mixed $fallback = "unknown", bool $strict = false): string {
+    public static function find(mixed $object, mixed $map = self::MAP, mixed $fallback = "unknown", bool $strict = false): string {
         # Prevent non-string fallback values
         if (!is_string($fallback)) return "unknown";
         # POSTCONDITIONS: Fallback is a string

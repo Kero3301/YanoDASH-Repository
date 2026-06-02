@@ -13,7 +13,8 @@
         'document_list',
         'document_modal',
         'page_header',
-        'pagination_controls'
+        'pagination_controls',
+        'doc_query'
     );
 
     $documentsPerPage = 8;
@@ -26,13 +27,18 @@
     $currentPage = max(1, min($currentPage, $totalPages));
     $skip = ($currentPage - 1) * $documentsPerPage;
 
-    $results = coll('documents')
+    // $results = coll('documents')
+    //     ->find(['doc_status' => 'PUBLICIZED'])
+    //     ->skip($skip)
+    //     ->limit($documentsPerPage)
+    //     ->execute();
+    $query = fn ($_)=> $_
         ->find(['doc_status' => 'PUBLICIZED'])
         ->skip($skip)
         ->limit($documentsPerPage)
         ->execute();
 
-    $all_docs = get_all($results);
+    $all_docs = DocQuery::get($query);
 
     $sidebarWidth = isset($_COOKIE['sidebar_width']) ? $_COOKIE['sidebar_width'] : '260px';
     $sidebarState = isset($_COOKIE['sidebar_state']) ? $_COOKIE['sidebar_state'] : 'open';

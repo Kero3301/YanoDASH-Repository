@@ -19,7 +19,7 @@
         # Load first document data
         $_id = $document->_id;
         $title = $document->doc_title ?? "(unknown)";
-        $description = $document->description ?? "(no description)";
+        $description = $document->doc_description;
         $category = $document->doc_category ?? "";
         $tags = $document->doc_tags ?? [];
         $tc = $document->tracking_code;
@@ -85,9 +85,9 @@
                                     </div>
                                     <div class="doc-info">
                                         <h3 class="doc-title" title="$sanitizedTitle">$sanitizedTitle</h3>
-                                        <p>👤 $sanitizedAuthor</p> 
-                                        <p>🏢 $sanitizedAreaOfOrigin</p>
-                                        <p>🔎 <span class="doc-tc">$sanitizedTC</span></p>
+                                        <p title="$sanitizedAuthor">👤 $sanitizedAuthor</p> 
+                                        <p title="$sanitizedAreaOfOrigin">🏢 $sanitizedAreaOfOrigin</p>
+                                        <p title="$sanitizedTC">🔎 <span class="doc-tc">$sanitizedTC</span></p><br>
                                         <p class="doc-desc">$sanitizedDescription</p>
                                     </div>
                                 </div>
@@ -103,7 +103,27 @@
                 return "<h1>Pending Archival</h1>";
             # Editing in DMS
             case "EDITING":
-                return "<h1>Editing in DMS</h1>";
+                return <<< HTML
+                    <div class="doc-card-wrapper">
+                        <div class="doc-card-b2">
+                            <div class="doc-card-b1">
+                                <div class="doc-card" data-category="$sanitizedCategory" data-doc-id="$sanitizedID">
+                                    <div class="doc-preview">
+                                        <div class="doc-thumbnail"></div>
+                                        <span class="tag $tagClass">$sanitizedCategory</span>
+                                    </div>
+                                    <div class="doc-info">
+                                        <h3 class="doc-title" title="$sanitizedTitle">$sanitizedTitle</h3>
+                                        <p title="$sanitizedAuthor">👤 $sanitizedAuthor</p> 
+                                        <p title="$sanitizedAreaOfOrigin">🏢 $sanitizedAreaOfOrigin</p>
+                                        <p title="$sanitizedTC">🔎 <span class="doc-tc">$sanitizedTC</span></p><br>
+                                        <p class="doc-desc">$sanitizedDescription</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                HTML;
             default:
                 return "<h1>Unknown</h1>";
         }

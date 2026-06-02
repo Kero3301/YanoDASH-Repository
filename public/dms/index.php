@@ -10,7 +10,8 @@
         'document_factory',
         'navbar',
         'document_list',
-        'footer'
+        'footer',
+        'doc_query'
     );
 
     if (!Authenticator::isLoggedIn()) {
@@ -18,7 +19,7 @@
         exit;
     }
 
-    if (!Authorizer::canUseDMS($_CURRENTUSER['PERMISSIONS']))
+    if (!Authorizer::canUseDMS($_CURRENTUSER))
         die("You do not have permission to access this resource.");
 
     $baseQuery = [
@@ -28,13 +29,13 @@
         ]
     ];
 
-    if (Authorizer::isPresident($_CURRENTUSER)) {
+    if (Authorizer::isOSCPresident($_CURRENTUSER)) {
         $baseQuery = [
             'doc_status' => 'EDITING'
         ];
     }
 
-    $documentsPerPage = 15;
+    $documentsPerPage = 20;
 
     $totalDocuments = coll('documents')
         ->countDocuments($baseQuery)
@@ -49,14 +50,21 @@
 
     $currentPage = min($currentPage, $totalPages);
     $skip = (int)(($currentPage - 1) * $documentsPerPage);
-    $results = coll('documents')
+    // $results = coll('documents')
+    //     ->find($baseQuery)
+    //     ->sort(['dates.date_added' => -1])
+    //     ->skip($skip)
+    //     ->limit($documentsPerPage)
+    //     ->execute();
+    
+    $query = fn($_)=> $_
         ->find($baseQuery)
         ->sort(['dates.date_added' => -1])
         ->skip($skip)
         ->limit($documentsPerPage)
         ->execute();
 
-    $all_docs = get_all($results);
+    $all_docs = DocQuery::get($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">

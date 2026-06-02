@@ -1,13 +1,15 @@
 <?php
     session_start();
     require_once '../../../bootstrap/app.php';
-    load('vendor_autoload', 'authentication', 'authorization', 'text_utils', 'navbar', 'mongodb');
+    load('vendor_autoload', 'authenticator', 'authorizer', 'text_utils', 'navbar', 'mongodb');
 
-    if (!is_logged_in()) {
-        header('location: '. $app_url. '/auth/login.php');
+    if (!Authenticator::isLoggedIn()) {
+        header('location: '. $app_url. '/auth/login.php?redirect=dms');
         exit;
     }
 
+    if (!Authorizer::canUseDMS($_CURRENTUSER))
+        die("You do not have permission to access this resource.");
 
     $message = "";
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['document_file']) && $_FILES['document_file']['error'] === UPLOAD_ERR_OK) {
@@ -15,8 +17,9 @@
     
         $doc_title = $_POST['docname'];
         $doc_category = $_POST['categories'];
-        $author = new MongoDB\BSON\ObjectId($identity['user_id']);
-        $area_of_origin = $identity['department'];
+        $author = oid($_SESSION['user_id'] ?? null);
+        if (is_null($author)) exit("You are logged out!");
+        $area_of_origin = $_CURRENTUSER['IDENTITY']['department'];
         $yr = date('Y');
         $tracking_code = 'YD-'. date("Ymd"). date("His");
 
@@ -77,7 +80,7 @@
     </style>
 </head>
 <body>
-    <?php echo navbar()?>
+    <?php echo navbar($_CURRENTUSER)?>
 
     <div class="container">
         <h2 style="font-family: 'Gupter'; font-weight: normal">New Document</h2>

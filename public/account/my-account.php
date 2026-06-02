@@ -1,17 +1,20 @@
     <?php
     require_once dirname(dirname(__DIR__)). '/bootstrap/app.php';
     load (
-        'authentication',
+        'authenticator',
         'identity_resolver',
         'user_profile_service',
         'navbar',
         'footer',
         'password_input',
-        'mongodb'
+        'mongodb',
+        'profile',
+        'authorizer',
+        'mapper'
     );
 
-    if (!is_logged_in()) {
-        header('location: '. $app_url. '/auth/login.php');
+    if (!Authenticator::isLoggedIn()) {
+        header('location: '. $app_url. '/auth/login.php?redirect=account/my-account.php');
         exit;
     }
 
@@ -200,38 +203,37 @@ button:hover {
         <div class="profile">
             <?php
                 # Get and store properties of profile and identity
-                $fullname = full_name($profile);
-                $student_id = student_id_number($profile);
-                $email = $identity['email'];
-                $avatar = avatar($profile);
-                $badge = match($identity['organization']) {
-                    default => "Student",
-                    'CICLC', 'CTLC' => "LC Officer",
-                    'Obrero Student Council', 'OSC' => "OSC Officer"
-                };
-                $albadge = match ($permissions['access_level']) {
-                    'admin' => "Administrator",
-                    'editor' => "Editor",
-                    'viewer' => "Viewer"
-                };
+                $fullname = Profile::fullName($_CURRENTUSER['PROFILE']);
+                $student_id = $_CURRENTUSER['PROFILE']['student_id_number'];
+                $email = $_CURRENTUSER['IDENTITY']['email'];
+                $avatar = null;
+                $badge = "Student";
+                if (Authorizer::isOSCOfficial($_CURRENTUSER)) 
+                    $badge = "OSC Official";
+                else if (Authorizer::isCouncilOfficial($_CURRENTUSER))
+                    $badge = "Local Council Official";
+                else if (!empty($_CURRENTUSER['IDENTITY']['org_id']))
+                    $badge = "Organization Member";
+
+                $albadge = Mapper::find($_CURRENTUSER['PERMISSIONS']['access_level']);
 
                 $avatarElement = <<< HTML
                     <img src="../images/ui-indicators/account.png" alt="Placeholder profile picture">
                 HTML;
-                $avatarType = $avatar['type'];
-                $avatarValue = $avatar['value'];
+                // $avatarType = $avatar['type'];
+                // $avatarValue = $avatar['value'];
 
-                switch ($avatarType) {
-                    case 'initials':
-                        $avatarElement = $avatarValue;
-                        break;
-                    case 'url':
-                        $sanitizedValue = htmlspecialchars($avatarValue);
-                        $avatarElement = <<< HTML
-                            <img src="$sanitizedValue" alt="Profile picture for $fullname">
-                        HTML;
-                        break;
-                }
+                // switch ($avatarType) {
+                //     case 'initials':
+                //         $avatarElement = $avatarValue;
+                //         break;
+                //     case 'url':
+                //         $sanitizedValue = htmlspecialchars($avatarValue);
+                //         $avatarElement = <<< HTML
+                //             <img src="$sanitizedValue" alt="Profile picture for $fullname">
+                //         HTML;
+                //         break;
+                // }
             ?>
             <div class="avatar">
                 <?= $avatarElement ?>
@@ -243,10 +245,10 @@ button:hover {
                     HTML;
                 ?>
                 <p>📧 <?= $email ?></p>
-                <p>Organization: <?= $identity['organization'] ?></p>
-                <p>Department: <?= $identity['department'] ?></p>
-                <p>Position: <?= $profile['position'] ?></p>
-                <p>Joined: <?= $profile['date_joined'] ?></p>
+                <p>Organization: <?= $_CURRENTUSER['PROFILE']['org_name'] ?></p>
+                <p>Department: <?= Mapper::find($_CURRENTUSER['IDENTITY']['department']) ?></p>
+                <p>Position: <?= Mapper::find($_CURRENTUSER['IDENTITY']['position']) ?></p>
+                <p>Joined: <?= $_CURRENTUSER['PROFILE']['date_joined'] ?></p>
             </div>
         </div>
     </div>
@@ -276,21 +278,17 @@ button:hover {
         <div class="scroll">
             <?php
                 $documentTitles = [];
-                try {
-                    $documents = coll('documents')
-                        ->find(["author" => new MongoDB\BSON\ObjectId($userID)])
-                        ->sort(['dates.date_added' => -1])
-                        ->execute();
-                    if (!empty($documents)) {
-                        foreach($documents as $document) {
-                            $title = $document['doc_title'];
-                            array_push($documentTitles, $title);
-                        }
+                $docs = QueryRunner::tryWithCollections([
+                    ($C1='documents')
+                        => fn ($C1)=> $C1->find(["author" => oid($_SESSION['user_id'] ?? null)])->sort(['dates.date_added' => -1])->execute()
+                ])->getResults($C1);
+                if (!empty($docs)) {
+                    foreach ($docs as $doc) {
+                        $title = $doc['doc_title'];
+                        array_push($documentTitles, $title);
                     }
-                } catch (Exception $e) { 
-                    $documentTitles = [];
                 }
-                
+
                 if (!empty($documentTitles)) {
                     foreach($documentTitles as $docTitle) echo <<< HTML
                         <div class="item">

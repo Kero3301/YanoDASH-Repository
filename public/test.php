@@ -1,6 +1,6 @@
 <?php
 require_once '../bootstrap/app.php';
-load('mongodb', 'user_resolver', 'profile', 'user_context');
+load('mongodb', 'user_resolver', 'profile', 'document_list', 'user_context', 'doc_query');
 
 echo (Authorizer::validateIAM($_CURRENTUSER)? "IAM Context Valid": "IAM Context Invalid"). '<br>';
 echo (Authorizer::isOSCPresident($_CURRENTUSER)? "OSC President": "Not OSC President"). '<br>';
@@ -15,23 +15,27 @@ echo (Authorizer::canUseDMS($_CURRENTUSER)? "Can Use DMS": "Cannot Use DMS"). '<
 echo (Authorizer::canAccessAdminPages($_CURRENTUSER)? "Can Access Admin Pages": "Cannot Access Admin Pages"). '<br>';
 
 // $userContext = UserResolver::resolve($_SESSION['user_id'] ?? null);
-$results = QueryRunner::tryWithCollections([
-    ($C1='documents')
-        => fn ($C1)=> $C1->find(['doc_status' => 'ARCHIVED'])->execute(),
-    ($C2='archive_requests')
-        => fn ($C2)=> $C2->find(['status' => 'approved'])->execute(),
-    ($C3='accounts')
-        => fn ($C3)=> $C3->findOne(['name.first_name' => 'Alex'])->execute()])
-    ->getResults();
-?>
+// $results = QueryRunner::tryWithCollections([
+//     ($C1='documents')
+//         => fn ($C1)=> $C1->find(['doc_status' => 'ARCHIVED'])->execute(),
+//     ($C2='archive_requests')
+//         => fn ($C2)=> $C2->find(['status' => 'approved'])->execute(),
+//     ($C3='accounts')
+//         => fn ($C3)=> $C3->findOne(['name.first_name' => 'Alex'])->execute()])
+//     ->getResults();
+// ?>
 <!DOCTYPE html>
 <html>
     <head>
         <?php initialize_page('Batch Query Test');?>
     </head>
     <body>
-        <pre style="font-family: monospace; background: lightgray; padding: 8px; border-radius: 16px; width: max-content">
-            <?php var_dump(UserContext::constructFromUID($_SESSION['user_id'] ?? null))?>
-        </pre>
+        <!-- <pre style="font-family: monospace; background: lightgray; padding: 8px; border-radius: 16px; width: max-content"> -->
+            <?php /* var_dump(UserContext::constructFromUID($_SESSION['user_id'] ?? null)) */ ?>
+            <?php
+                $docs = DocQuery::get(fn ($_)=> $_->find(['doc_status' => 'EDITING'])->execute());
+                list_all_documents($docs);
+            ?>
+        <!-- </pre> -->
     </body>
 </html>

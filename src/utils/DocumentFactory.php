@@ -3,7 +3,7 @@ require_once dirname(__DIR__). '/database/mongodb.php';
 require_once dirname(__DIR__). '/models/DocEd.php';
 
 final class DocumentFactory {
-    function getDoc(mixed $docData): ?Document {
+    public static function getDoc(mixed $docData): ?Document {
         if (!is_array($docData)) return null;
 
         # Attribute storage
@@ -26,17 +26,23 @@ final class DocumentFactory {
         return new Document(
             _id: $docData['_id'],
             doc_title: $docData['doc_title'],
-            doc_description: $docData['doc_description'],
+            doc_description: $docData['doc_description'] ?? "(no description)",
             doc_category: $docData['doc_category'],
             doc_tags: $docData['doc_tags'],
-
+            author: $docData['author'],
+            area_of_origin: $docData['area_of_origin'],
+            doc_status: $docData['doc_status'],
+            tracking_code: $docData['tracking_code'],
+            dates: $docData['dates'],
+            current_version: $docData['current_version'] ?? 1,
+            category_data: $docData['category_data'] ?? []
         );
     }
 
-    function getAll($results): array {
+    public static function getAll($results): array {
         $documentList = [];
         foreach ($results as $result)
-            array_push($documentList, get_doc($result));
+            array_push($documentList, DocumentFactory::getDoc($result));
         return $documentList;
     }
 }

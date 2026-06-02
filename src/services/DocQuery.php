@@ -1,8 +1,10 @@
 <?php
 // doc_query.php - Shannon: This file provides TOOLS only.
-require dirname(__DIR__). '/database/mongodb.php';
-require dirname(__DIR__). '/iam/IAMContextValidator.php';
-require dirname(__DIR__). '/iam/Authorizer.php';
+require_once dirname(__DIR__). '/database/mongodb.php';
+require_once dirname(__DIR__). '/presentation/Mapper.php';
+require_once dirname(__DIR__). '/iam/IAMContextValidator.php';
+require_once dirname(__DIR__). '/iam/Authorizer.php';
+require_once dirname(__DIR__). '/models/DocEd.php';
 
 final class DocQuery {
     public static function buildQuery($user, $orgOnly = false, $pageType = 'dms'): ?array {
@@ -54,6 +56,52 @@ final class DocQuery {
 
         }
         
+    }
+
+    public static function get($queryStatement): array {
+        if (!is_callable($queryStatement)) return [];
+
+        $results = QueryRunner::tryWithCollections([($docs='documents') => $queryStatement])->getResults($docs);
+        if (empty($results)) return [];
+
+        $uniqueAuthorIDs = $authorMappings = [];
+        foreach ($results as $r) {
+            $id = (string) $r['author'];
+            if (!in_array($id, $uniqueAuthorIDs)) array_push($uniqueAuthorIDs, oid($id));
+        }
+     
+        $authors = QueryRunner::tryWithCollections([($acc='accounts')
+            => fn ($acc)=> $acc->find(['_id' => ['$in' => $uniqueAuthorIDs]])->execute()
+        ])->getResults($acc);
+        if (!empty($authors)) foreach ($authors as $a) {
+            $authorID = $a['_id'];
+            $firstName = $a['name']['first_name'];
+            $lastName = $a['name']['last_name'];
+            $authorName = empty($firstName) && empty($lastName)
+                ? "(unknown)" 
+                : "$firstName $lastName";
+            $authorMappings[$authorID] = $authorName;
+        }
+
+        $finalDocs = [];
+        foreach ($results as $r) array_push(
+            $finalDocs, new Document(
+                _id: $r['_id'],
+                doc_title: $r['doc_title'],
+                doc_description: $r['doc_description'] ?? "(no description)",
+                doc_category: $r['doc_category'],
+                doc_tags: $r['doc_tags'],
+                author: $authorMappings[$r['author']] ?? "(unknown)",
+                area_of_origin: Mapper::find($r['area_of_origin']),
+                doc_status: $r['doc_status'],
+                tracking_code: $r['tracking_code'],
+                dates: $r['dates'],
+                current_version: $r['current_version'] ?? 1,
+                category_data: $r['category_data'] ?? []
+            )
+        );
+        
+        return $finalDocs;
     }
 }
 
