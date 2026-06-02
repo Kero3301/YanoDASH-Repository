@@ -62,6 +62,7 @@ final class DocQuery {
         if (!is_callable($queryStatement)) return [];
 
         $results = QueryRunner::tryWithCollections([($docs='documents') => $queryStatement])->getResults($docs);
+        if (!is_array($results)) return [];
         if (empty($results)) return [];
 
         $uniqueAuthorIDs = $authorMappings = [];

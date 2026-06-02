@@ -18,7 +18,6 @@
         exit;
     }
 
-    $userID = $identity['user_id'] ?? null;
     ?>
 
     <!DOCTYPE html>
@@ -104,10 +103,22 @@
         display:flex;
         gap:16px;
         flex-wrap:wrap;
+        align-items: center;
+        justify-content: center;
     }
+
+    .avatar-container {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+    }
+
     .avatar {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
         border: 2px solid #63071e;
         border-radius: 50%;
         background: var(--maroon);
@@ -192,7 +203,7 @@ button:hover {
     </style>
     </head>
     <body>
-    <?php echo navbar(0); ?>
+    <?php echo navbar($_CURRENTUSER); ?>
 
 
     <div class="account-container">
@@ -218,7 +229,7 @@ button:hover {
                 $albadge = Mapper::find($_CURRENTUSER['PERMISSIONS']['access_level']);
 
                 $avatarElement = <<< HTML
-                    <img src="../images/ui-indicators/account.png" alt="Placeholder profile picture">
+                    <img id="avatar-preview" src="../images/ui-indicators/account.png" alt="Placeholder profile picture">
                 HTML;
                 // $avatarType = $avatar['type'];
                 // $avatarValue = $avatar['value'];
@@ -235,20 +246,27 @@ button:hover {
                 //         break;
                 // }
             ?>
-            <div class="avatar">
-                <?= $avatarElement ?>
+            <div class="avatar-container">
+                <div class="avatar">
+                    <input id="upload-avatar" name="upload_avatar" type="file" hidden>
+                    <?= $avatarElement ?>
+                </div>
+                <label for="upload-avatar" class="btn" style="text-align: center; font-size: 0.8rem; padding: 6px 4px; border-radius: 8px; margin-top: 6px;">Change Avatar</label>
+                <input id="save-avatar" type="submit" class="btn green" style="text-align: center; font-size: 0.8rem; padding: 6px 4px; border-radius: 8px; margin-top: 4px;" value="Save" hidden>
             </div>
             <div class="info">
                 <?php
                     echo <<< HTML
-                        <h2>$fullname <span class="badge">$albadge</span></h2>
+                        <h2 style="margin-bottom: 0; display: flex; align-items: center">$fullname <span style="margin-left: 4px;" class="badge">$albadge</span></h2>
                     HTML;
                 ?>
-                <p>📧 <?= $email ?></p>
-                <p>Organization: <?= $_CURRENTUSER['PROFILE']['org_name'] ?></p>
-                <p>Department: <?= Mapper::find($_CURRENTUSER['IDENTITY']['department']) ?></p>
-                <p>Position: <?= Mapper::find($_CURRENTUSER['IDENTITY']['position']) ?></p>
-                <p>Joined: <?= $_CURRENTUSER['PROFILE']['date_joined'] ?></p>
+                <p style="margin-top: 0;">📧 <?= $email ?></p>
+                <table class="text-grid"> 
+                    <tr class="inline"><th>Organization</th><td><?= $_CURRENTUSER['PROFILE']['org_name']?></td></tr>
+                    <tr class="inline"><th>Department</th><td><?= Mapper::find($_CURRENTUSER['IDENTITY']['department'])?></td></tr>
+                    <tr class="inline"><th>Position</th><td><?= Mapper::find($_CURRENTUSER['IDENTITY']['position'])?></td></tr>
+                </table>
+                <p>Member since <b><?= (new DateTime($_CURRENTUSER['PROFILE']['date_joined']))->format('M d, Y') ?></b></p>
             </div>
         </div>
     </div>
@@ -258,9 +276,12 @@ button:hover {
         <div class="title">Security</div>
         <p><b>Change Password</b></p>
         <form method="POST" action="../auth/change_password.php">
-            <input type="password" name="current_password" placeholder="Current password" minlength="8" required>
+            <?php echo password_input("p1", "current_password", "Current password", height: 45) ?>
+            <?php echo password_input("p2", "new_password", "New password", height: 45) ?>
+            <?php echo password_input("p3", "confirm_new_password", "Confirm new password", height: 45) ?>
+            <!-- <input type="password" name="current_password" placeholder="Current password" minlength="8" required>
             <input type="password" name="new_password" placeholder="New password" minlength="8" required>
-            <input type="password" name="confirm_new_password" placeholder="Confirm new password" minlength="8" required>
+            <input type="password" name="confirm_new_password" placeholder="Confirm new password" minlength="8" required> -->
             <input type="submit" class="btn action" value="Update">
         </form>
         <?php
@@ -316,6 +337,34 @@ button:hover {
     </div>
 
         <?php echo footer(); ?>
+
+        <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const uploadInput = document.getElementById('upload-avatar');
+    const saveButton = document.getElementById('save-avatar');
+    const avatarPreview = document.getElementById('avatar-preview');
+
+    const originalSrc = avatarPreview.src;
+
+    uploadInput.addEventListener('change', () => {
+        const file = uploadInput.files[0];
+
+        if (file) {
+            // Show Save button
+            saveButton.hidden = false;
+
+            // Preview selected image
+            avatarPreview.src = URL.createObjectURL(file);
+        } else {
+            // Hide Save button
+            saveButton.hidden = true;
+
+            // Restore original avatar
+            avatarPreview.src = originalSrc;
+        }
+    });
+});
+</script>
 
     </body>
     </html>

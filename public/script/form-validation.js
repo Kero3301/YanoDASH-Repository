@@ -53,10 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener("submit", (e) => {
             e.preventDefault();
             
-            if (!validateForm(form)) {
-                alert("Form invalid. Please check warnings to see if any details are incorrect."); 
-                return;
-            }
+            if (!validateForm(form)) return;
 
             // ONLY now allow submission
             form.submit(); // safe because we fully validated manually

@@ -272,6 +272,30 @@ final class Authorizer {
         return Authorizer::isAdmin($user);
     }
 
+    # Evaluate if a user can access a specific page or perform a specific action
+    function can(mixed $user, mixed $requirements): bool {
+        # Verify that passed requirements is an array
+        if (!is_array($requirements)) return false;
+
+        # Verify that the user has a valid IAM context
+        if (!Authorizer::validateIAM($user)) return false;
+
+        # Read the user's IAM context information for permissions information, namely: access level, scope, and domains
+        $permissions = $user['PERMISSIONS'];
+        $accessLevel = $permissions['access_level'] ?? 'viewer';
+        $accessScope = $permissions['access_scope'] ?? self::ACCESS_SCOPES['viewer'];
+
+        $requiredScope = $requirements['scope'] ?? [];
+        $requiredDomain = $requirements['domain'] ?? null;
+
+        # Presidential override
+        if (Authorizer::isPresident($user)) return true;
+
+
+ 
+        return true;
+    }
+
     # Evaluate if a user, given their identity and permissions, can access a specific page or action given its requirements
     function can_access(?array $identity, ?array $permissions, array $req): bool {
         if (!is_array($identity) || !is_array($permissions)) return false;

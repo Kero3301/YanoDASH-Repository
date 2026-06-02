@@ -2,7 +2,7 @@
 require_once '../../bootstrap/app.php';
 load('mongodb');
 
-$userId = $identity['user_id'] ?? null;
+$userId = $_SESSION['user_id'] ?? null;
 if (!$userId) die("User not found");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwordsEqual = $newPassword === $confirmNewPassword;
 
     $credentials = coll('login_credentials')
-        ->findOne(['user' => new MongoDB\BSON\ObjectId($userId)])
+        ->findOne(['user' => oid($userId)])
         ->execute();
     if (empty($credentials)) redirect_with_message("Account corrupted.");
 
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwordHash = password_hash($confirmNewPassword, PASSWORD_ARGON2ID);
     $result = coll('login_credentials')
         ->updateOne(
-            ['user' => new MongoDB\BSON\ObjectId($userId)],
+            ['user' => oid($userId)],
             [
                 '$set' => ['password_hash' => $passwordHash]
             ]
