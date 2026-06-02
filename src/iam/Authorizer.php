@@ -272,27 +272,55 @@ final class Authorizer {
         return Authorizer::isAdmin($user);
     }
 
-    # Evaluate if a user can access a specific page or perform a specific action
+    # Evaluate if a user can access a specific resource or perform a specific action
     function can(mixed $user, mixed $requirements): bool {
         # Verify that passed requirements is an array
         if (!is_array($requirements)) return false;
+        # POSTCONDITIONS: Requirements is an array
 
-        # Verify that the user has a valid IAM context
+        # Allow only two array members for requirements to avoid mixing arbitrary requirements
+        if (count($requirements) !== 2) return false;
+        # POSTCONDITIONS: Requirements has exactly 2 elements
+
+        # Ensure both elements are arrays
+        if (!is_array($requirements['scopes'] ?? null) || !is_array($requirements['domains'] ?? null)) return false;
+        $requiredScopes = $requirements['scopes'];
+        $requiredDomains = $requirements['domains'];
+        # POSTCONDITIONS: Both required scope and domain are arrays
+        # CONTRACT: 
+        #   requiredScopes may be [], which means there are NO scope restrictions
+        #   requiredDomains may be [], which means there are NO domain restrictions
+
+        # Determine if the resource or action is open-access
+        $commonScopes = ['view_docs', 'download_docs'];
+        $isOpenAccess = 
+            (count($requiredScopes) === 0 && count($requiredDomains) === 0)     # Both arrays are unrestricted
+            || ((                                                               # Either of the arrays have at least one restriction
+                empty(array_diff_key(array_flip($requiredScopes), array_flip($commonScopes))) && 
+                empty(array_diff_key(array_flip($commonScopes), array_flip($requiredScopes)))
+            ) && $requiredDomains === ['public']);
+        if ($isOpenAccess) return true;     # If open-access (safe-to-perform/guest actions), allow user with no need to validate IAM context
+        # POSTCONDITIONS: The resource or action is not open-access and the user is not a guest, therefore user IAM context needs to be verified
+
+        # Deny if user's IAM context is invalid
         if (!Authorizer::validateIAM($user)) return false;
-
-        # Read the user's IAM context information for permissions information, namely: access level, scope, and domains
-        $permissions = $user['PERMISSIONS'];
-        $accessLevel = $permissions['access_level'] ?? 'viewer';
-        $accessScope = $permissions['access_scope'] ?? self::ACCESS_SCOPES['viewer'];
-
-        $requiredScope = $requirements['scope'] ?? [];
-        $requiredDomain = $requirements['domain'] ?? null;
-
+        # POSTCONDITIONS: The user's IAM context is validated. PERMISSIONS associative array exists with its baseline schema and is safe to access
+    
         # Presidential override
-        if (Authorizer::isPresident($user)) return true;
+        if (Authorizer::isOSCPresident($user)) return true;
+        # POSTCONDITIONS: User is not the president
 
+        # Read the user's IAM context information for PERMISSIONS information, namely: access scope and domains
+        $permissions = $user['PERMISSIONS'];
+            $accessScope = $permissions['access_scope'] ?? self::ACCESS_SCOPES['viewer'];
+            $accessDomains = $permissions['access_domains'] ?? ['public'];
+        # Perform scope and domain checks
+        # Strict scope check: required scopes are cumulative; all action types defined in required scopes MUST be within the user's access scope  
+        foreach ($requiredScopes as $action) if (!in_array($action, $accessScope, true)) return false;
+        # Strict domain check: required domains MUST be a subset of the user's access domains
+        if (!empty(array_diff($requiredDomains, $accessDomains))) return false;        
+        # POSTCONDITIONS: Required scope and domains are within the user's access scope and domains
 
- 
         return true;
     }
 
@@ -320,35 +348,6 @@ final class Authorizer {
             'MERCH_DOC' => $isHOROfficial
         };
         return $canAuthorCategory;
-    }
-
-    # Evaluate if a user, given their identity and permissions, can access a specific page or action given its requirements
-    function can_access(?array $identity, ?array $permissions, array $req): bool {
-        if (!is_array($identity) || !is_array($permissions)) return false;
-
-        $accessLevel = $permissions['access_level'] ?? 'viewer';
-        $accessScope = $permissions['access_scope'] ?? [];
-        $accessDomains  = $permissions['access_domains'] ?? ['public'];
-        $position = $identity['position'] ?? null;
-
-        $req_scope  = $req['scope'] ?? [];
-        $req_domain = $req['domain'] ?? null;
-
-        if (is_president($identity, $permissions)) return true;
-        
-        if ($req_domain !== null) {
-            $domain_allowed =
-                in_array('*', $accessDomains, true) ||
-                in_array($req_domain, $accessDomains, true);
-
-            if (!$domain_allowed) return false;
-        }
-
-        foreach ($req_scope as $perm) {
-            if (!in_array($perm, $accessScope, true)) return false;
-        }
-
-        return true;
     }
 }
 ?>
