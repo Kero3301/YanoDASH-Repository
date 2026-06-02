@@ -14,16 +14,7 @@ echo (Authorizer::isCouncilOfficial($_CURRENTUSER)? "Council Official": "Not Cou
 echo (Authorizer::canUseDMS($_CURRENTUSER)? "Can Use DMS": "Cannot Use DMS"). '<br>';
 echo (Authorizer::canAccessAdminPages($_CURRENTUSER)? "Can Access Admin Pages": "Cannot Access Admin Pages"). '<br>';
 
-// $userContext = UserResolver::resolve($_SESSION['user_id'] ?? null);
-// $results = QueryRunner::tryWithCollections([
-//     ($C1='documents')
-//         => fn ($C1)=> $C1->find(['doc_status' => 'ARCHIVED'])->execute(),
-//     ($C2='archive_requests')
-//         => fn ($C2)=> $C2->find(['status' => 'approved'])->execute(),
-//     ($C3='accounts')
-//         => fn ($C3)=> $C3->findOne(['name.first_name' => 'Alex'])->execute()])
-//     ->getResults();
-// ?>
+?>
 <!DOCTYPE html>
 <html>
     <head>

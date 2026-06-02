@@ -45,13 +45,13 @@ final class Authorizer {
 
     # ====== SECTION 0.1: ACCESS MANAGEMENT CONSTANTS ======
 
-    private const ACCESS_LEVELS = [
+    public const ACCESS_LEVELS = [
         'admin' => true,
         'editor' => true,
         'viewer' => true
     ];
 
-    private const ACCESS_SCOPES = [
+    public const ACCESS_SCOPES = [
         'admin' => [
             'add_docs', 
             'view_docs', 
@@ -273,7 +273,7 @@ final class Authorizer {
     }
 
     # Evaluate if a user can access a specific resource or perform a specific action
-    function can(mixed $user, mixed $requirements): bool {
+    public static function can(mixed $user, mixed $requirements): bool {
         # Verify that passed requirements is an array
         if (!is_array($requirements)) return false;
         # POSTCONDITIONS: Requirements is an array
@@ -306,22 +306,27 @@ final class Authorizer {
         if (!Authorizer::validateIAM($user)) return false;
         # POSTCONDITIONS: The user's IAM context is validated. PERMISSIONS associative array exists with its baseline schema and is safe to access
     
-        # Presidential override
-        if (Authorizer::isOSCPresident($user)) return true;
-        # POSTCONDITIONS: User is not the president
-
         # Read the user's IAM context information for PERMISSIONS information, namely: access scope and domains
         $permissions = $user['PERMISSIONS'];
             $accessScope = $permissions['access_scope'] ?? self::ACCESS_SCOPES['viewer'];
             $accessDomains = $permissions['access_domains'] ?? ['public'];
+
         # Perform scope and domain checks
         # Strict scope check: required scopes are cumulative; all action types defined in required scopes MUST be within the user's access scope  
         foreach ($requiredScopes as $action) if (!in_array($action, $accessScope, true)) return false;
-        # Strict domain check: required domains MUST be a subset of the user's access domains
-        if (!empty(array_diff($requiredDomains, $accessDomains))) return false;        
-        # POSTCONDITIONS: Required scope and domains are within the user's access scope and domains
+        # POSTCONDITIONS: The user's access scope meets the required scope
 
-        return true;
+        # Strict domain check: required domains MUST be a subset of the user's access domains
+
+        # Presidential override: OSC President can access any domain
+        if (Authorizer::isOSCPresident($user)) return true;
+        # POSTCONDITIONS: User is not an OSC President
+
+        # If domains is open-access, allow access
+        if (empty($requiredDomains) || in_array('public', $requiredDomains)) return true;
+        # POSTCONDITIONS: Domain is not open-access
+
+        return !empty(array_intersect($requiredDomains, $accessDomains));   
     }
 
     # Templates for specific authorship rules
