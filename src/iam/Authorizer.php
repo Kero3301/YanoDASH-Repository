@@ -234,6 +234,7 @@ final class Authorizer {
     public static function isViewer(mixed $user): bool {
         if (!Authorizer::validateIAM($user)) return false;
         $permissions = $user['PERMISSIONS'];
+        if ($permissions['access_domains'] !== ['public']) return false;
         if (trim($permissions['access_level']) !== 'viewer') return false;
         $expected = array_flip(self::ACCESS_SCOPES['viewer']);
         $actual = array_flip($permissions['access_scope']);

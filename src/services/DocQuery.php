@@ -7,55 +7,123 @@ require_once dirname(__DIR__). '/iam/Authorizer.php';
 require_once dirname(__DIR__). '/models/DocEd.php';
 
 final class DocQuery {
-    public static function buildQuery($user, $orgOnly = false, $pageType = 'dms'): ?array {
-        # Ensure user's IAM context is valid
-        if (!IAMContextValidator::validate($user)) return null;
+    private const DMS_VALID_STATUS = ['EDITING', 'PENDING_ARCHIVAL', 'PENDING_AUDIT', 'PENDING_APPROVAL'];
+    private const PRIVATE_ARCHIVE_VALID_STATUS = ['ARCHIVED'];
+    private const PUBLIC_ARCHIVE_VALID_STATUS = ['PUBLICIZED'];
+    private const PAGE_TYPES = ['dms', 'private', 'public'];
 
-        # Query initialization
-        $query = null;
+    public static function buildQuery($user, $orgOnly = false, $pageType = 'public'): ?array {
+        # For Guests or invalid users (ignore all other parameters)
+        if (!Authorizer::validateIAM($user)) return ['doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS]];
+        # POSTCONDITIONS: User is non-guest with valid IDENTITY
 
-        # Valid document statuses per page type
-        $dmsValidStatus = ['EDITING', 'PENDING ARCHIVAL'];
-        $privArchValidStatus = ['ARCHIVED'];
-        $pubArchValidStatus = ['PUBLICIZED'];
+        # Normalize page type
+        $pageType = strtolower(trim($pageType));
+        # POSTCONDITIONS: pageType is normalized and ready to use
 
-        # President override (cross-department access)
-        if (Authorizer::isPresident($user)) switch ($pageType) {
-            case 'dms': return $query = ($orgOnly === true)
-                ? [ 'org_of_origin' => oid($user['IDENTITY']['org_id']),
-                    'doc_status' => ['$in' => $dmsValidStatus] ]
-                : [ 'doc_status' => ['$in' => $dmsValidStatus] ];
-            case 'private': return $query = ($orgOnly === true)
-                ? [ 'org_of_origin' => oid($user['IDENTITY']['org_id']),
-                    'doc_status' => ['$in' => $privArchValidStatus] ]
-                : [ 'doc_status' => ['$in' => $privArchValidStatus] ];
-            case 'public': return $query = ($orgOnly === true)
-                ? [ 'org_of_origin' => oid($user['IDENTITY']['org_id']),
-                    'doc_status' => ['$in' => $pubArchValidStatus] ]
-                : [ 'doc_status' => ['$in' => $pubArchValidStatus] ];
-            default: return $query = ($orgOnly === true)
-                ? [ 'org_of_origin' => oid($user['IDENTITY']['org_id']) ]
-                : [ ]; } 
-        # Non-president instances (departmental-only access)
-        else switch ($pageType) {
-            case 'dms':
-            case 'private':
-            case 'public':
-            default:
-        }
+        # Return null if page type does not correspond to any of the 3 recognized page types
+        if (!in_array($pageType, self::PAGE_TYPES, true)) return null;
+        # POSTCONDITIONS: pageType is any of these three: 'dms', 'private', 'public'
 
-        $userOrg = valid_oid(oid($user['IDENTITY']['org_id']))
-            ? oid($user['IDENTITY']['org_id'])
-            : null;
-        $scopes = $user['PERMISSIONS']['access_scope'];
-
-
-        if ($orgOnly === true && isset($userOrg)) {
-            
-        } else {
-
-        }
+        # Determine if fit for org-only query
+        $showOrgOnly = 
+            $orgOnly === true &&
+            valid_oid(oid($user['IDENTITY']['org_id']));
         
+        # Decide based on whether the user is a viewer
+        $isViewer = Authorizer::isViewer($user);
+        # Viewer case
+        if ($isViewer === true) return $showOrgOnly === true 
+            ? ['doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS], 'org_of_origin' => oid($user['IDENTITY']['org_id'])]
+            : ['doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS]];
+        # Non-Viewer case
+        else {
+            # Determine whether user is an admin or editor
+            $isAdmin = Authorizer::isAdmin($user);
+            $isEditor = Authorizer::isEditor($user);
+            
+            # For admin
+            if ($isAdmin === true) return 
+                # For president
+                Authorizer::isOSCPresident($user)       
+                    ? match ($showOrgOnly) {            # President
+                        true => match ($pageType) {     # Org-only
+                            'dms' => [      
+                                'doc_status' => ['$in' => self::DMS_VALID_STATUS],
+                                'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                            ],
+                            'private' => [ 
+                                'doc_status' => ['$in' => self::PRIVATE_ARCHIVE_VALID_STATUS],
+                                'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                            ],
+                            'public' => [   
+                                'doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS],
+                                'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                            ]
+                        },  
+                        false => match ($pageType) {    # Not org-only
+                            'dms' => ['doc_status' => ['$in' => self::DMS_VALID_STATUS]],
+                            'private' => ['doc_status' => ['$in' => self::PRIVATE_ARCHIVE_VALID_STATUS]],
+                            'public' => ['doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS]]
+                        }
+                    } 
+                    : match ($showOrgOnly) {            # Non-president (departmental only access for DMS case)
+                        true => match ($pageType) {     # Org-only
+                            'dms' => [
+                                'doc_status' => ['$in' => self::DMS_VALID_STATUS],
+                                'org_of_origin' => oid($user['IDENTITY']['org_id']),
+                                'area_of_origin' => $user['IDENTITY']['department']
+                            ],
+                            'private' => [
+                                'doc_status' => ['$in' => self::PRIVATE_ARCHIVE_VALID_STATUS],
+                                'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                            ],
+                            'public' => [
+                                'doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS],
+                                'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                            ]
+                        },
+                        false => match ($pageType) {    # Not org-only
+                            'dms' => [
+                                'doc_status' => ['$in' => self::DMS_VALID_STATUS],
+                                'area_of_origin' => $user['IDENTITY']['department']
+                            ],
+                            'private' => ['doc_status' => ['$in' => self::PRIVATE_ARCHIVE_VALID_STATUS]],
+                            'public' => ['doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS]]
+                        }
+                    };
+
+            # For editor (also department-only access for DMS)
+            if ($isEditor === true) return 
+                match ($showOrgOnly) {
+                    true => match ($pageType) {
+                        'dms' => [
+                            'doc_status' => ['$in' => self::DMS_VALID_STATUS],
+                            'org_of_origin' => oid($user['IDENTITY']['org_id']),
+                            'area_of_origin' => $user['IDENTITY']['department']
+                        ],
+                        'private' => [
+                            'doc_status' => ['$in' => self::PRIVATE_ARCHIVE_VALID_STATUS],
+                            'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                        ],
+                        'public' => [
+                            'doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS],
+                            'org_of_origin' => oid($user['IDENTITY']['org_id'])
+                        ]
+                    },
+                    false => match ($pageType) {
+                        'dms' => [
+                            'doc_status' => ['$in' => self::DMS_VALID_STATUS],
+                            'area_of_origin' => $user['IDENTITY']['department']
+                        ],
+                        'private' => ['doc_status' => ['$in' => self::PRIVATE_ARCHIVE_VALID_STATUS]],
+                        'public' => ['doc_status' => ['$in' => self::PUBLIC_ARCHIVE_VALID_STATUS]]
+                    }
+                };
+
+            # Default fallback
+            return null;
+        }        
     }
 
     public static function get($queryStatement): array {
