@@ -8,11 +8,14 @@ class Document {
         public string $doc_category,
         public ?array $doc_tags,
         public string $author,
+        public string $author_identifier,
         public string $area_of_origin,
+        public string $area_of_origin_identifier,
         public string $doc_status,
         public string $tracking_code,
         public array $dates,
         public int $current_version,
+        public bool $password_protected,
         public ?array $category_data
     ) {}
 }

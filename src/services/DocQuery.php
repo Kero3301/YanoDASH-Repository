@@ -93,11 +93,14 @@ final class DocQuery {
                 doc_category: $r['doc_category'],
                 doc_tags: $r['doc_tags'],
                 author: $authorMappings[$r['author']] ?? "(unknown)",
+                author_identifier: $r['author'],
                 area_of_origin: Mapper::find($r['area_of_origin']),
+                area_of_origin_identifier: $r['area_of_origin'],
                 doc_status: $r['doc_status'],
                 tracking_code: $r['tracking_code'],
                 dates: $r['dates'],
                 current_version: $r['current_version'] ?? 1,
+                password_protected: (isset($r['view_password_hash']) && is_string($r['view_password_hash'])) ? true : false,
                 category_data: $r['category_data'] ?? []
             )
         );
