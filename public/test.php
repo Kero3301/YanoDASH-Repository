@@ -31,6 +31,17 @@ $doc = $docs[0];
 
 echo Authorizer::validateIAM($_CURRENTUSER)? "Valid<br>" : "Invalid<br>";
 
+$query = DocQuery::buildQuery($_CURRENTUSER, pageType: 'dms');
+$results = DocQuery::get(fn ($docs) => $docs->find($query)->execute());
+
+list_all_documents($results);
+
+echo '<pre>';
+var_dump($results);
+echo '</pre>';
+
+
+
 
 #echo Authorizer::can($_CURRENTUSER, [                                           # 'Does the current user...'
 #    'scopes' => ['download_docs'],                                              # '...have document downloading permissions...'
@@ -67,8 +78,8 @@ else echo Authorizer::can($_CURRENTUSER, [
         <!-- <pre style="font-family: monospace; background: lightgray; padding: 8px; border-radius: 16px; width: max-content"> -->
             <?php /* var_dump(UserContext::constructFromUID($_SESSION['user_id'] ?? null)) */ ?>
             <?php
-                $docs = DocQuery::get(fn ($_)=> $_->find(['doc_status' => 'EDITING'])->execute());
-                list_all_documents($docs);
+                // $docs = DocQuery::get(fn ($_)=> $_->find(['doc_status' => 'EDITING'])->execute());
+                // list_all_documents($docs);
             ?>
         <!-- </pre> -->
     </body>
