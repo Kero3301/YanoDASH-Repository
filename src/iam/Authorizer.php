@@ -76,6 +76,10 @@ final class Authorizer {
             'view_docs',
             'download_docs',
             'bookmark_docs'
+        ],
+        'common' => [
+            'view_docs',
+            'download_docs'
         ]
     ];
 
@@ -284,27 +288,56 @@ final class Authorizer {
 
         # Ensure both elements are arrays
         if (!is_array($requirements['scopes'] ?? null) || !is_array($requirements['domains'] ?? null)) return false;
+        # Store the required scope and domain arrays
         $requiredScopes = $requirements['scopes'];
         $requiredDomains = $requirements['domains'];
-        # POSTCONDITIONS: Both required scope and domain are arrays
+        # POSTCONDITIONS: Both required scopes and domains are arrays
         # CONTRACT: 
         #   requiredScopes may be [], which means there are NO scope restrictions
         #   requiredDomains may be [], which means there are NO domain restrictions
 
-        # Determine if the resource or action is open-access
-        $commonScopes = ['view_docs', 'download_docs'];
-        $isOpenAccess = 
-            (count($requiredScopes) === 0 && count($requiredDomains) === 0)     # Both arrays are unrestricted
-            || ((                                                               # Either of the arrays have at least one restriction
-                empty(array_diff_key(array_flip($requiredScopes), array_flip($commonScopes))) && 
-                empty(array_diff_key(array_flip($commonScopes), array_flip($requiredScopes)))
-            ) && $requiredDomains === ['public']);
-        if ($isOpenAccess) return true;     # If open-access (safe-to-perform/guest actions), allow user with no need to validate IAM context
-        # POSTCONDITIONS: The resource or action is not open-access and the user is not a guest, therefore user IAM context needs to be verified
+        # Open-access (guest) override if there are no scope and domain restrictions
+        if (count($requiredScopes) === 0 && count($requiredDomains) === 0) return true;
+        # POSTCONDITIONS: There is at least 1 restriction in either array
+        
+        # Ensure there aren't too many specified scope and domain requirements
+        if (count($requiredScopes) > 16) return false;      # Too many required scopes
+        if (count($requiredDomains) > 64) return false;     # Too many required domains
+        # POSTCONDITIONS: There are an adequate number of required scopes and domains to safely process
+        # CONTRACT:
+        #   requiredScopes may only contain up to 16 elements
+        #   requiredDomains may only contain up to 64 elements
 
-        # Deny if user's IAM context is invalid
+        # Ensure invalid scopes and domains (i.e. non-strings) are rejected
+        foreach ($requiredScopes as $s) if (!is_string($s)) return false;   # A non-string scope has been found
+        foreach ($requiredDomains as $d) if (!is_string($d)) return false;  # A non-string domain has been found
+        # POSTCONDITIONS: The elements of both required scopes and domains are all valid strings
+        # CONTRACT: 
+        #   requiredScopes and requiredDomains may only accept string values as elements
+        
+        # If explicit restrictions are specified, evaluate whether they still count as open-access restrictions or not
+        foreach ($requiredScopes as $s) if (!in_array($s, self::ACCESS_SCOPES['common'], true)) return (
+            # If a required access scope has been found to no longer belong to the common scope set, allow ONLY IF the user IAM context is validated and contains that scope
+            Authorizer::validateIAM($user) &&
+            in_array($s, $user['PERMISSIONS']['access_scope']) &&
+            (
+                count($requiredDomains) === 0 ||                # No required domain
+                in_array('public', $requiredDomains) ||         # Same as above
+                (                                               # Required domain with presidential override
+                    !empty(array_intersect($requiredDomains, $user['PERMISSIONS']['access_domains'])) ||
+                    Authorizer::isOSCPresident($user)
+                )
+            )
+        );
+        if (
+            count($requiredDomains) === 0 ||
+            !empty(array_intersect($requiredDomains, ['public']))
+        ) return true;        
+        # POSTCONDITIONS: The resource or action is definitively not open-access and the user is not a guest, therefore user IAM context must be verified 
+        
+        # Validate the user's IAM context
         if (!Authorizer::validateIAM($user)) return false;
-        # POSTCONDITIONS: The user's IAM context is validated. PERMISSIONS associative array exists with its baseline schema and is safe to access
+        # POSTCONDITION: The user's IAM context is validated; PERMISSIONS associated array exists with its baseline schema and is safe to access
     
         # Read the user's IAM context information for PERMISSIONS information, namely: access scope and domains
         $permissions = $user['PERMISSIONS'];
@@ -312,21 +345,21 @@ final class Authorizer {
             $accessDomains = $permissions['access_domains'] ?? ['public'];
 
         # Perform scope and domain checks
-        # Strict scope check: required scopes are cumulative; all action types defined in required scopes MUST be within the user's access scope  
-        foreach ($requiredScopes as $action) if (!in_array($action, $accessScope, true)) return false;
-        # POSTCONDITIONS: The user's access scope meets the required scope
+        # Scope check: required scopes are cumulative; all action types defined in required scopes MUST be within the user's access scope  
+        foreach ($requiredScopes as $s) if (!in_array($s, $accessScope, true)) return false;
+        # POSTCONDITIONS: The user's access scope meets the minimum required scope
 
-        # Strict domain check: required domains MUST be a subset of the user's access domains
-
-        # Presidential override: OSC President can access any domain
+        # Domain check: required domains MUST have an intersection with the user's access domains
+        # Presidential override: OSC President can access ANY domain
         if (Authorizer::isOSCPresident($user)) return true;
-        # POSTCONDITIONS: User is not an OSC President
+        # POSTCONDITIONS: User is not an OSC President, therefore domains must be verified
 
-        # If domains is open-access, allow access
-        if (empty($requiredDomains) || in_array('public', $requiredDomains)) return true;
-        # POSTCONDITIONS: Domain is not open-access
-
-        return !empty(array_intersect($requiredDomains, $accessDomains));   
+        # Check if domain is permitted for access
+        $domainAllowed = 
+            count($requiredDomains) === 0 ||                                # No required domains, open to all domains
+            in_array('public', $requiredDomains, true) ||                   # Same concept as above semantically
+            !empty(array_intersect($requiredDomains, $accessDomains));      # User's access domain(s) is/are listed in the required domains
+        return $domainAllowed;
     }
 
     # Templates for specific authorship rules

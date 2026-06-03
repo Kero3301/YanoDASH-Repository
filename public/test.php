@@ -29,20 +29,25 @@ $docs = Authorizer::isOSCPresident($_CURRENTUSER)
     );
 $doc = $docs[0];
 
-echo Authorizer::can($_CURRENTUSER, [                                       # 'Does the current user...'
-    'scopes' => ['download_docs'],                                          # '...have document downloading permissions...'
-    'domains' => [$doc->area_of_origin_identifier],                         # '...and their domain is listed here?'
-]) ? "Can download doc" : "Cannot download doc";                            # 'Then, the user can/cannot edit this document.'
+echo Authorizer::validateIAM($_CURRENTUSER)? "Valid<br>" : "Invalid<br>";
+
+
+#echo Authorizer::can($_CURRENTUSER, [                                           # 'Does the current user...'
+#    'scopes' => ['download_docs'],                                              # '...have document downloading permissions...'
+#    'domains' => [$doc->area_of_origin_identifier],                             # '...and their domain is listed here?'
+#]) ? "Can download protected doc <br>" : "Cannot download protected doc <br>";  # 'Then, the user can/cannot edit this document.'
+
+// echo Authorizer::can(null, [
+//     'scopes' => Authorizer::ACCESS_SCOPES['common'],
+//     'domains' => ['osc_president_office']
+// ]) ? "Can the doc" : "Cannot the doc";
+
+
 # In other words, the above Authorizer::can statement says: "A user can download doc(s) provided they are in any of these domains."
 # Remember:
 #   - Domain: eligibility
 #   - Scope: capability filter (cumulative)
 # Eligible domain + matching scope (or higher) = access granted
-
-
-echo '<pre>';
-var_dump($doc);
-echo '</pre>';
 exit;
     
 

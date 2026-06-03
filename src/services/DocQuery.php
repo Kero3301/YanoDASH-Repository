@@ -95,7 +95,7 @@ final class DocQuery {
                 author: $authorMappings[$r['author']] ?? "(unknown)",
                 author_identifier: $r['author'],
                 area_of_origin: Mapper::find($r['area_of_origin']),
-                area_of_origin_identifier: $r['area_of_origin'],
+                area_of_origin_identifier: $r['area_of_origin'] ?? '',
                 doc_status: $r['doc_status'],
                 tracking_code: $r['tracking_code'],
                 dates: $r['dates'],
