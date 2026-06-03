@@ -156,34 +156,37 @@ if ($statusType === 200) {
 
         # Continue deciding if status type is still OK
         if ($statusType === 200) switch ($docStatus) {
-            default:    # EDITING, PENDING_ARCHIVAL_PROCESS, PENDING_AUDIT, PENDING_...
-                if (!Authorizer::validateIAM($_CURRENTUSER)) {
-                    $statusType = 401;
-                    break;
-                }
-                # POSTCONDITIONS: User's IAM context is validated (non-guest/non-invalid)
-
-                if (Authorizer::isOSCPresident($_CURRENTUSER)) break;
-                # POSTCONDITIONS: User is not an OSC President
-
-                # ...
-
-                break;
-            case 'ARCHIVED':
-                if (!Authorizer::validateIAM($_CURRENTUSER)) {
-                    $statusType = 401;
-                    break;
-                }
-                # POSTCONDITIONS: User's IAM context is validated (non-guest/non-invalid)
-
-                if (!Authorizer::isEditor($_CURRENTUSER) && !Authorizer::isAdmin($_CURRENTUSER)) {
-                    $statusType = 401;
-                    break;
-                }
-                # POSTCONDITIONS: User can only be either an Editor or Admin, not a Viewer
-
-                break;
-            case 'PUBLICIZED':
+            default: $statusType = match ($mode) {
+                default => 400,
+                'view' => 
+                    (Authorizer::isOSCPresident($_CURRENTUSER) || 
+                    Authorizer::can($_CURRENTUSER, [
+                        'scopes' => ['view_docs'],
+                        'domains' => [$docAreaOfOrigin]
+                    ]))
+                        ? 200
+                        : 403,
+                'edit' => 
+                    ((Authorizer::isOSCPresident($_CURRENTUSER) && $docAreaOfOrigin === 'osc_president_office') ||
+                    (!Authorizer::isOSCPresident($_CURRENTUSER) && Authorizer::can($_CURRENTUSER, [
+                        'scopes' => ['edit_docs'],
+                        'domains' => [$docAreaOfOrigin]
+                    ])))
+                        ? 200
+                        : 403
+            }; break;
+            case 'ARCHIVED': $statusType = match ($mode) {
+                default => 400,
+                'view' => (Authorizer::isAdmin($_CURRENTUSER) || Authorizer::isEditor($_CURRENTUSER)) 
+                    ? 200 
+                    : 403,
+                'edit' => 403
+            }; break;
+            case 'PUBLICIZED': $statusType = match ($mode) {
+                default => 400,
+                'view' => 200,
+                'edit' => 403
+            }; break;
         }
     }
     # ...
@@ -199,7 +202,8 @@ if ($statusType === 200) {
             $title = match ($statusType) {
                 200 => $docTitle,
                 400 => 'Invalid Request',
-                401 => 'Forbidden Access',
+                401 => 'Unauthorized',
+                403 => 'Forbidden Access',
                 404 => 'Not Found',
                 500 => 'Error'
             };
