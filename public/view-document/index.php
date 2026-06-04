@@ -381,7 +381,7 @@ if ($statusType === 200) {
                         </div>
                         <div class="right">
                             <div class="button-list">
-                                <button title="Download Document" type="button" class="document-action" style="display: inline-block; background: transparent; border: none">
+                                <button title="Download Document" type="button" class="document-action download-btn" style="display: inline-block; background: transparent; border: none">
                                     <img src="../images/doc-actions/download-doc.png" draggable="false" style="width: 40px; height: 40px">
                                 </button>
                                 <?php if (Authorizer::validateIAM($_CURRENTUSER)): ?>
@@ -411,6 +411,17 @@ if ($statusType === 200) {
                     <iframe src="../demo/new.pdf" width="80%" height="400px" style="border-radius: 16px; border: 2px solid #ddd">
                     </iframe>
                     </div>
+
+                    <div id="download-toast" class="toast">
+                <span class="toast-message"></span>
+
+                <button
+                    type="button"
+                    class="toast-close"
+                    aria-label="Close">
+                    ×
+                </button>
+            </div>
                 <!-- <div> -->
             <?php elseif ($statusType === 404): ?>
                 <div class="no-document-found-wrapper">
