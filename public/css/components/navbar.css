@@ -21,7 +21,7 @@
     z-index: 1000;
 }
 
-#navbar>a:first-child img {
+#navbar>a#yd-logo:first-child img {
     width: 50px !important;
     height: auto;
 }
@@ -244,7 +244,7 @@
         border-radius: 36px;
     }
 
-    #navbar>a:first-child,
+    #navbar>a#yd-logo:first-child,
     #navbar>a:nth-child(2)
     {
         display: flex;
@@ -252,7 +252,7 @@
         flex-shrink: 0;
     }
 
-    #navbar>a:first-child img {
+    #navbar>a#yd-logo:first-child img {
         width: 65px !important;
     }
 
@@ -511,7 +511,7 @@
         border-radius: 48px;
     }
 
-    #navbar>a:first-child img {
+    #navbar>a#yd-logo:first-child img {
         width: 90px !important;
         margin-left: 4px;
     }

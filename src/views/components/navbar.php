@@ -67,9 +67,12 @@ function navbar($user): string {
 
     # Common UI elements
     $navTitle = <<< HTML
-        <a href="$app_url">
+        <a id="yd-logo" href="$app_url">
             <img src="$app_url/images/navbar-logo.png" draggable="false">
         </a>
+
+        <img src="$app_url/images/osc-logo-temporary.png" style="width: 90px; height: 90px" draggable="false">
+
         <a id="yanodash-home" href="$app_url">
             <h1 style="user-select: none;">Yano<span id="dash-underline">DASH<span></h1>
         </a>
