@@ -118,10 +118,10 @@ function navbar($user): string {
                     "<p class=\"menu-category-label\">PRIVATE ARCHIVE</p>"
                         => "#",
 
-                    "Private Documents" 
+                    "Internal Documents" 
                         => "$app_url/archive/private/",
 
-                    "Request..."
+                    "Request to Archive"
                         => "$app_url/archive/private/request/",
 
                     "Pending Archive Requests" 
@@ -140,10 +140,10 @@ function navbar($user): string {
                             "<p class=\"menu-category-label\">PRIVATE ARCHIVE</p>"
                                 => "#",
 
-                            "Private Documents" 
+                            "Internal Documents" 
                                 => "$app_url/private-archive/",
 
-                            "Request..."
+                            "Request to Archive"
                                 => "$app_url/archive/private/request",
                         ])
                         : $archiveMenu

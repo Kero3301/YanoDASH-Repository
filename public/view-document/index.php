@@ -13,14 +13,18 @@ $statusType = 200;  # Status type 200: OK/success (baseline)
 
 # Check for document validity by checking the id parameter
 $id = $_GET['id'] ?? null;
-$oidValid = valid_oid(oid($id));
-if ($oidValid === false) $statusType = 400; # Status type 400: Bad request      
+$id = is_string($id)
+    ? trim($id)
+    : null;
+
+$idValid = !is_null($id);
+if ($idValid === false) $statusType = 400; # Status type 400: Bad request      
 # POSTCONDITIONS: id is a valid ObjectId format
 
 # Attempt to find the document in the database if ObjectId is valid
 if ($statusType === 200) {
     $result = QueryRunner::tryWithCollections([
-        ($docs='documents') => fn ($docs)=> $docs->findOne(['_id' => oid($id)])->execute()
+        ($docs='documents') => fn ($docs)=> $docs->findOne(['tracking_code' => $id])->execute()
     ])->getResults($docs);
     if (empty($result)) $statusType = 404;  # Status type 404: Not found
 
@@ -270,6 +274,13 @@ if ($statusType === 200) {
                 align-items: center;
             }
 
+            .document-identity-info {
+                display: grid;
+                grid-template-columns: auto 180px;
+                padding: 0;
+                align-items: center;
+            }
+
             .view-document-title {
                 font-size: 1.25rem !important; 
                 width: 500px; 
@@ -282,11 +293,70 @@ if ($statusType === 200) {
                 border-color: #d6d6d6; 
                 backdrop-filter: blur(10px);
             }
-            
+
+            .view-document-origin {
+                margin-left: 8px;
+                display: flex;
+                flex-direction: column;
+                width: max-content;
+            }
+
+            .view-document-origin p {
+                margin: 0;
+                font-size: 0.9rem;
+            }
+
+            .document-origin-org.single {
+
+            }
+
+            .document-origin-org.pair {
+                border-radius: 16px;
+                display: flex;
+                gap: 0;
+                width: max-content;
+                padding: 2px 0;
+            }
+
+            .document-origin-org.pair .part {
+                padding: 2px 6px;
+            }
+
+            .document-origin-org.pair .part.begin {
+                border-top-left-radius: 16px;
+                border-bottom-left-radius: 16px;
+                background: #a50a31;
+                color: white;
+                /* padding-left: 10px; */
+                /* padding-right: 8px; */
+            }
+
+            .document-origin-org.pair .part.end {
+                border-top-right-radius: 16px;
+                border-bottom-right-radius: 16px;
+                background: linear-gradient(to right, #E5B7BD, #ede6e6);
+                padding-right: 10px;
+                color: #59051a;
+            }
+
+            .document-origin-org p {
+                margin: 0;
+                padding: 0;
+            }
         </style>
     </head>
     <body>
         <?php echo navbar($_CURRENTUSER)?>
+        <?php
+            $authorName = "unknown author";
+
+            $author = QueryRunner::tryWithCollections([
+                ($a='accounts')
+                    => fn ($a) => $a->findOne(['_id' => oid($docAuthor ?? null)])->execute()
+            ])->getResults($a);
+            if (!empty($author)) $authorName = 
+                htmlspecialchars($author['name']['first_name']). ' '. htmlspecialchars($author['name']['last_name']);
+        ?>
         <div class="page-contents no-padding">
             <div style="padding: 16px; display: flex; flex-direction: column; justify-content: center;">
                 <?php if ($statusType === 200): ?>
@@ -298,7 +368,16 @@ if ($statusType === 200) {
                             </a>
                         </div>
                         <div class="center">
-                            <input class="view-document-title" type="text" title="<?= $docTitle ?>" value="<?= $docTitle ?>" <?php if ($mode === 'view') echo 'disabled'?>> 
+                            <div class="document-identity-info">
+                                <input class="view-document-title" type="text" title="<?= $docTitle ?>" value="<?= $docTitle ?>" <?php if ($mode === 'view') echo 'disabled'?>> 
+                                <div class="view-document-origin">
+                                    <p>by <b><?= $authorName ?></b></p>
+                                    <div class="document-origin-org pair">
+                                        <div class="part begin"><p><b>OSC</b></p></div>
+                                        <div class="part end"><p>Office of the General Secretary</p></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="right">
                             <div class="button-list">
@@ -312,32 +391,8 @@ if ($statusType === 200) {
                         </div>
                     </div>
 
-            
-                    <p>by <?php 
-                        $author = QueryRunner::tryWithCollections([
-                            ($a='accounts')
-                                => fn ($a) => $a->findOne(['_id' => oid($docAuthor)])->execute()
-                        ])->getResults($a);
-
-                        echo empty($author)
-                            ? ' <b>unknown author</b>'
-                            : '<b>'. htmlspecialchars($author['name']['first_name']). ' '. htmlspecialchars($author['name']['last_name']). '</b>';    
-                    ?><p>
-                    <p><br>
-                        <span class="badge left">
-                            <?php
-                                $org = QueryRunner::tryWithCollections([
-                                    ($b='organizations')
-                                        => fn ($b) => $b->findOne(['_id' => oid($author['organization'])])->execute()
-                                ])->getResults($b); 
-                                
-                                echo empty($org)
-                                    ? ' <b>UNKNOWN ORGANIZATION</b>'
-                                    : ' <b>'. strtoupper(htmlspecialchars($org['organization_name'])). '</b>'
-                            ?>
-                        </span>
-                        <span class="badge right"><?= Mapper::find($docAreaOfOrigin) ?></span>
-                    </p>
+        
+                    
             </div>
                 
                 <!-- <div style="display: flex; justify-content: center"> -->
