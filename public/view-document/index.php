@@ -242,7 +242,7 @@ if ($statusType === 200) {
             }
 
             .document-action-bar {
-                background: #eee;
+                background: linear-gradient(to right, #eee, #f9f9f9);
                 box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
                 border: 2px solid #dbdbdb;
                 border-radius: 32px;
@@ -362,7 +362,7 @@ if ($statusType === 200) {
                 <?php if ($statusType === 200): ?>
                     <div class="document-action-bar">
                         <div class="left">
-                            <a class="btn action latent moveleft">
+                            <a class="btn action latent moveleft" href="<?= match($docStatus) {'ARCHIVED' => "$app_url/archive/private", 'PUBLICIZED' => "$app_url/archive/public", default => "$app_url/dms"}?>">
                                 <p style="margin: 0; text-overflow: ellipsis">← Back to <?= match($docStatus) {'ARCHIVED', 'PUBLICIZED' => "Archive", default => "DMS"}; ?></p>
                                 <p class="btn-hint"><?= match($docStatus) {'ARCHIVED' => "PRIVATE", 'PUBLICIZED' => "PUBLIC", default => "DEPARTMENTAL"} ?></p>
                             </a>
@@ -381,11 +381,21 @@ if ($statusType === 200) {
                         </div>
                         <div class="right">
                             <div class="button-list">
-                                <button type="button" class="document-action" style="display: inline-block; background: transparent; border: none">
+                                <button title="Download Document" type="button" class="document-action" style="display: inline-block; background: transparent; border: none">
                                     <img src="../images/doc-actions/download-doc.png" draggable="false" style="width: 40px; height: 40px">
                                 </button>
-                                <button type="button" class="document-action download-btn" data-version-id="$vid" style="display: inline-block; background: transparent; border: none">
-                                    <img src="../images/doc-actions/edit-doc.png" draggable="false" style="width: 40px; height: 40px">
+                                <?php if (Authorizer::validateIAM($_CURRENTUSER)): ?>
+                                    <button title="Bookmark Document" type="button" class="document-action" data-version-id="$vid" style="display: inline-block; background: transparent; border: none">
+                                        <img src="../images/doc-actions/bookmark-doc.png" draggable="false" style="width: 40px; height: 40px">
+                                    </button>
+                                <?php endif; ?>
+                                <?php if (!in_array($docStatus, ['ARCHIVED', 'PUBLICIZED'])): ?>
+                                    <button type="button" class="document-action" data-version-id="$vid" style="display: inline-block; background: transparent; border: none">
+                                        <img src="../images/doc-actions/edit-doc.png" draggable="false" style="width: 40px; height: 40px">
+                                    </button>
+                                <?php endif; ?>
+                                <button title="View Additional Info" type="button" class="document-action" style="display: inline-block; background: transparent; border: none">
+                                    <img src="../images/doc-actions/doc-info.png" draggable="false" style="width: 40px; height: 40px">
                                 </button>
                             </div>
                         </div>
