@@ -36,6 +36,7 @@ const SOURCES = [
     'document_card' => 'views/components/document_card',
     'document_list' => 'views/components/document_list',
     'document_modal' => 'views/components/document_modal',
+    'docx_previewer' => 'views/components/docx_previewer',
     'dynamic_options' => 'views/components/dynamic_options',
     'filter_chips' => 'views/components/filter_chips',
     'footer' => 'views/components/footer',

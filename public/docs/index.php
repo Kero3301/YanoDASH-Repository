@@ -292,6 +292,7 @@ if ($statusType === 200) {
                 black; background: rgba(0, 0, 0, 0.1); 
                 border-color: #d6d6d6; 
                 backdrop-filter: blur(10px);
+                border-radius: 64px !important;
             }
 
             .view-document-origin {
