@@ -35,7 +35,7 @@
     color: #63071e;
     padding: 4px 8px;
     border-radius: 16px;
-    background: rgb(255, 203, 203);
+    background: linear-gradient(to right, #ffc2cb, #fcf6f6);
     /* border: 1px solid rgb(255, 155, 155); */
     border-bottom-width: 4px;
     cursor: default;

@@ -385,8 +385,8 @@ if ($statusType === 200) {
                                     <img src="../images/doc-actions/download-doc.png" draggable="false" style="width: 40px; height: 40px">
                                 </button>
                                 <?php if (Authorizer::validateIAM($_CURRENTUSER)): ?>
-                                    <button title="Bookmark Document" type="button" class="document-action" data-version-id="$vid" style="display: inline-block; background: transparent; border: none">
-                                        <img src="../images/doc-actions/bookmark-doc.png" draggable="false" style="width: 40px; height: 40px">
+                                    <button id="bookmark-btn" title="Bookmark Document" type="button" class="document-action" data-version-id="$vid" style="display: inline-block; background: transparent; border: none">
+                                        <img id="bookmark-img" src="../images/doc-actions/bookmark-doc.png" draggable="false" style="width: 40px; height: 40px">
                                     </button>
                                 <?php endif; ?>
                                 <?php if (!in_array($docStatus, ['ARCHIVED', 'PUBLICIZED'])): ?>
@@ -422,6 +422,21 @@ if ($statusType === 200) {
                 <p style="text-align: center">We're sorry, we couldn't find the document you were looking for. Did you mistype the ID?</p>
             <?php endif; ?>
         </div>
+
+        <script>
+            const bookmarkBtn = document.getElementById('bookmark-btn');
+            const bookmarkImg = document.getElementById('bookmark-img');
+
+            let bookmarked = false;
+
+            bookmarkBtn.addEventListener('click', () => {
+                bookmarked = !bookmarked;
+
+                bookmarkImg.src = bookmarked
+                    ? '../images/doc-actions/bookmarked-doc.png'
+                    : '../images/doc-actions/bookmark-doc.png';
+            });
+        </script>
     </body>
 </html>
 <!-- END PAGE CONTENT -->
