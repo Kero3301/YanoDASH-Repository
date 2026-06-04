@@ -144,7 +144,7 @@ function navbar($user): string {
                                 => "$app_url/private-archive/",
 
                             "Request..."
-                                => "$app_url/request/",
+                                => "$app_url/archive/private/request",
                         ])
                         : $archiveMenu
                 );

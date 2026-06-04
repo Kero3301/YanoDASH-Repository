@@ -1,6 +1,13 @@
 <?php
-require_once '../../../bootstrap/app.php';
-load('mongodb', 'authorizer', 'doc_info', 'date_utils');
+require_once '../../bootstrap/app.php';
+load(
+    'mongodb', 
+    'authorizer', 
+    'doc_info', 
+    'date_utils', 
+    'navbar', 
+    'mapper'
+);
 
 $statusType = 200;  # Status type 200: OK/success (baseline)
 
@@ -209,6 +216,147 @@ if ($statusType === 200) {
             };
             initialize_page("$title | YanoDASH");
         ?>
+        <style>
+            .badge {
+                padding: 6px 12px;
+                color: white;
+                vertical-align: middle;
+                font-size: 0.8rem;
+                cursor: default;
+                font-family: 'RobotoFlex', sans-serif;
+            }
+
+            .badge.left {
+                background: #FF0000;
+                border-radius: 32px 0 0 32px;
+            }
+
+            .badge.right {
+                background: #FFD000;
+                color: black;
+                border-radius: 0 32px 32px 0;
+            }
+
+            .document-action-bar {
+                background: #eee;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+                border: 2px solid #dbdbdb;
+                border-radius: 32px;
+                width: 100%;
+                display: grid;
+                grid-template-columns: auto 1fr 1fr;
+                padding: 8px 12px;
+                overflow-x: hidden;
+            }
+
+            .document-action-bar>.left {
+                display: flex;
+                flex-direction: row;
+                justify-self: start;
+                align-items: center;
+            }
+
+            .document-action-bar>.center {
+                display: flex;
+                justify-self: start;
+                padding-left: 24px;
+                align-items: center;
+            }
+
+            .document-action-bar>.right {
+                display: flex;
+                flex-direction: row;
+                justify-self: end;
+                align-items: center;
+            }
+
+            .view-document-title {
+                font-size: 1.25rem !important; 
+                width: 500px; 
+                text-overflow: ellipsis; 
+                text-align: left; 
+                padding-left: 16px !important; 
+                padding-right: 16px !important; 
+                cursor: text; color: 
+                black; background: rgba(0, 0, 0, 0.1); 
+                border-color: #d6d6d6; 
+                backdrop-filter: blur(10px);
+            }
+            
+        </style>
     </head>
+    <body>
+        <?php echo navbar($_CURRENTUSER)?>
+        <div class="page-contents no-padding">
+            <div style="padding: 16px; display: flex; flex-direction: column; justify-content: center;">
+                <?php if ($statusType === 200): ?>
+                    <div class="document-action-bar">
+                        <div class="left">
+                            <a class="btn action latent moveleft">
+                                <p style="margin: 0; text-overflow: ellipsis">← Back to <?= match($docStatus) {'ARCHIVED', 'PUBLICIZED' => "Archive", default => "DMS"}; ?></p>
+                                <p class="btn-hint"><?= match($docStatus) {'ARCHIVED' => "PRIVATE", 'PUBLICIZED' => "PUBLIC", default => "DEPARTMENTAL"} ?></p>
+                            </a>
+                        </div>
+                        <div class="center">
+                            <input class="view-document-title" type="text" title="<?= $docTitle ?>" value="<?= $docTitle ?>" <?php if ($mode === 'view') echo 'disabled'?>> 
+                        </div>
+                        <div class="right">
+                            <div class="button-list">
+                                <button type="button" class="document-action" style="display: inline-block; background: transparent; border: none">
+                                    <img src="../images/doc-actions/download-doc.png" draggable="false" style="width: 40px; height: 40px">
+                                </button>
+                                <button type="button" class="document-action download-btn" data-version-id="$vid" style="display: inline-block; background: transparent; border: none">
+                                    <img src="../images/doc-actions/edit-doc.png" draggable="false" style="width: 40px; height: 40px">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+            
+                    <p>by <?php 
+                        $author = QueryRunner::tryWithCollections([
+                            ($a='accounts')
+                                => fn ($a) => $a->findOne(['_id' => oid($docAuthor)])->execute()
+                        ])->getResults($a);
+
+                        echo empty($author)
+                            ? ' <b>unknown author</b>'
+                            : '<b>'. htmlspecialchars($author['name']['first_name']). ' '. htmlspecialchars($author['name']['last_name']). '</b>';    
+                    ?><p>
+                    <p><br>
+                        <span class="badge left">
+                            <?php
+                                $org = QueryRunner::tryWithCollections([
+                                    ($b='organizations')
+                                        => fn ($b) => $b->findOne(['_id' => oid($author['organization'])])->execute()
+                                ])->getResults($b); 
+                                
+                                echo empty($org)
+                                    ? ' <b>UNKNOWN ORGANIZATION</b>'
+                                    : ' <b>'. strtoupper(htmlspecialchars($org['organization_name'])). '</b>'
+                            ?>
+                        </span>
+                        <span class="badge right"><?= Mapper::find($docAreaOfOrigin) ?></span>
+                    </p>
+            </div>
+                
+                <!-- <div style="display: flex; justify-content: center"> -->
+                    <br><br>
+                    <div style="display: flex; justify-content: center; justify-items: center">
+                    <iframe src="../demo/new.pdf" width="80%" height="400px" style="border-radius: 16px; border: 2px solid #ddd">
+                    </iframe>
+                    </div>
+                <!-- <div> -->
+            <?php elseif ($statusType === 404): ?>
+                <div class="no-document-found-wrapper">
+                    <div class="no-document-found-indicator">
+                        <div class="no-document-found-logo"></div>
+                        <h2 class="subtitle" style="user-select: none">Document not found</h2>
+                    </div>
+                </div>
+                <p style="text-align: center">We're sorry, we couldn't find the document you were looking for. Did you mistype the ID?</p>
+            <?php endif; ?>
+        </div>
+    </body>
 </html>
 <!-- END PAGE CONTENT -->

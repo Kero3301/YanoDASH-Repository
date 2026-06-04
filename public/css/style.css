@@ -286,6 +286,10 @@ button {
     cursor: pointer;
 }
 
+.btn.moveleft:hover {
+    transform: translateX(-3px);
+}
+
 .document-action {
     cursor: pointer !important;
 }
@@ -303,6 +307,11 @@ button {
 .btn.action:hover {
     background-color: #1F1F1F;
     border-color: #303030;
+}
+
+.btn.action.latent:hover {
+    background-color: #a50a31;
+    border-color: #a50a31;
 }
 
 .btn.positive {
@@ -426,7 +435,12 @@ input[type="password"]:focus-within {
     outline: none !important;
 }
 
-
+.btn-hint {
+    font-size: 0.65rem;
+    font-weight: normal;
+    text-align: center;
+    margin: 0;
+}
 
 /* ========== SELECT ==========*/
 select.sct {
