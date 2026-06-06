@@ -144,6 +144,7 @@
                 pointer-events: none;
                 transition: opacity 0.2s ease;
                 z-index: 1500;
+                height: 100vh;
             }
 
             /* Desktop sidebar states */
@@ -185,13 +186,17 @@
                     bottom: 0;
 
                     width: 220px;
-                    height: 100vh;
+                    height: 100%;
 
                     transform: translateX(-100%);
                     transition: transform 0.25s ease;
                     z-index: 1600;
 
                     overflow-y: auto;
+
+                    border-left: none;
+                    border-top-left-radius: 0;
+                    border-bottom-left-radius: 0;
                 }
 
                 #root.sidebar-open #left-sidebar {
