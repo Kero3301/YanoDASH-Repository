@@ -1,14 +1,13 @@
 <?php
 require_once '../bootstrap/app.php';
+load('footer');
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <?php initialize_page('hello world 2');?>
         <style>
-            * {
-                box-sizing: border-box;
-            }
+            * { box-sizing: border-box; }
 
             #root {
                 width: 100%;
@@ -50,18 +49,29 @@ require_once '../bootstrap/app.php';
             }
 
             #main {
-                height: 2000px;
                 width: auto;
                 background: white;
                 border-radius: 10px;
                 border: 2px solid #ddd;
                 overflow: hidden;
+                
+                display: flex;
+                flex-direction: column;
+                flex-shrink: 0;
             }
 
             #top-root-p1 {
                 background: white;
                 height: 50%;
                 padding: 8px;
+            }
+
+            #footer {
+                margin-top: auto;
+            }
+
+            #main-contents {
+                padding: 12px;
             }
 
         </style>
@@ -74,16 +84,27 @@ require_once '../bootstrap/app.php';
                         <h1>YanoDASH</h1>
                     </nav>
                 </div>
-
-                
             </div>
-           <div id="bottom-root">
+            <div id="bottom-root">
                 <main id="main">
+                    <!-- Page content header -->
                     <div class="pch">
                         <h1>abc</h1>
                     </div>
+
+                    <!-- Page contents -->
+                    <div id="main-contents">
+                        <?php
+                            for ($i = 1; $i <= 100; $i++) echo <<< HTML
+                                <p>$i</p>
+                            HTML;
+                        ?>
+                    </div>
+
+                    <!-- Page content footer -->
+                    <?php echo footer() ?>
                 </main>
-           </div>
+            </div>
         </div>
     </body>
 </html>
