@@ -13,11 +13,12 @@
                 --circle-btn-wh: 40px;
                 --osc-logo-nav-wh: 100px;
                 --yd-logo-nav-wh: 80px;
-                --yd-title-nav-lmarg: 4px;
+                --yd-title-nav-lmarg: 2px;
                 --yd-title-nav-fontsize: 2.6rem;
                 --maroon: #63071e;
                 --richred: #9f1f3f;
-                --gold: #F1CB4A;
+                --gold: #F8BB38;
+                --gold-translucent: #f8bb38b9;
                 --roundborder-top: 6px solid var(--maroon);
             }
 
@@ -74,16 +75,23 @@
                 height: calc(var(--nav-height) / 2);
             }
 
+            #navigation-links {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                margin-left: auto;
+            }
+
             #nav {
                 margin-inline: var(--main-margin-il);
                 display: flex;
                 border-radius: var(--nav-border-radius);
                 height: var(--nav-height);
-                background: white;
-                border: 3px solid #eee;
+                background: linear-gradient(to right, white, #f3f3f3);
+                border: 1px solid var(--richred);
                 position: relative;
                 top: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
                 padding-inline: 8px;
             }
 
@@ -132,11 +140,13 @@
                 background: rgba(255,255,255,0.33);
 
                 backdrop-filter: blur(10px);
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease, background 0.3s ease;
             }
 
             #lsb-btn:hover {
                 transform: translateX(4px);
+                background: var(--gold-translucent);
+                border-color: #c68d12;
             }
 
             #lsb-btn:has(~#main.lsb-open):hover {
@@ -176,6 +186,14 @@
                 z-index: 1100;
 
                 pointer-events: none;
+            }
+
+            #vertical-bar-nav {
+                height: 28px;
+                width: 4px;
+                background: rgba(0,0,0,0.11);
+                margin-left: 14px;
+                border-radius: 2px;
             }
 
             #osc-logo-nav {
@@ -257,9 +275,14 @@
                     <a id="yd-logo-nav-wrap" href='#'>
                         <img draggable="false" src="images/navbar-logo.png" id="yd-logo-nav">
                     </a>
+                    <span id="vertical-bar-nav"></span>
                     <h1 id="yd-title-nav">
                         YanoDASH
                     </h1>
+                </div>
+                <div id="navigation-links">
+                    <p>1</p>
+                    <p>2</p>
                 </div>
             </nav>
         </div>
