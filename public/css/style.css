@@ -291,6 +291,10 @@ button {
     transform: translateX(-3px);
 }
 
+.btn.moveright:hover {
+    transform: translateX(3px);
+}
+
 .document-action {
     cursor: pointer !important;
 }
@@ -310,7 +314,7 @@ button {
     border-color: #303030;
 }
 
-.btn.action.latent:hover {
+.btn.latent:hover {
     background-color: #a50a31;
     border-color: #a50a31;
 }

@@ -1,6 +1,6 @@
 <?php
     require_once '../bootstrap/app.php';
-    load('svg_templates');
+    load('svg_templates', 'footer');
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,7 +43,7 @@
                 transition: color 0.3s ease;
             }
 
-            #yd-logo-nav-wrap:hover + #yd-title-nav,
+            #yd-logo-nav-wrap:hover:has(~#yd-title-nav),
             #yd-title-nav:hover {
                 color: #BB0000;
             }
@@ -55,7 +55,7 @@
                 inset: 0;
                 background: linear-gradient(to right, #ff9d9d83, #fff4f46f);
                 opacity: 0;
-                transition: opacity 0.5s ease, transform 0.5s ease;
+                transition: opacity 0.4s ease, transform 0.4s ease;
                 z-index: -1;
 
                 transform: translateX(-100%);
@@ -81,9 +81,16 @@
 
             #navigation-links {
                 display: flex;
-                gap: 8px;
+                gap: 4px;
                 align-items: center;
-                margin-left: auto;
+                /* margin-left: auto; */
+                margin-right: 16px;
+            }
+
+            #navigation-links .inline-link {
+                padding-inline: 12px;
+                border-radius: 8px;
+                font-size: 1.05rem;
             }
 
             #nav {
@@ -223,6 +230,19 @@
                 height: var(--yd-logo-nav-wh);
             }
 
+            #footer {
+                margin-top: auto;
+            }
+
+            #nav-right {
+                margin-left: auto;
+                margin-right: 16px;
+                padding-right: 12px;
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+            }
+
             /* Mobile */
             @media(max-width: 767px) {
                 :root {
@@ -303,9 +323,16 @@
                         YanoDASH
                     </h1>
                 </div>
-                <div id="navigation-links">
-                    <p>1</p>
-                    <p>2</p>
+                <div id="nav-right">
+                    <div id="navigation-links">
+                        <a class="inline-link" href="#"><p>Archive</p></a>
+                        <a class="inline-link" href="#"><p>DMS</p></a>
+                        <a class="inline-link" href="#"><p>Statistics</p></a>
+                    </div>
+
+                    <div id="account-actions-nav">
+                        <button class="btn moveright latent" style="padding-inline: 16px; font-weight: normal;">Login</button>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -319,10 +346,16 @@
                 <div id="left-sidebar">
                 </div>
             </div>
-            <div class="page-contents no-padding" style="border-radius: 10px; grid-column: 2; width: 100%; height: 1000px; border: none; border-top: var(--roundborder-top);">
+            <div class="page-contents no-padding" style="border-radius: 10px; grid-column: 2; width: 100%; border: none;">
                 <div class="pch" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; background: linear-gradient(to bottom, var(--maroon), var(--richred)">
                     <h1>New Layout</h1>
                 </div>
+                <div style="padding-inline: 36px; padding-block: 20px;">
+                    <h2>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </h2>
+                </div>
+                <?php echo footer()?>
             </div>
         </main>
         <script src="script/sidebar-controls.js">
