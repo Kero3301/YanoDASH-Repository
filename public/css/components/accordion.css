@@ -2,20 +2,21 @@
     width: 100%;
     margin: 1rem auto;
     border-radius: 16px;
-    border: 3px solid #CCC;
+    border: 2px solid #ddd;
     overflow: hidden;
-    background: #f4f4f4;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background: #f7f7f7;
+    /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);*/
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .accordion {
     width: 100%;
-    padding: 1rem 1.25rem;
+    padding: 12px 1.25rem;
     text-align: left;
     font-size: 1rem;
     font-family: 'RobotoFlex';
     font-weight: bold;
-    background-color: #f4f4f4;
+    background-color: #f7f7f7;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     outline: none;

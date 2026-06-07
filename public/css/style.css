@@ -1,5 +1,9 @@
 /* GLOBAL STYLES */
 
+ol li::marker {
+    color: #A60000;
+    font-weight: bold;
+}
 
 table.text-grid {
     background: #f2f2f2;
@@ -142,7 +146,8 @@ hr.short-divider {
     padding: 10px;
     border-radius: 8px;
     border: 2px solid #DDD;
-    width: 100%
+    min-width: 180px;
+    width: auto;
 }
 
 .no-document-found-wrapper {
@@ -295,6 +300,10 @@ button {
     transform: translateX(3px);
 }
 
+.btn.movedown:hover {
+    transform: translateY(2px);
+}
+
 .document-action {
     cursor: pointer !important;
 }
@@ -391,6 +400,13 @@ button {
 
 input {
     font-family: 'RobotoFlex', sans-serif;
+    width: auto;
+    min-width: 180px;
+}
+
+input[type="number"] {
+    /*width: auto !important;*/
+    width: 80px !important;
 }
 
 input.locked {
@@ -400,7 +416,8 @@ input.locked {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="number"] {
     box-sizing: border-box;
     display: inline-block;
     padding: 10px 4px;

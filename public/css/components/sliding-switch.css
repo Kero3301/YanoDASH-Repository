@@ -17,39 +17,44 @@
 .slider {
     position: absolute;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
+    border-radius: 34px;
+    /*transition: background-color 0.4s;*/
 }
 
-.slider:before {
-    position: absolute;
+.slider::before {
     content: "";
+    position: absolute;
     height: 26px;
     width: 26px;
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
+    border-radius: 50%;
+    /*-webkit-transition: .4s;*/
+    transition: transform 0.4s ease;
+    z-index: 1;
 }
 
-input:checked+.slider {
-    background-color: #2196F3;
+.slider::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(to right, #63071e, #9f1f3f);
+    opacity: 0;
+    transition: opacity 0.4s ease;
 }
 
-/* input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
-} */
-
-input:checked+.slider:before {
+input:checked+.slider::before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
+}
+
+input:checked+.slider::after {
+    opacity: 1;
 }
 
 /* Rounded sliders */

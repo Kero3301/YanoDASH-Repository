@@ -1,6 +1,6 @@
 <?php
     require_once '../bootstrap/app.php';
-    load('svg_templates', 'footer');
+    load('svg_templates', 'footer', 'accordion', 'sliding_switch');
 ?>
 <!DOCTYPE html>
 <html>
@@ -243,7 +243,7 @@
 
             .sidebar-item:hover {
                 border: 2px solid var(--richred);
-                border-bottom-width: 4px;
+                /*border-bottom-width: 4px;*/
                 background: rgba(255,0,0,0.15);
                 transform: translateY(1px);
             }
@@ -256,6 +256,8 @@
                 opacity: 1;
                 padding-inline: 24px;
             }
+
+            ul, ol { list-style-position: inside; }
 
             #sidebar-backdrop {
                 position: fixed;
@@ -327,6 +329,51 @@
                 color: var(--maroon);
                 font-size: 20px;
                 text-align: center;
+            }
+
+            .table-container {
+                width: 90%;
+                margin: 0 auto 30px;
+                overflow-x: auto;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                font-family: 'RobotoFlex', sans-serif;
+            }
+
+            .table-container table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .table-container table thead {
+                background: linear-gradient(to right, var(--maroon), var(--richred));
+            }
+
+            th {
+                /*background-color: var(--maroon);*/
+                color: white;
+                padding: 15px;
+                text-align: center;
+                font-weight: 600;
+            }
+
+            td {
+                padding: 15px;
+                border-bottom: 1px solid #eee;
+                text-align: center;
+            }
+
+            td button {
+                display: inline-block;
+                margin-right: 5px;
+                margin-bottom: 5px;
+                padding: 5px 12px;
+                font-size: 0.8rem;
+                border-radius: 20px;
+                cursor: pointer;
+                border: none;
+                transition: 0.2s ease;
             }
 
             /* Mobile */
@@ -446,18 +493,13 @@
                             ?>
                         </div>
                     </div>
-                    <!-- <p class="panel-title">Sidebar</p>
-                    <div class="sidebar-item-panel">
-                        <p>abc</p>
-                        <p>def</p>
-                    </div> -->
                 </div>
             </div>
             <div class="page-contents no-padding" style="border-radius: 10px; grid-column: 2; width: 100%; border: none;">
                 <div class="pch" style="border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; background: linear-gradient(to bottom, var(--maroon), var(--richred)">
                     <h1>New Layout</h1>
                 </div>
-                <div style="padding-inline: 36px; padding-block: 20px;">
+                <div style="padding-inline: 48px; padding-block: 20px;">
                     <p class="section-title">
                         Section 1
                     </p>
@@ -470,9 +512,60 @@
                     <p class="section-title">
                         Section 2
                     </p>
-                    <p>
-                        The quick brown fox jumps over the lazy dog. 0123456789
+                    <p>The quick brown fox jumps over the lazy dog. 0123456789</p>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                            </thead>
+                            <tbody>
+                                <td>ab</td>
+                                <td>cd</td>
+                                <td>ef</td>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="section-title">
+                        Section 3
                     </p>
+                    List
+                    <ul>
+                        <li>a</li>
+                        <li>b</li>
+                        <li>c</li>
+                    </ul>
+                    Enumeration
+                    <ol>
+                        <li>d</li>
+                        <li>e</li>
+                        <li>f</li>
+                    </ol>
+                    <hr class="section-gap">
+
+                    <p class="section-title">
+                        Section 4
+                    </p>
+                    Buttons<br>
+                    <button class="btn moveleft">Button 1</button>
+                    <button class="btn action">Button 2</button>
+                    <button class="btn latent movedown">Button 3</button>
+                    <button class="btn action latent moveright">Button 4</button> <br>
+                    Inputs
+                    <input type="text">
+                    <input type="text" placeholder="abc">
+                    <input type="number">
+                    Selection
+                    <select class="sct">
+                        <option>a</option>
+                    </select>
+                    Switches<br>
+                    <?php echo sliding_switch("abc")?><br>
+                    Accordion
+                    <?php echo accordion("accd", ["abc" => "def", "ghi" => "jkl"]);?>
                 </div>
                 <?php echo footer()?>
             </div>
