@@ -197,6 +197,66 @@
                 border-top: var(--roundborder-top);
             }
 
+            .sidebar-contents {
+                /* background: yellow; */
+                display: grid;
+                grid-template-rows: 
+                    auto /* Section title */ 
+                    1fr; /* Section */
+                height: 100%;
+                overflow: hidden;
+                padding-inline: 0px;
+                opacity: 0;
+                transition: opacity 0.3s ease, padding 0.3s ease;
+            }
+
+            .sidebar-contents .section-title {
+                margin-bottom: 8px;
+            }
+
+            .sidebar-item-section {
+                margin-bottom: 24px;
+                border-radius: 8px;
+                overflow: auto;
+                background: rgba(0,0,0,0.03);
+                display: flex;
+                flex-direction: column;
+                flex-shrink: 0;
+                border: 2px solid #eee;
+            }
+
+            .sidebar-item {
+                cursor: pointer;
+                width: 100%;
+                margin-block: 0;
+                padding-block: 4px;
+                padding-inline: 10px;
+                text-overflow: ellipsis;
+                font-family: 'RobotoFlex', sans-serif;
+                font-size:0.89rem;
+                transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease, transform 0.15s ease, border-bottom-width 0.1s ease;
+                border-radius: 10px;
+                border: 2px solid transparent;
+                user-select: none;
+                border-bottom: 1px solid rgba(0,0,0,0.05);
+            }
+
+            .sidebar-item:hover {
+                border: 2px solid var(--richred);
+                border-bottom-width: 4px;
+                background: rgba(255,0,0,0.15);
+                transform: translateY(1px);
+            }
+
+            .sidebar-item:active {
+                background: rgba(255,0,0,0.3);
+            }
+
+            #main.lsb-open .sidebar-contents {
+                opacity: 1;
+                padding-inline: 24px;
+            }
+
             #sidebar-backdrop {
                 position: fixed;
                 inset: 0;
@@ -241,6 +301,32 @@
                 display: flex;
                 align-items: center;
                 overflow: hidden;
+            }
+
+            .section-title {
+                font-weight: 700;
+                color:var(--maroon);
+                margin-bottom: 12px;
+                border-bottom: 2px solid rgba(128,0,0,.2);
+                padding-bottom: 6px;
+                text-transform: uppercase;
+                font-size: .95rem;
+                font-family: 'RobotoFlex', serif !important;
+            }
+
+            .section-gap {
+                width: 100%;
+                height: 16px;
+                background: transparent;
+                border: none;
+            }
+
+            .panel-title {
+                font-family: 'Gupter', serif;
+                font-weight: bold;
+                color: var(--maroon);
+                font-size: 20px;
+                text-align: center;
             }
 
             /* Mobile */
@@ -344,6 +430,27 @@
         <main id="main">
             <div id="left-sidebar-container">
                 <div id="left-sidebar">
+                    <div class="sidebar-contents">
+                        <p class="section-title">Sidebar</p>
+                        <!-- <p>a</p> -->
+                        <div class="sidebar-item-section">
+                            <?php
+                                $letters = "abcdefghijklmnopqrstuvwxyz";
+                                for ($i=0; $i<strlen($letters); $i++) {
+                                    $letter = $letters[$i];
+
+                                    echo <<< HTML
+                                        <a class="sidebar-item">$letter</a>
+                                    HTML;
+                                }
+                            ?>
+                        </div>
+                    </div>
+                    <!-- <p class="panel-title">Sidebar</p>
+                    <div class="sidebar-item-panel">
+                        <p>abc</p>
+                        <p>def</p>
+                    </div> -->
                 </div>
             </div>
             <div class="page-contents no-padding" style="border-radius: 10px; grid-column: 2; width: 100%; border: none;">
@@ -351,9 +458,21 @@
                     <h1>New Layout</h1>
                 </div>
                 <div style="padding-inline: 36px; padding-block: 20px;">
-                    <h2>
+                    <p class="section-title">
+                        Section 1
+                    </p>
+                    <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br> Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </h2>
+                    </p>
+
+                    <hr class="section-gap">
+
+                    <p class="section-title">
+                        Section 2
+                    </p>
+                    <p>
+                        The quick brown fox jumps over the lazy dog. 0123456789
+                    </p>
                 </div>
                 <?php echo footer()?>
             </div>
