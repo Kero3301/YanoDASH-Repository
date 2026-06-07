@@ -48,6 +48,7 @@ const SOURCES = [
     'pagination_controls' => 'views/components/pagination_controls', 
     'password_input' => 'views/components/password_input',
     'sliding_switch' => 'views/components/sliding_switch',
+    'svg_templates' => 'views/components/svg_templates',
     'user_form' => 'views/components/user_form'
 ];
 

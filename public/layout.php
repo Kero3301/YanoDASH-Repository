@@ -1,5 +1,6 @@
 <?php
     require_once '../bootstrap/app.php';
+    load('svg_templates');
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,13 +14,16 @@
                 --circle-btn-wh: 40px;
                 --osc-logo-nav-wh: 100px;
                 --yd-logo-nav-wh: 80px;
+                --yd-title-nav-inpad: 16px;
                 --yd-title-nav-lmarg: 2px;
                 --yd-title-nav-fontsize: 2.6rem;
+                --yd-title-nav-border-radius: 16px;
                 --maroon: #63071e;
                 --richred: #9f1f3f;
                 --gold: #F8BB38;
-                --gold-translucent: #f8bb38b9;
+                --gold-translucent: #ffc74db9;
                 --roundborder-top: 6px solid var(--maroon);
+                --vertical-bar-nav-lmarg: 14px;
             }
 
             body::before {
@@ -33,9 +37,9 @@
                 z-index: 0;
                 font-size: var(--yd-title-nav-fontsize);
                 color: #63071e;
-                padding-inline: 16px;
+                padding-inline: var(--yd-title-nav-inpad);
                 cursor: pointer;
-                border-radius: 16px;
+                border-radius: var(--yd-title-nav-border-radius);
                 transition: color 0.3s ease;
             }
 
@@ -141,12 +145,25 @@
 
                 backdrop-filter: blur(10px);
                 transition: transform 0.3s ease, background 0.3s ease;
+
+                display: flex;
+                justify-content: center; 
+                align-items: center;
             }
 
             #lsb-btn:hover {
                 transform: translateX(4px);
                 background: var(--gold-translucent);
                 border-color: #c68d12;
+            }
+
+            #lsb-btn #lsb-toggle-icon {
+                transform: rotate(180deg);
+                transition: transform 0.3s ease;
+            }
+
+            #lsb-btn:has(~#main.lsb-open) #lsb-toggle-icon {
+                transform: rotate(0deg);
             }
 
             #lsb-btn:has(~#main.lsb-open):hover {
@@ -190,9 +207,9 @@
 
             #vertical-bar-nav {
                 height: 28px;
-                width: 4px;
+                width: 3px;
                 background: rgba(0,0,0,0.11);
-                margin-left: 14px;
+                margin-left: var(--vertical-bar-nav-lmarg);
                 border-radius: 2px;
             }
 
@@ -213,8 +230,11 @@
                     --nav-border-radius: 40px;
                     --osc-logo-nav-wh: 80px;
                     --yd-logo-nav-wh: 60px;
+                    --yd-title-nav-inpad: 10px;
                     --yd-title-nav-fontsize: 2rem;
                     --yd-title-nav-lmarg: 0;
+                    --vertical-bar-nav-lmarg: 5px;
+                    --yd-title-nav-border-radius: 12px;
                 }
 
                 #main {
@@ -234,6 +254,7 @@
 
                     transform: translateX(-100%);
                     transition: transform 0.3s ease;
+
                 }
 
                 #left-sidebar {
@@ -246,6 +267,8 @@
                     background: white;
 
                     overflow-y: auto;
+
+                    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
                 }
 
                 #main.lsb-open #left-sidebar-container {
@@ -265,8 +288,8 @@
     </head>
     <body>
         <!-- Left Sidebar button -->
-        <button id="lsb-btn" onclick="toggleLsb()">
-        >
+        <button id="lsb-btn" onclick="toggleLsb()" title="Show or hide sidebar">
+            <?= svg('chevron', id: 'lsb-toggle-icon') ?>
         </button>
         <div id="nav-dock">
             <nav id="nav">

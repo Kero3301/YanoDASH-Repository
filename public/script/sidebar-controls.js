@@ -28,5 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('resize', () => {
     if (!isDesktop()) {
         mainDiv?.classList.remove('lsb-open');
+    } else {
+        setLsbOpen(localStorage.getItem('lsb-open') === 'true');
     }
 });
