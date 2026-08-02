@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /yanodash-repository/
+
+RewriteCond %{REQUEST_URI} !^/yanodash-repository/public/ [NC]
+
+RewriteCond %{DOCUMENT_ROOT}/yanodash-repository/public/$1 -d
+RewriteRule ^(.*?[^/])$ $1/ [L,R=301]
+
+RewriteRule ^(.*)$ public/$1 [L]
